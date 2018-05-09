@@ -3,10 +3,10 @@ kind: StorageClass
 metadata:
   name: pure
   annotations:
-    storageclass.beta.kubernetes.io/is-default-class: "true"
+    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.isPureDefault }}"
   labels:
     kubernetes.io/cluster-service: "true"
-{{ include "chart_labels" . | indent 4}}
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
 provisioner: pure-provisioner
 parameters:
     backend: block
@@ -17,7 +17,7 @@ metadata:
   name: pure-file
   labels:
     kubernetes.io/cluster-service: "true"
-{{ include "chart_labels" . | indent 4}}
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
 provisioner: pure-provisioner
 parameters:
     backend: file
@@ -28,7 +28,7 @@ metadata:
   name: pure-block
   labels:
     kubernetes.io/cluster-service: "true"
-{{ include "chart_labels" . | indent 4}}
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
 provisioner: pure-provisioner
 parameters:
     backend: block
