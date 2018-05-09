@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: pure-flex
+  namespace: {{ .Values.namespaces.k8s }}
+  lables:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+spec:
+  template:
+    metadata:
+      labels:
+        app: pure-flex
+{{ include "pure_k8s_plugin.labels" . | indent 8}}
+    spec:
+      containers:
+        - name: pure-flex
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - >
+                    touch /tmp/.uninstall_start_flag;
+                    while true; do
+                    if [ -f /tmp/.uninstall_finish_flag ]; then
+                    exit;
+                    fi;
+                    sleep 1;
+                    done
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            privileged: true
+          command:
+            - "/pure-flex-daemon"
+            - "--kubeletBaseDir=/kubelet-plugins"
+{{- if eq .Values.app.debug true}}
+            - "--debug"
+{{- end}}
+            - "--daemon"
+            - "install"
+          volumeMounts:
+          - name: config
+            mountPath: /etc/pure
+          - name: kubelet-plugins
+            mountPath: /kubelet-plugins
+          env:
+          - name: PURE_DISCOVERY_CONF
+            value: /etc/pure/pure.json
+          - name: PURE_FLASHARRAY_SAN_TYPE
+            value: {{ .Values.flasharray.sanType | upper }}
+      volumes:
+        - name: config
+          configMap:
+            name: pure-provisioner-config
+        - name: kubelet-plugins
+          hostPath:
+           path: {{ template "pure_k8s_plugin.flexpath" .}}

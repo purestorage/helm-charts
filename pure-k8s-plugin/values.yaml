@@ -1,0 +1,70 @@
+# Default values for k8s-plugin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  name: purestorage/k8s
+  tag: 1.2.4
+  pullPolicy: IfNotPresent
+
+# this option is to enable/disable the debug mode of this app
+# for pure-provisioner and pure-flex-daemon
+app:
+  debug: false
+
+# do you want to set pure as the default storageclass?
+storageclass:
+  isPureDefault: true
+
+# specify the service account name for this app
+clusterrolebinding:
+  serviceAccount:
+    name: default
+
+# support ISCSI or FC, not case sensitive
+flasharray:
+  sanType: ISCSI
+
+# there are two namespaces for this app
+# 1. namespaces.k8s is the kubernetes namespace for running this app/plugin,
+#    all the components of this app will be installed in this namespace
+#
+# 2. namespaces.nsm is the namespace of the backend storages, all the volumes
+#    and filesystems will be created in this namespaces
+namespaces:
+  k8s: default
+  nsm: k8s
+
+# support k8s or openshift
+# if you want to install flex into a different place, you need to
+# overwrite the flexpath
+orchestrator:
+  name: k8s
+  openshift:
+    flexPath: /etc/origin/node/kubelet-plugins
+  k8s:
+    flexPath: /usr/libexec/kubernetes/kubelet-plugins
+
+# arrays must be overwrited by customer, otherwise it will fail the installation
+# the following is an example
+arrays:
+  #FlashArrays:
+  #  - MgmtEndPoint: "1.2.3.4"
+  #    APIToken: "a526a4c6-18b0-a8c9-1afa-3499293574bb"
+  #    Labels:
+  #      rack: "22"
+  #      env: "prod"
+  #  - MgmtEndPoint: "1.2.3.5"
+  #    APIToken: "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+  #FlashBlades:
+  #  - MgmtEndPoint: "1.2.3.6"
+  #    APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
+  #    NfsEndPoint: "1.2.3.7"
+  #    Labels:
+  #      rack: "7b"
+  #      env: "dev"
+  #  - MgmtEndPoint: "1.2.3.8"
+  #    APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
+  #    NfsEndPoint: "1.2.3.9"
+  #    Labels:
+  #      rack: "6a"

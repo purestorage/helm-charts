@@ -1,0 +1,38 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: pure-provisioner
+  namespace: {{ .Values.namespaces.k8s }}
+  lables:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pure-provisioner
+{{ include "pure_k8s_plugin.labels" . | indent 8}}
+    spec:
+      containers:
+        - name: pure-provisioner
+          image: "{{ .Values.image.name }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /k8s-provisioner
+            - '-logtostderr=false'
+            - '-stderrthreshold=2'
+{{- if eq .Values.app.debug true}}
+            - '--debug'
+{{- end}}
+          volumeMounts:
+          - name: config
+            mountPath: /etc/pure
+          env:
+          - name: PURE_DISCOVERY_CONF
+            value: /etc/pure/pure.json
+          - name: PURE_K8S_NAMESPACE
+            value: {{ .Values.namespaces.nsm }}
+      volumes:
+        - name: config
+          configMap:
+            name: pure-provisioner-config
