@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: pure-provisioner-rights
+  labels:
+{{ include "chart_labels" . | indent 4}}
+roleRef:
+{{- if eq .Values.orchestrator.name "k8s"}}
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+{{- end}}
+  name: system:persistent-volume-provisioner
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: {{ .Values.namespaces.k8s }}

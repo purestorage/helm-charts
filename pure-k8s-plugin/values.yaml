@@ -1,0 +1,29 @@
+# Default values for k8s-plugin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  name: purestorage/k8s
+  tag: 1.2.4
+  pullPolicy: IfNotPresent
+
+flasharray:
+  sanType: ISCSI
+
+namespaces:
+  k8s: default
+  nsm: k8s
+
+# support k8s or openshift
+orchestrator:
+  name: k8s
+
+# arrays must be overwrited by customer, the following is an example
+arrays:
+  FlashArrays:
+    - MgmtEndPoint: "1.2.3.4"
+      APIToken: "c526a4c6-18b0-a8c9-1afa-3499293574bb"
+  FlashBlades:
+    - MgmtEndPoint: "1.2.3.5"
+      APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
+      NfsEndPoint: "1.2.3.6"

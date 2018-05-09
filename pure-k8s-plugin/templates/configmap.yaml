@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pure-provisioner-config
+  namepsace: {{ .Values.namespaces.k8s }}
+  labels:
+{{ include "chart_labels" . | indent 4}}
+data:
+  pure.json: |-
+{{ .Values.arrays | toJson | indent 4 }}
