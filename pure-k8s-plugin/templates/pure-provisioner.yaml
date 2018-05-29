@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: pure-provisioner
-          image: "{{ .Values.image.name }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /k8s-provisioner
