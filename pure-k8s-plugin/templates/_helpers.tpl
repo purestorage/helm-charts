@@ -17,3 +17,9 @@ release: {{ .Release.Name | quote }}
 {{ .Values.orchestrator.openshift.flexPath }}
 {{- end -}}
 {{- end -}}
+
+{{/* Define the apiversion of clusterrolebinding
+*/}}
+{{ define "pure_k8s_plugin.clusterrolebiding_apiversion" -}}
+{{ if eq .Values.orchestrator.name "k8s" -}}rbac.authorization.k8s.io/v1beta1{{ else -}}v1{{- end -}}
+{{- end -}}
