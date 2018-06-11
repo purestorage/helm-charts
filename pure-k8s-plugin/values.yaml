@@ -41,9 +41,9 @@ namespaces:
 orchestrator:
   name: k8s
   openshift:
-    flexPath: /etc/origin/node/kubelet-plugins
+    flexPath: /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
   k8s:
-    flexPath: /usr/libexec/kubernetes/kubelet-plugins
+    flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
 
 # arrays must be overwrited by customer, otherwise it will fail the installation
 # the following is an example

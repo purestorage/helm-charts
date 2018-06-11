@@ -34,8 +34,8 @@ The following table lists the configurable parameters of the Datadog chart and t
 | `namespaces.k8s`            | Kubernetes namespace for running app | `default`                    |
 | `namespaces.nsm`            | Namespace of the backend storages  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
-| `orchestrator.k8s.flexPath` | Dir path to install flex plugin, works with orchestrator.name=k8s | `/usr/libexec/kubernetes/kubelet-plugins` |
-| `orchestrator.openshift.flexPath` | Dir path to install flex plugin, works with orchestrator.name=openshift | `/etc/origin/node/kubelet-plugins` |
+| `orchestrator.k8s.flexPath` | Dir path to install flex plugin, works with orchestrator.name=k8s | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex` |
+| `orchestrator.openshift.flexPath` | Dir path to install flex plugin, works with orchestrator.name=openshift | `/etc/origin/node/kubelet-plugins/volume/exec/pure~flex` |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
 
 *Examples:
