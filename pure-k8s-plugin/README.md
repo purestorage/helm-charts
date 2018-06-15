@@ -1,5 +1,9 @@
 # pure-k8s-plugin
 
+## Helm Version
+
+Verified with the Helm client/server version >= 2.9.1
+
 ## How to install
 
 Download the helm chart (will be replaced by helm repo solution below)
