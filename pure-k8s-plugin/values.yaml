@@ -41,8 +41,12 @@ namespaces:
 orchestrator:
   name: k8s
   openshift:
+    # flexBaseDir is for image.tag < 2.0
+    flexBaseDir: /etc/origin/node/kubelet-plugins
+    # flexPath is for image.tag >= 2.0
     flexPath: /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
   k8s:
+    flexBaseDir: /usr/libexec/kubernetes/kubelet-plugins
     flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
 
 # arrays must be overwrited by customer, otherwise it will fail the installation
