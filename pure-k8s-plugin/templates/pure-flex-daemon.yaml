@@ -34,7 +34,7 @@ spec:
             privileged: true
           command:
             - "/pure-flex-daemon"
-            - "--pureFlexTargetDir=/kubelet-plugins"
+            - "--kubeletBaseDir=/kubelet-plugins"
 {{- if eq .Values.app.debug true}}
             - "--debug"
 {{- end}}

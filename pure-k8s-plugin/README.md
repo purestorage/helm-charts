@@ -39,8 +39,10 @@ The following table lists the configurable parameters and their default values.
 | `namespaces.k8s`            | Kubernetes namespace for running app | `default`                    |
 | `namespaces.nsm`            | Namespace of the backend storages  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
-| `orchestrator.k8s.flexPath` | Dir full path to install flex plugin, works with orchestrator.name=k8s | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex` |
-| `orchestrator.openshift.flexPath` | Dir full path to install flex plugin, works with orchestrator.name=openshift | `/etc/origin/node/kubelet-plugins/volume/exec/pure~flex` |
+| `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
+| `orchestrator.k8s.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex` |
+| `orchestrator.openshift.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=openshift and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/etc/origin/node/kubelet-plugins` |
+| `orchestrator.openshift.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0 | `/etc/origin/node/kubelet-plugins/volume/exec/pure~flex` |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
 
 *Examples:
