@@ -24,7 +24,7 @@ Create your own values.yaml and install the helm chart with it, and keep it
 
 ### Configuration
 
-The following table lists the configurable parameters of the Datadog chart and their default values.
+The following table lists the configurable parameters and their default values.
 
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
