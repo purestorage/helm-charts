@@ -9,7 +9,7 @@ Minimum version of K8S FlexVol driver required is 2.0.0
 
 Add the Pure Storage helm repo
 ```
-helm repo add pure https://github.com/purestorage/helm-charts
+helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
 helm search pure-k8s-plugin
 ```
