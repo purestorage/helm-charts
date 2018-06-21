@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 1.2.4
+  tag: 2.0
   pullPolicy: IfNotPresent
 
 # this option is to enable/disable the debug mode of this app
@@ -49,8 +49,11 @@ orchestrator:
     flexBaseDir: /usr/libexec/kubernetes/kubelet-plugins
     flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
 
-# arrays must be overwrited by customer, otherwise it will fail the installation
-# the following is an example
+# arrays specify what storage arrays should be managed by the plugin, this is
+# required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
+# and "APIToken", and for FlashBlades you need the additional "NfsEndPoint" parameter.
+# The labels are optional, and can be any key-value pair for use with the "fleet"
+# provisioner. An example is shown below:
 arrays:
   #FlashArrays:
   #  - MgmtEndPoint: "1.2.3.4"

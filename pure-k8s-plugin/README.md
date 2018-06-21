@@ -3,25 +3,24 @@
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
-Minimum version of K8S FlexVol driver required is 2.0
+Minimum version of K8S FlexVol driver required is 2.0.0
 
 ## How to install
 
-Download the helm chart (will be replaced by helm repo solution below)
+Add the Pure Storage helm repo
 ```
-git clone https://github.com/purestorage/helm-charts.git
-cd helm-charts
-```
-
-`TODO`: Install charts from helm repo
-```
-# TODO:
 helm repo add pure https://github.com/purestorage/helm-charts
 helm repo update
 helm search pure-k8s-plugin
 ```
 
-Create your own values.yaml and install the helm chart with it, and keep it
+Optional (offline installation): Download the helm chart
+```
+git clone https://github.com/purestorage/helm-charts.git
+```
+
+Create your own values.yaml and install the helm chart with it, and keep it. Easiest way is to copy
+the default [./values.yaml](./values.yaml)
 
 ### Configuration
 
@@ -71,43 +70,43 @@ arrays:
 ```
 
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml. Better to set a release name such as "pure-storage-driver"
-```
-# Dry run the installation firstly, and make sure yourvalues.yaml working correctly
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 
-# Install
+Dry run the installation, and make sure your values.yaml working correctly
+```
+helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+```
+
+Run the Install
+```
 helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
 ```
 
-Install with your values.yaml and overwrite some values by "--set"
+The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
+option will take precedence.
 ```
-# the value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml,
-# the value set by "--set" will overwrite the one in both yourvalues.yaml and pure-k8s-plugin/values.yaml
-
 helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespaces.nsm=k8s_xxx,orchestrator.name=openshift
 ```
 
-## How to update arrays info
+## How to update `arrays` info
 
 Update your values.yaml with the correct arrays info, and then upgrade the helm as below
-```
-# need to set the same values with "--set" which is same as in your install command,
-# it's better to save all your customized values into yourvalues.yaml. So that, no "--set" is needed
 
-cd helm-charts
+**Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
+to use the values.yaml and not specify options with `--set` to make this easier.
+```
 helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
+# Upgrading
 ## How to upgrade the driver version
 
-It's not recommended to upgrade by setting the values in the image section of values.yaml
+It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
+the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
-cd helm-charts
-git pull
-helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
+helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
 ```
 
-# How to upgrade from the legacy installation to helm version
+## How to upgrade from the legacy installation to helm version
 
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-fly volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 
@@ -128,3 +127,82 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     root@k8s-test-openshift-0:~# find /etc/origin/node/kubelet-plugins/ -name "flex" | xargs dirname
     /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
     ```
+
+# Containerized Kubelet
+
+If Kubernetes is deployed using containerized kubelet services then there
+may be steps required to ensure it can use the FlexVolume plugin. In general
+there are a few requirements that must be met for the plugin to work.
+
+## Requirements
+The container running the kubelet service must have:
+
+* Access to the host systems PID namespace
+* Access to host devices and sysfs (`/dev` & `/sys`)
+* Access to the kubelet volume plugin directory
+
+For the volume plugin directory this defaults to `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`
+but can be adjusted with the kubelet `volume-plugin-dir` option. Where
+possible the containerized kubelet should have this directory passed in from
+the host system.
+
+To change the volume plugin directory a few steps are required:
+
+* Update the kubelet service to use the `volume-plugin-dir` option, and
+  direct it to the new location.
+* Ensure the kubelet container is configured to mount the new location
+  into the container.
+* Ensure that the `pure-flex-daemon.yaml` is configured to to use the
+  new plugin directory for the `kubelet-plugins` host volume mount.
+
+This allows for the `pure-flex` plugin to be installed in the new location
+on the filesystem, and for the kubelet to have access to the plugin.
+
+
+
+# Platform Specific Considerations
+
+Some Kubernetes environments will require special configuration, especially
+on restrictive host operating systems where parts of it are mounted read-only.
+
+### CentOS/RHEL Atomic
+Atomic is configured to have the `/usr` directory tree mounted
+as read-only. This will cause problems installing the `pure-flex` plugin
+as write permission is required.
+
+To get things working an alternate plugin directory should be used, a
+good option is `/etc/kubernetes/volumeplugins/`. This is convienient for
+both because it is writable, and the kubelet container will already be
+mounting the `/etc/kubernetes/` directory in to the kubelet.
+
+Once changed the kublet parameters need to be updated to set the
+`volume-plugin-dir` to be `/etc/kubernetes/volumeplugins/`, and the
+`pure-flex` DaemonSet needs to be adjusted to install there as well
+via the `flexPath` option in your `values.yaml`.
+
+### CoreOS
+Similar to the Atomic hosts this has a read-only `/usr` tree and requires
+the plugin to be installed to an alternate location. Follow the same
+recommendations to use `/etc/kubernetes/volumeplugins/` and adjust
+the kubelet service to use the `--volume-plugin-dir` CLI argument and
+mount the `/etc/kubernetes` directory into the container.
+
+### OpenShift
+Specify the `orchestrator.name` to be `openshift` and configure the other
+OpenShift specific options.
+
+**Note: the deployment is done with the default service account,
+and requires privileged containers. This means you may need to modify
+the service account used to use a new or existing service account with
+the right permissions or add the privileged scc to the default service
+account.**
+
+### OpenShift Containerized Deployment
+When deploying OpenShift with the containerized deployment method it is
+going to require mounting the plugin directory through to the container
+running the kubelet service.
+
+The kubelet configuration is then set via the `node-config.yaml` in the
+`kubeletArguments` section to set the `volume-plugin-dir`. The easiest
+path to use is something like `/etc/origin/node/kubelet-plugins` or similar
+as the node config path is passed through to the container.

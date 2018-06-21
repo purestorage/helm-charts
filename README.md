@@ -24,3 +24,15 @@ Configure RBAC for plugin (assume it is installed in project of "yourproject")
 ```
 
 For more details, please see https://docs.helm.sh/using_helm/
+
+# Updating Charts
+We serve charts using a github page with its root at [./docs](./docs) when the helm source is updated
+we need to do something like:
+
+```bash
+helm package ./$CHART_NAME>
+cp $CHART_NAME.tgz ./docs
+helm repo index docs --url https://purestorage.github.com/helm-charts
+```
+
+You can then commit the changes and have them become available once merged.
