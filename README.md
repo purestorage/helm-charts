@@ -2,6 +2,14 @@
 
 # Installation
 
+## Adding the `pure` repo
+
+```bash
+helm repo add pure https://purestorage.github.io/helm-charts
+helm repo update
+```
+
+## Helm Setup
 Please ensure you have a correct service account with cluster-admin role in K8s/Openshift for Helm. 
 
 For K8s, if you hit the following error, solve it as
