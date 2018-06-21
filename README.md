@@ -32,7 +32,7 @@ we need to do something like:
 ```bash
 helm package ./$CHART_NAME>
 cp $CHART_NAME.tgz ./docs
-helm repo index docs --url https://purestorage.github.com/helm-charts
+helm repo index docs --url https://purestorage.github.io/helm-charts
 ```
 
 You can then commit the changes and have them become available once merged.
