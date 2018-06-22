@@ -29,7 +29,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                 |
-| `image.tag`                 | The image tag to pull              | `latest`                                  |
+| `image.tag`                 | The image tag to pull              | `2.0.0`                                  |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                  |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`       |
