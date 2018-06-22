@@ -72,18 +72,18 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 
 Dry run the installation, and make sure your values.yaml working correctly
 ```
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 ```
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
 ```
 
 The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespaces.nsm=k8s_xxx,orchestrator.name=openshift
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespace.pure=k8s_xxx,orchestrator.name=openshift
 ```
 
 ## How to update `arrays` info
@@ -93,7 +93,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
 ```
-helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
+helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
 # Upgrading
@@ -102,7 +102,7 @@ helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.ya
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
 the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
-helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
+helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
 ```
 
 ## How to upgrade from the legacy installation to helm version
