@@ -14,7 +14,7 @@ app:
 
 # do you want to set pure as the default storageclass?
 storageclass:
-  isPureDefault: true
+  isPureDefault: false
 
 # specify the service account name for this app
 clusterrolebinding:

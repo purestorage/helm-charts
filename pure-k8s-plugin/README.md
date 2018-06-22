@@ -32,7 +32,7 @@ The following table lists the configurable parameters and their default values.
 | `image.tag`                 | The image tag to pull              | `latest`                                  |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                  |
-| `storageclass.isPureDefault`| Set pure storageclass to the default | `false`       |
+| `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`       |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s service account for app | `default`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                      |
 | `namespaces.k8s`            | Kubernetes namespace for running app | `default`                    |
