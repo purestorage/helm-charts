@@ -26,18 +26,14 @@ flasharray:
   sanType: ISCSI
 
 # there are two namespaces for this app
-# 1. namespaces.k8s is the kubernetes namespace for running this app/plugin,
-#    all the components of this app will be installed in this namespace
-#
-# 2. namespaces.nsm is the namespace of the backend storages, all the volumes
-#    and filesystems will be created in this namespaces
-namespaces:
-  k8s: default
-  nsm: k8s
+# 1. namespace.pure is the backend storage namespace where volumes/shares/etc
+#    will be created.
+namespace:
+  pure: k8s
 
 # support k8s or openshift
 # if you want to install flex into a different place, you need to
-# overwrite the flexpath
+# overwrite the flexpath.
 orchestrator:
   name: k8s
   openshift:

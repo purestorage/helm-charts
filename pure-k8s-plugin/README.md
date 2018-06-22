@@ -35,8 +35,7 @@ The following table lists the configurable parameters and their default values.
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`       |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s service account for app | `default`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                      |
-| `namespaces.k8s`            | Kubernetes namespace for running app | `default`                    |
-| `namespaces.nsm`            | Namespace of the backend storages  | `k8s`                                     |
+| `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
 | `orchestrator.k8s.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex` |

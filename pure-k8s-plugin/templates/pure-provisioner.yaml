@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: pure-provisioner
-  namespace: {{ .Values.namespaces.k8s }}
+  namespace: {{ .Release.Namespace }}
   lables:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:
@@ -31,7 +31,7 @@ spec:
           - name: PURE_DISCOVERY_CONF
             value: /etc/pure/pure.json
           - name: PURE_K8S_NAMESPACE
-            value: {{ .Values.namespaces.nsm }}
+            value: {{ .Values.namespace.pure }}
       volumes:
         - name: config
           configMap:
