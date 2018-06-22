@@ -32,11 +32,10 @@ The following table lists the configurable parameters and their default values.
 | `image.tag`                 | The image tag to pull              | `latest`                                  |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                  |
-| `storageclass.isPureDefault`| Set pure storageclass to the default | `false`       |
+| `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`       |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s service account for app | `default`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                      |
-| `namespaces.k8s`            | Kubernetes namespace for running app | `default`                    |
-| `namespaces.nsm`            | Namespace of the backend storages  | `k8s`                                     |
+| `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
 | `orchestrator.k8s.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex` |
@@ -73,18 +72,18 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 
 Dry run the installation, and make sure your values.yaml working correctly
 ```
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 ```
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
 ```
 
 The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
-helm install --name pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespaces.nsm=k8s_xxx,orchestrator.name=openshift
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespace.pure=k8s_xxx,orchestrator.name=openshift
 ```
 
 ## How to update `arrays` info
@@ -94,7 +93,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
 ```
-helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
+helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
 # Upgrading
@@ -103,7 +102,7 @@ helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.ya
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
 the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
-helm upgrade pure-storage-driver pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
+helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
 ```
 
 ## How to upgrade from the legacy installation to helm version
