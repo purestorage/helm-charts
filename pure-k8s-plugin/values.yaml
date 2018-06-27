@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 2.0.0
+  tag: 2.0.1
   pullPolicy: IfNotPresent
 
 # this option is to enable/disable the debug mode of this app
@@ -40,10 +40,10 @@ orchestrator:
     # flexBaseDir is for image.tag < 2.0
     flexBaseDir: /etc/origin/node/kubelet-plugins
     # flexPath is for image.tag >= 2.0
-    flexPath: /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
+    flexPath: /etc/origin/node/kubelet-plugins/volume/exec
   k8s:
     flexBaseDir: /usr/libexec/kubernetes/kubelet-plugins
-    flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
+    flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
 
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
