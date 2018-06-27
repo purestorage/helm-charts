@@ -3,7 +3,7 @@ kind: DaemonSet
 metadata:
   name: pure-flex
   namespace: {{ .Release.Namespace }}
-  lables:
+  labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:
   template:

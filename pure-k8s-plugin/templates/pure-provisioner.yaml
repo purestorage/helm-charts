@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: pure-provisioner
   namespace: {{ .Release.Namespace }}
-  lables:
+  labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:
   replicas: 1
