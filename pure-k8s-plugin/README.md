@@ -102,7 +102,7 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalu
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
 the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
-helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
+helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version> --recreate-pods
 ```
 
 ## How to upgrade from the legacy installation to helm version
