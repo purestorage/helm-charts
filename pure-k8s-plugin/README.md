@@ -127,13 +127,13 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
     ```
 
-# Containerized Kubelet
+## Containerized Kubelet
 
 If Kubernetes is deployed using containerized kubelet services then there
 may be steps required to ensure it can use the FlexVolume plugin. In general
 there are a few requirements that must be met for the plugin to work.
 
-## Requirements
+### Requirements
 The container running the kubelet service must have:
 
 * Access to the host systems PID namespace
@@ -159,7 +159,7 @@ on the filesystem, and for the kubelet to have access to the plugin.
 
 
 
-# Platform Specific Considerations
+## Platform Specific Considerations
 
 Some Kubernetes environments will require special configuration, especially
 on restrictive host operating systems where parts of it are mounted read-only.
@@ -205,3 +205,6 @@ The kubelet configuration is then set via the `node-config.yaml` in the
 `kubeletArguments` section to set the `volume-plugin-dir`. The easiest
 path to use is something like `/etc/origin/node/kubelet-plugins` or similar
 as the node config path is passed through to the container.
+
+# License
+https://www.purestorage.com/content/dam/purestorage/pdf/legal/pure-plugin-end-user-license-agmt-sept-18-2017.pdf
