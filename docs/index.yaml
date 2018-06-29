@@ -2,19 +2,19 @@ apiVersion: v1
 entries:
   pure-k8s-plugin:
   - apiVersion: v1
-    created: 2018-06-27T13:26:40.792876665-07:00
+    created: 2018-06-28T19:09:10.73260838-07:00
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
-    digest: da8e7972f324084e9ac5dc54c0a4bdc098feddf048e51e2efb1bbf1a9d9c07c2
+    digest: dd295534c68be5e1024c6061256625751cf9bbf64e549f708a0900bf49aee915
     name: pure-k8s-plugin
     urls:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.0.1.tgz
     version: 2.0.1
   - apiVersion: v1
-    created: 2018-06-27T13:26:40.792325758-07:00
+    created: 2018-06-28T19:09:10.731960802-07:00
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: 1cd0d82bf6e38183f70bd4160ddb74be76be355935ad6c41fdc1ef2403686f72
     name: pure-k8s-plugin
     urls:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.0.0.tgz
     version: 2.0.0
-generated: 2018-06-27T13:26:40.791485504-07:00
+generated: 2018-06-28T19:09:10.728940821-07:00
