@@ -43,4 +43,10 @@ cp $CHART_NAME.tgz ./docs
 helm repo index docs --url https://purestorage.github.io/helm-charts
 ```
 
+Luckily there is a helper script to make this easy:
+
+```bash
+./update.sh
+```
+
 You can then commit the changes and have them become available once merged.
