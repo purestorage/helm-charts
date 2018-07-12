@@ -28,13 +28,16 @@ The following table lists the configurable parameters and their default values.
 
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
-| `image.name`                | The image name       to pull from  | `purestorage/k8s`                 |
-| `image.tag`                 | The image tag to pull              | `2.0.1`                                  |
+| `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
+| `image.tag`                 | The image tag to pull              | `2.1.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
-| `app.debug`                 | Enable/disable debug mode for app  | `false`                                  |
-| `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`       |
+| `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
+| `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s service account for app | `default`                    |
-| `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                      |
+| `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
+| `flasharray.defaultFSType`  | Block volume default filesystem type. *Not recommended to change!* | `xfs`     |
+| `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
+| `flasharray.defaultMountOpt`  | Block volume default filesystem mount options. *Not recommended to change!* |     ""    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
