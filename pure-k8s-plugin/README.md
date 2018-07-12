@@ -130,6 +130,26 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
     ```
 
+## Platform and Software Dependencies
+- #### Operating Systems Supported*:
+  - CentOS 7
+  - CoreOS (Ladybug 1298.6.0 and above)
+  - RHEL 7
+  - Ubuntu 16.04
+- #### Environments Supported*:
+  - Kubernetes 1.6+
+  - OpenShift 3.6+
+- #### Other software dependencies:
+  - Latest linux multipath software package for your operating system (Required)
+  - Latest Filesystem utilities/drivers (XFS by default, Required)
+  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
+  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
+  - Latest FC initiator software for your operating system (Optional, requied for FC connectivity)
+- #### FlashArray and FlashBlade:
+  - The FlashArray and/or FlashBlade should be connected to the compute nodes using Pure's best practices
+
+_* Please see release notes for details_
+
 ## Containerized Kubelet
 
 If Kubernetes is deployed using containerized kubelet services then there
