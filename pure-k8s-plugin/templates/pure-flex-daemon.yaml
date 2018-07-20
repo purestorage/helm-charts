@@ -50,6 +50,8 @@ spec:
             value: /etc/pure/pure.json
           - name: PURE_FLASHARRAY_SAN_TYPE
             value: {{ .Values.flasharray.sanType | upper }}
+          - name: PURE_K8S_NAMESPACE
+            value: {{ .Values.namespace.pure }}
       volumes:
         - name: config
           configMap:
