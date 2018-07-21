@@ -50,12 +50,6 @@ spec:
             value: /etc/pure/pure.json
           - name: PURE_FLASHARRAY_SAN_TYPE
             value: {{ .Values.flasharray.sanType | upper }}
-          - name: PURE_DEFAULT_BLOCK_FS_TYPE
-            value: {{ .Values.flasharray.defaultFSType }}
-          - name: PURE_DEFAULT_BLOCK_FS_OPT
-            value: "{{ .Values.flasharray.defaultFSOpt }}"
-          - name: PURE_DEFAULT_BLOCK_MNT_OPT
-            value: "{{ .Values.flasharray.defaultMountOpt }}"
       volumes:
         - name: config
           configMap:
