@@ -38,7 +38,7 @@ We serve charts using a github page with its root at [./docs](./docs) when the h
 we need to do something like:
 
 ```bash
-helm package ./$CHART_NAME>
+helm package ./$CHART_NAME
 cp $CHART_NAME.tgz ./docs
 helm repo index docs --url https://purestorage.github.io/helm-charts
 ```

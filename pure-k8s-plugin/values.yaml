@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 2.0.1
+  tag: 2.1.0
   pullPolicy: IfNotPresent
 
 # this option is to enable/disable the debug mode of this app
@@ -24,6 +24,9 @@ clusterrolebinding:
 # support ISCSI or FC, not case sensitive
 flasharray:
   sanType: ISCSI
+  defaultFSType: xfs
+  defaultFSOpt: "-q"
+  defaultMountOpt: ""
 
 # there are two namespaces for this app
 # 1. namespace.pure is the backend storage namespace where volumes/shares/etc
