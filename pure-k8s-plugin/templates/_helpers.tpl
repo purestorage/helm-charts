@@ -2,7 +2,6 @@
 */}}
 {{- define "pure_k8s_plugin.labels" -}}
 generator: helm
-date: {{ now | htmlDate }}
 chart: {{ .Chart.Name }}
 release: {{ .Release.Name | quote }}
 {{- end -}}
