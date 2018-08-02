@@ -7,6 +7,9 @@ metadata:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: pure-provisioner
   template:
     metadata:
       labels:

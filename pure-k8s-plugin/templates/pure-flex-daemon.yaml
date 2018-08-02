@@ -6,6 +6,9 @@ metadata:
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:
+  selector:
+    matchLabels:
+      app: pure-flex
   template:
     metadata:
       labels:
