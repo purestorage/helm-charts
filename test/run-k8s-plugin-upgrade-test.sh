@@ -108,6 +108,10 @@ function final_steps() {
     if ${DELETE_MINIKUBE}; then
         minikube stop -p ${MINIKUBE_NAME} || echo "Warning: failed to stop the minikube(${MINIKUBE_NAME})"
         minikube delete -p ${MINIKUBE_NAME}
+        if [ "${VM_DRIVER}" == "none" ]; then
+            # cleanup all the docker containers created by minikube
+            docker ps -a -q -f name="k8s" -f status=exited | xargs docker rm -f
+        fi
     fi
     rm -rf ${KUBECONFIG} ${HELM_HOME}
 }
