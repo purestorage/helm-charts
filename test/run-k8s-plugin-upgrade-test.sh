@@ -21,9 +21,13 @@ WORKSPACE=${WORKSPACE:-$(dirname $0)/..}
 
 KUBECONFIG=${WORKSPACE}/kube.conf
 HELM_HOME=${WORKSPACE}/.helm
+VM_DRIVER=${MINIKUBE_VM_DRIVER:-virtualbox}
+MINIKUBE_NAME=helm-chart-upgrade-test
 
 CHECK_LIMIT=30
 CHECK_INTERVAL=10
+
+DELETE_MINIKUBE=true
 
 function verify_helm_install {
     # verify for pure-provisioner
@@ -73,9 +77,23 @@ function init_helm {
 }
 
 function start_minikube {
+    if [ "${VM_DRIVER}" == "none" ]; then
+        if pgrep kubelet; then
+            echo "Found an exisitng minikube. Please have a check. Stop and delete it carefully before retry"
+            DELETE_MINIKUBE=false
+            false
+        fi
+    else
+        if minikube status -p ${MINIKUBE_NAME}; then
+            echo "Found an exisitng minikube(${MINIKUBE_NAME}). Please have a check. Stop and delete it carefully before retry"
+            DELETE_MINIKUBE=false
+            false
+        fi
+    fi
+
     echo "Starting a minikube for testing ..."
     # start a minikube for test
-    minikube start
+    minikube start --vm-driver ${VM_DRIVER} -p ${MINIKUBE_NAME}
     # verify minikube
     local n=0
     while true; do
@@ -84,12 +102,13 @@ function start_minikube {
         sleep ${CHECK_INTERVAL}
         kubectl get pods --all-namespaces | grep kube-system | grep -v Running || break
     done
-
 }
 
 function final_steps() {
-    minikube stop
-    minikube delete
+    if ${DELETE_MINIKUBE}; then
+        minikube stop -p ${MINIKUBE_NAME} || echo "Warning: failed to stop the minikube(${MINIKUBE_NAME})"
+        minikube delete -p ${MINIKUBE_NAME}
+    fi
     rm -rf ${KUBECONFIG} ${HELM_HOME}
 }
 trap final_steps EXIT
