@@ -67,6 +67,9 @@ export HELM_HOME=${CHARTS_TESTS_DIR}/${TEST_CHART_NAME}/helm
 source ${CHARTS_TESTS_DIR}/common/minikube-utils.sh
 
 function final_steps() {
+    if [ -e ${CHARTS_DIR}/${TEST_CHART_NAME}/Chart.yaml.bak ]; then
+        mv ${CHARTS_DIR}/${TEST_CHART_NAME}/Chart.yaml.bak ${CHARTS_DIR}/${TEST_CHART_NAME}/Chart.yaml
+    fi
     cleanup_minikube ${MINIKUBE_INSTANCE_NAME}
     rm -rf ${KUBECONFIG} ${HELM_HOME}
 }
@@ -109,8 +112,10 @@ verify_chart_installation
 kubectl get all -o wide
 
 echo "Upgrading the helm chart of ${TEST_CHART_NAME} ..."
+CHART_DEV_VERSION=$(sh ${CHARTS_TESTS_DIR}/common/generate-version.sh)
+sed -i.bak "s/version: [0-9.]*/version: ${CHART_DEV_VERSION}/" ${CHARTS_DIR}/${TEST_CHART_NAME}/Chart.yaml
 IMAGE_TAG=$(grep ' tag:' ${CHARTS_DIR}/${TEST_CHART_NAME}/values.yaml | cut -d':' -f2 | tr -d ' ')
-helm upgrade ${TEST_CHART_INSTANCE} ${CHARTS_DIR}/${TEST_CHART_NAME} --set arrays=""
+helm upgrade ${TEST_CHART_INSTANCE} ${CHARTS_DIR}/${TEST_CHART_NAME} --version ${CHART_DEV_VERSION} --set arrays=""
 
 echo "Verifying the upgrade ..."
 verify_chart_installation
