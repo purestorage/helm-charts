@@ -17,7 +17,8 @@
 set -xe
 
 # This script is to test the upgrade from the latest GA version to the current developing one 
-WORKSPACE=${WORKSPACE:-$(dirname $0)/../..}
+script_abs_path=`cd $(dirname $0); echo $(pwd)/$(basename $0)`
+WORKSPACE=$(dirname ${script_abs_path})/../..
 
 TEST_CHART_NAME=pure-k8s-plugin
 
@@ -61,7 +62,7 @@ function verify_chart_installation {
 }
 
 export KUBECONFIG=${CHARTS_TESTS_DIR}/${TEST_CHART_NAME}/kube.conf
-export HELM_HOME=${CHARTS_TESTS_DIR}/${TEST_CHART_NAME}/.helm
+export HELM_HOME=${CHARTS_TESTS_DIR}/${TEST_CHART_NAME}/helm
 
 source ${CHARTS_TESTS_DIR}/common/minikube-utils.sh
 
