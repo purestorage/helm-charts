@@ -14,13 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This script will generate and configure all nodes in the specified
-# inventory file will new ssh keys in /etc/pure-ci/cluster.key and
-# set them in root's authorized_keys. Use this script when setting
-# up a new CI cluster where the tests are running and deploying the
-# cluster from one of the cluster nodes (not a bootstrap node, where
-# this script would be run).
-
 # First see if we are on a tag
 MD5_BIN=md5sum
 if [ `uname -s` == "Darwin" ]; then
