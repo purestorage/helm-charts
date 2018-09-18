@@ -12,23 +12,25 @@ helm repo update
 ## Helm Setup
 Please ensure you have a correct service account with cluster-admin role in K8s/Openshift for Helm. 
 
-For K8s, if you hit the following error, solve it as
+1. Install Helm client and tiller under a namespace(i.e. project in openshift)
 ```
-Error:
-# helm list
-Error: configmaps is forbidden: User "system:serviceaccount:kube-system:default" cannot list configmaps in the namespace "kube-system"
+export TILLER_NAMESPACE=tiller
+# If helm is not installed, you can install as:
+curl -s https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz | tar xz
+cd linux-amd6a
 
-Solve it by:
-# kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
-```
+# Check for helm version:
+./helm version
 
-For Openshift, you may need extra step to configure RBAC for plugin
-```
-Configure RBAC for helm/tiller for installing
-# oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:kube-system:default
+# Initialize the helm client and tiller, and configure the correct role for it
+# For K8s:
+./helm init
+kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=${TILLER_NAMESPACE}:default
 
-Configure RBAC for plugin (assume it is installed in project of "yourproject")
-# oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:yourproject:default
+# For Openshift:
+./helm init --client-only
+oc process -f https://github.com/openshift/origin/raw/master/examples/helm/tiller-template.yaml -p TILLER_NAMESPACE="${TILLER_NAMESPACE}" -p HELM_VERSION=v2.9.1 | oc create -f -
+oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${TILLER_NAMESPACE}:tiller
 ```
 
 For more details, please see https://docs.helm.sh/using_helm/

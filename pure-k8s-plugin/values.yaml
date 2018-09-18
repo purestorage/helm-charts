@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# which openshift project or k8s namespace will the plugin be installed
+project: pure-storage-plugin
+
 image:
   name: purestorage/k8s
   tag: 2.1.0
@@ -19,7 +22,7 @@ storageclass:
 # specify the service account name for this app
 clusterrolebinding:
   serviceAccount:
-    name: default
+    name: installer
 
 # support ISCSI or FC, not case sensitive
 flasharray:

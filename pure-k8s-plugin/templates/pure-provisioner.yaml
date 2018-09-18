@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: pure-provisioner
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.project }}
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:
@@ -16,6 +16,7 @@ spec:
         app: pure-provisioner
 {{ include "pure_k8s_plugin.labels" . | indent 8}}
     spec:
+      serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       containers:
         - name: pure-provisioner
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"

@@ -28,12 +28,13 @@ The following table lists the configurable parameters and their default values.
 
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
+| `project`                   | The project or namespace where the plugin will be installed | `pure-storage-plugin` |
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
 | `image.tag`                 | The image tag to pull              | `2.1.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
-| `clusterrolebinding.serviceAccount.name`| Name of K8s service account for app | `default`                    |
+| `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `installer`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
 | `flasharray.defaultFSType`  | Block volume default filesystem type. *Not recommended to change!* | `xfs`     |
 | `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
@@ -71,6 +72,9 @@ arrays:
         rack: "6a"
 ```
 
+## Install the plugin in a separate namespace(i.e. project)
+For security reason, it's strongly recommended to install the plugin in a new separated namespace/project.
+
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml. Better to set a release name such as "pure-storage-driver"
 
 Dry run the installation, and make sure your values.yaml working correctly
@@ -80,13 +84,24 @@ helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/y
 
 Run the Install
 ```
+# For Openshift only:
+#   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
+#   You can find the serviceaccount info from your values.yaml (if not in it, find in the default values.yaml).
+#   The service account should be "system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>"
+oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>
+
+# Install the plugin (works for both openshift and kubernetes)
 helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
 ```
 
 The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespace.pure=k8s_xxx,orchestrator.name=openshift
+helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml \
+            --set project=pure-plugin-xxx \
+            --set flasharray.sanType=fc \
+            --set namespace.pure=k8s_xxx \
+            --set orchestrator.name=openshift
 ```
 
 ## How to update `arrays` info
@@ -105,7 +120,7 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalu
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
 the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
-helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version> --recreate-pods
+helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
 ```
 
 ## How to upgrade from the legacy installation to helm version
