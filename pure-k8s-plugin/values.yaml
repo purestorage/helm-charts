@@ -2,9 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# which openshift project or k8s namespace will the plugin be installed
-project: pure-storage-plugin
-
 image:
   name: purestorage/k8s
   tag: 2.1.0
@@ -41,6 +38,8 @@ namespace:
 # if you want to install flex into a different place, you need to
 # overwrite the flexpath.
 orchestrator:
+  # which openshift project or k8s namespace will the plugin be installed
+  namespace: pure-storage-driver
   name: k8s
   openshift:
     # flexBaseDir is for image.tag < 2.0

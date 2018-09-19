@@ -16,8 +16,14 @@ Please ensure you have a correct service account with cluster-admin role in K8s/
 ```
 export TILLER_NAMESPACE=tiller
 # If helm is not installed, you can install as:
+# For Linux
 curl -s https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz | tar xz
 cd linux-amd6a
+# For OSX
+curl -s https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-darwin-amd64.tar.gz | tar xz
+$ cd darwin-amd64
+# For Windows
+Download and extract https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-windows-amd64.zip. Open a command prompt in the newly created windows-amd64 folder.
 
 # Check for helm version:
 ./helm version

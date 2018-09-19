@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: pure-provisioner
-  namespace: {{ .Values.project }}
+  namespace: {{ .Values.orchestrator.namespace }}
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 spec:

@@ -28,7 +28,6 @@ The following table lists the configurable parameters and their default values.
 
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
-| `project`                   | The project or namespace where the plugin will be installed | `pure-storage-plugin` |
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
 | `image.tag`                 | The image tag to pull              | `2.1.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
@@ -40,6 +39,7 @@ The following table lists the configurable parameters and their default values.
 | `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
 | `flasharray.defaultMountOpt`  | Block volume default filesystem mount options. *Not recommended to change!* |     ""    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
+| `orchestrator.namespace`    | The project or namespace where the plugin will be installed | `pure-storage-driver` |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
 | `orchestrator.k8s.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
@@ -73,7 +73,7 @@ arrays:
 ```
 
 ## Install the plugin in a separate namespace(i.e. project)
-For security reason, it's strongly recommended to install the plugin in a new separated namespace/project.
+For security reason, it's strongly recommended to install the plugin in a new separate namespace/project.
 
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml. Better to set a release name such as "pure-storage-driver"
 
@@ -98,7 +98,7 @@ The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.y
 option will take precedence.
 ```
 helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml \
-            --set project=pure-plugin-xxx \
+            --set orchestrator.namespace=pure-plugin-xxx \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
             --set orchestrator.name=openshift
@@ -120,6 +120,11 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalu
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
 the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
+# list the avaiable version of the plugin
+helm repo update
+helm search pure-k8s-plugin -l
+
+# select a target version to upgrade as
 helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
 ```
 
