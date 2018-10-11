@@ -33,13 +33,12 @@ The following table lists the configurable parameters and their default values.
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
-| `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `installer`                    |
+| `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `pure`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
 | `flasharray.defaultFSType`  | Block volume default filesystem type. *Not recommended to change!* | `xfs`     |
 | `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
 | `flasharray.defaultMountOpt`  | Block volume default filesystem mount options. *Not recommended to change!* |     ""    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
-| `orchestrator.namespace`    | The project or namespace where the plugin will be installed | `pure-storage-driver` |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
 | `orchestrator.k8s.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
@@ -73,13 +72,13 @@ arrays:
 ```
 
 ## Install the plugin in a separate namespace(i.e. project)
-For security reason, it's strongly recommended to install the plugin in a new separate namespace/project.
+For security reason, it's strongly recommended to install the plugin in a separate namespace/project. Make sure the namespace is existing, otherwise create it before installing the plugin.
 
-Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml. Better to set a release name such as "pure-storage-driver"
+Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
-Dry run the installation, and make sure your values.yaml working correctly
+Dry run the installation, and make sure your values.yaml working correctly.
 ```
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
@@ -91,14 +90,13 @@ Run the Install
 oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>
 
 # Install the plugin (works for both openshift and kubernetes)
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml \
-            --set orchestrator.namespace=pure-plugin-xxx \
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
             --set orchestrator.name=openshift
@@ -111,7 +109,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
 ```
-helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
+helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
 # Upgrading
@@ -124,8 +122,8 @@ the helm repository with the tag version required. This will ensure the supporti
 helm repo update
 helm search pure-k8s-plugin -l
 
-# select a target version to upgrade as
-helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version>
+# select a target chart version to upgrade as
+helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
 ```
 
 ## How to upgrade from the legacy installation to helm version

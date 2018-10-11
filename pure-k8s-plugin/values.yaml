@@ -19,7 +19,7 @@ storageclass:
 # specify the service account name for this app
 clusterrolebinding:
   serviceAccount:
-    name: installer
+    name: pure
 
 # support ISCSI or FC, not case sensitive
 flasharray:
@@ -38,8 +38,6 @@ namespace:
 # if you want to install flex into a different place, you need to
 # overwrite the flexpath.
 orchestrator:
-  # which openshift project or k8s namespace will the plugin be installed
-  namespace: pure-storage-driver
   name: k8s
   openshift:
     # flexBaseDir is for image.tag < 2.0

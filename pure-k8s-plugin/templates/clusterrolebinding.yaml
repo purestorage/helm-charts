@@ -1,17 +1,9 @@
-# Create a new namespace or project
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: {{ .Values.orchestrator.namespace }}
-
----
-
 # Create a service account for installation
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ .Values.clusterrolebinding.serviceAccount.name }}
-  namespace: {{ .Values.orchestrator.namespace }}
+  namespace: {{ .Release.Namespace }}
 
 ---
 
@@ -35,4 +27,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.clusterrolebinding.serviceAccount.name }}
-  namespace: {{ .Values.orchestrator.namespace }}
+  namespace: {{ .Release.Namespace }}

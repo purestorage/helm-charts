@@ -80,6 +80,7 @@ start_minikube ${MINIKUBE_INSTANCE_NAME} ${MINIKUBE_VM_DRIVER}
 TEST_CHARTS_REPO_URL=${TEST_CHARTS_REPO_URL:-https://purestorage.github.io/helm-charts}
 TEST_CHARTS_REPO_NAME=pure
 
+TILLER_NAMESPACE=kube-system
 source ${CHARTS_TESTS_DIR}/common/helm-utils.sh
 init_helm ${TEST_CHARTS_REPO_URL} ${TEST_CHARTS_REPO_NAME}
 

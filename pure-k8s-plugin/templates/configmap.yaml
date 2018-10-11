@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pure-provisioner-config
-  namespace: {{ .Values.orchestrator.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 data:
