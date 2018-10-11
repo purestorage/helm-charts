@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 2.1.0
+  tag: 2.1.1
   pullPolicy: IfNotPresent
 
 # this option is to enable/disable the debug mode of this app
@@ -27,6 +27,7 @@ flasharray:
   defaultFSType: xfs
   defaultFSOpt: "-q"
   defaultMountOpt: ""
+  preemptAttachments: "true"
 
 # there are two namespaces for this app
 # 1. namespace.pure is the backend storage namespace where volumes/shares/etc

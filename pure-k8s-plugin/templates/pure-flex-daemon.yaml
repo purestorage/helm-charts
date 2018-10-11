@@ -63,6 +63,8 @@ spec:
             value: "{{ .Values.flasharray.defaultFSOpt }}"
           - name: PURE_DEFAULT_BLOCK_MNT_OPT
             value: "{{ .Values.flasharray.defaultMountOpt }}"
+          - name: PURE_PREEMPT_RWO_ATTACHMENTS_DEFAULT
+            value: "{{ .Values.flasharray.preemptAttachments }}"
       volumes:
         - name: config
           configMap:
