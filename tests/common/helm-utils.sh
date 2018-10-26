@@ -26,7 +26,7 @@ function init_helm {
         [ $n -lt ${CHECK_LIMIT} ]
         n=$[$n+1]
         sleep ${CHECK_INTERVAL}
-        local readyTillers=$(kubectl get rs -l name=tiller -n kube-system -o json | jq -r '.items[].status.readyReplicas')
+        local readyTillers=$(kubectl get rs -l name=tiller -n ${TILLER_NAMESPACE} -o json | jq -r '.items[].status.readyReplicas')
         [[ ${readyTillers} == [0-9]* ]] || continue
         [ ${readyTillers} -gt 0 ] && break
     done

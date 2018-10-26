@@ -1,3 +1,13 @@
+# Create a service account for installation
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.clusterrolebinding.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+
+---
+
+# Assign cluster role to the service account
 {{- if (eq "k8s" .Values.orchestrator.name) }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
 {{- else }}

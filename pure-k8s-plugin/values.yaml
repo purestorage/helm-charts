@@ -19,7 +19,7 @@ storageclass:
 # specify the service account name for this app
 clusterrolebinding:
   serviceAccount:
-    name: default
+    name: pure
 
 # support ISCSI or FC, not case sensitive
 flasharray:

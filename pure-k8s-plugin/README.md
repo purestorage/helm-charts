@@ -33,7 +33,7 @@ The following table lists the configurable parameters and their default values.
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
-| `clusterrolebinding.serviceAccount.name`| Name of K8s service account for app | `default`                    |
+| `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `pure`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
 | `flasharray.defaultFSType`  | Block volume default filesystem type. *Not recommended to change!* | `xfs`     |
 | `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
@@ -72,22 +72,35 @@ arrays:
         rack: "6a"
 ```
 
-Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml. Better to set a release name such as "pure-storage-driver"
+## Install the plugin in a separate namespace(i.e. project)
+For security reason, it's strongly recommended to install the plugin in a separate namespace/project. Make sure the namespace is existing, otherwise create it before installing the plugin.
 
-Dry run the installation, and make sure your values.yaml working correctly
+Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
+
+Dry run the installation, and make sure your values.yaml working correctly.
 ```
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 ```
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml
+# For Openshift only:
+#   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
+#   You can find the serviceaccount info from your values.yaml (if not in it, find in the default values.yaml).
+#   The service account should be "system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>"
+oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>
+
+# Install the plugin (works for both openshift and kubernetes)
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
-helm install --name pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set flasharray=fc,namespace.pure=k8s_xxx,orchestrator.name=openshift
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+            --set flasharray.sanType=fc \
+            --set namespace.pure=k8s_xxx \
+            --set orchestrator.name=openshift
 ```
 
 ## How to update `arrays` info
@@ -97,7 +110,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
 ```
-helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --set ...
+helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
 # Upgrading
@@ -106,7 +119,12 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalu
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
 the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
 ```
-helm upgrade pure-storage-driver pure/pure-k8s-plugin -f <your_own_dir>/yourvalues.yaml --version <target version> --recreate-pods
+# list the avaiable version of the plugin
+helm repo update
+helm search pure-k8s-plugin -l
+
+# select a target chart version to upgrade as
+helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
 ```
 
 ## How to upgrade from the legacy installation to helm version
