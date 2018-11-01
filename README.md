@@ -19,8 +19,10 @@ https://docs.helm.sh/using_helm#install-helm
 2. For Openshift
 https://blog.openshift.com/getting-started-helm-openshift/
 
-# In order to enable helm tiller to install any type of services across the entire cluster, it's required to grant helm tiller with cluster admin role.
-# After helm installation, configure the cluster admin role for the service account of the helm tiller. You need to figure out the correct service account.
+In order to enable helm tiller to install any type of services across the entire cluster, it's required to grant helm tiller with cluster admin role.
+
+After helm installation, configure the cluster admin role for the service account of the helm tiller. You need to figure out the correct service account.
+```bash
 # For K8s, for exmaple of a service account {TILLER_NAMESPACE}:default
 kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=${TILLER_NAMESPACE}:default
 
