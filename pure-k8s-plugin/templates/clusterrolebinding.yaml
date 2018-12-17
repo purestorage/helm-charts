@@ -7,6 +7,51 @@ metadata:
 
 ---
 
+# Add event list cluster role
+{{- if (eq "k8s" .Values.orchestrator.name) }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+{{- else }}
+apiVersion: authorization.openshift.io/v1
+{{- end}}
+kind: ClusterRole
+metadata:
+  name: pure-provisioner-list-events
+  labels:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+rules:
+- apiGroups:
+- ""
+resources:
+- events
+verbs:
+- list
+
+---
+
+# Assign pure-provisioner-list-events cluster role to the service account
+{{- if (eq "k8s" .Values.orchestrator.name) }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+{{- else }}
+apiVersion: authorization.openshift.io/v1
+{{- end}}
+kind: ClusterRoleBinding
+metadata:
+  name: pure-provisioner-event-list-rights
+  labels:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+roleRef:
+{{- if (eq "k8s" .Values.orchestrator.name) }}
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+{{- end }}
+  name: pure-provisioner-list-events
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.clusterrolebinding.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+
+---
+
 # Assign cluster role to the service account
 {{- if (eq "k8s" .Values.orchestrator.name) }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
