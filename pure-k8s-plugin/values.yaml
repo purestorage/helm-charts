@@ -15,6 +15,8 @@ app:
 # do you want to set pure as the default storageclass?
 storageclass:
   isPureDefault: false
+  # set the type of backend you want for the 'pure' storageclass
+  # pureBackend: file
 
 # specify the service account name for this app
 clusterrolebinding:
