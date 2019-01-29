@@ -42,10 +42,7 @@ The following table lists the configurable parameters and their default values.
 | `flasharray.preemptAttachments`  | Enable/Disable attachment preemption! |     `true`    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
-| `orchestrator.k8s.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/usr/libexec/kubernetes/kubelet-plugins` |
-| `orchestrator.k8s.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
-| `orchestrator.openshift.flexBaseDir` | Base path of directory to install flex plugin, works with orchestrator.name=openshift and image.tag < 2.0. Sub-dir of "volume/exec/pure~flex" will be automatically created under it | `/etc/origin/node/kubelet-plugins` |
-| `orchestrator.openshift.flexPath` | Full path of directory to install flex plugin, works with orchestrator.name=k8s and image.tag >= 2.0.1 | `/etc/origin/node/kubelet-plugins/volume/exec` |
+| `flexPath`                  | Full path of directory to install flex plugin, works with image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
 
 *Examples:
@@ -135,7 +132,7 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
 1. Uninstall the legacy installation by following [the instructions](https://hub.docker.com/r/purestorage/k8s/)
 2. Reinstall via helm
     a. Convert pure.json into arrays info in your values.yaml, (online tool: https://www.json2yaml.com/)
-3. Ensure either `orchestrator.k8s.flexPath` or `orchestrator.openshift.flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter. 
+3. Ensure either `flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter. 
     a. How to find the full path of the directory for pure flex plugin (i.e. `volume-plugin-dir`) 
     ```
     # ssh to a node which has pure flex plugin installed, and check the default value of "volume-plugin-dir" from "kubelet --help"
@@ -144,8 +141,12 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     # for k8s
     root@k8s-test-k8s-0:~# find /usr/libexec/kubernetes/kubelet-plugins/ -name "flex" | xargs dirname
     /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
+
+    # for openshift on RHEL Server
+    root@k8s-test-openshift-0:~# find /usr/libexec/kubernetes/kubelet-plugins/ -name "flex" | xargs dirname
+    /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
     
-    # for openshift
+    # for openshift 3.10+ on RHEL Atomic
     root@k8s-test-openshift-0:~# find /etc/origin/node/kubelet-plugins/ -name "flex" | xargs dirname
     /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
     ```
