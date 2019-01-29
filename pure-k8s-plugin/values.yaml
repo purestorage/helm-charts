@@ -41,15 +41,28 @@ namespace:
 # if you want to install flex into a different place, you need to
 # overwrite the flexpath.
 orchestrator:
+  # name is either 'k8s' or 'openshift'
   name: k8s
-  openshift:
-    # flexBaseDir is for image.tag < 2.0
-    flexBaseDir: /etc/origin/node/kubelet-plugins
-    # flexPath is for image.tag >= 2.0
-    flexPath: /etc/origin/node/kubelet-plugins/volume/exec
-  k8s:
-    flexBaseDir: /usr/libexec/kubernetes/kubelet-plugins
-    flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+
+# flexPath is for image.tag >= 2.0
+# `flexPath` needs to align with kubelet "volume-plugin-dir" configuration
+# by default in Kubernetes it is '/usr/libexec/kubernetes/kubelet-plugins/volume/exec'
+# Select an option below or customize for the environment.
+
+# Default for Kubernetes and OpenShift on RHEL Server
+flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+
+# Default for Openshift 3.10+ on RHEL Atomic (containerized kubelet/origin-node)
+#flexPath: /etc/origin/kubelet-plugins/volume/exec
+
+# Default for Openshift 3.9 and lower with RHEL Atomic
+#flexPath : /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+
+# Default for RKE
+#flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+
+# Default for GKE
+#flexPath: /home/kubernetes/flexvolume
 
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
