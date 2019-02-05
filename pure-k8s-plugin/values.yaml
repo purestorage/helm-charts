@@ -90,3 +90,10 @@ arrays:
   #    NfsEndPoint: "1.2.3.9"
   #    Labels:
   #      rack: "6a"
+
+nodeSelector: {}
+
+tolerations: []
+  # - operator: Exists
+
+affinity: {}

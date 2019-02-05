@@ -44,6 +44,9 @@ The following table lists the configurable parameters and their default values.
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `flexPath`                  | Full path of directory to install flex plugin, works with image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
+| `nodeSelector`              | Kubernetes nodeSelector            | `{}`                                      |
+| `tolerations`               | Kubernetes tolerations             | `[]`                                      |
+| `affinity`                  | Kubernetes affinity                | `{}`                                      |
 
 *Examples:
 ```yaml
