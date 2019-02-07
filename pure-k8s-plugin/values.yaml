@@ -90,3 +90,23 @@ arrays:
   #    NfsEndPoint: "1.2.3.9"
   #    Labels:
   #      rack: "6a"
+
+# These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+nodeSelector: {}
+  # disktype: ssd
+
+# These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+tolerations: []
+  # - operator: Exists
+
+# These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+affinity: {}
+  # nodeAffinity: 
+  #   requiredDuringSchedulingIgnoredDuringExecution: 
+  #     nodeSelectorTerms:
+  #     - matchExpressions:
+  #       - key: e2e-az-NorthSouth 
+  #         operator: In 
+  #         values:
+  #         - e2e-az-North 
+  #         - e2e-az-South
