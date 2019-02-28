@@ -81,13 +81,13 @@ arrays:
   #FlashBlades:
   #  - MgmtEndPoint: "1.2.3.6"
   #    APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
-  #    NfsEndPoint: "1.2.3.7"
+  #    NFSEndPoint: "1.2.3.7"
   #    Labels:
   #      rack: "7b"
   #      env: "dev"
   #  - MgmtEndPoint: "1.2.3.8"
   #    APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
-  #    NfsEndPoint: "1.2.3.9"
+  #    NFSEndPoint: "1.2.3.9"
   #    Labels:
   #      rack: "6a"
 
