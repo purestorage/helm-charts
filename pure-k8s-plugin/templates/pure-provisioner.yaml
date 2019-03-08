@@ -36,7 +36,21 @@ spec:
             value: /etc/pure/pure.json
           - name: PURE_K8S_NAMESPACE
             value: {{ .Values.namespace.pure }}
+          - name: PURE_DEFAULT_BLOCK_FS_TYPE
+            value: {{ .Values.flasharray.defaultFSType }}
       volumes:
         - name: config
           configMap:
             name: pure-provisioner-config
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
