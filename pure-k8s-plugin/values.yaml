@@ -53,7 +53,7 @@ orchestrator:
 flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
 
 # Default for Openshift 3.10+ on RHEL Atomic (containerized kubelet/origin-node)
-#flexPath: /etc/origin/kubelet-plugins/volume/exec
+#flexPath: /etc/origin/node/kubelet-plugins/volume/exec
 
 # Default for Openshift 3.9 and lower with RHEL Atomic
 #flexPath : /usr/libexec/kubernetes/kubelet-plugins/volume/exec
