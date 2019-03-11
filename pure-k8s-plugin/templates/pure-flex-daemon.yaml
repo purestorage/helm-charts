@@ -17,10 +17,6 @@ spec:
         app: pure-flex
 {{ include "pure_k8s_plugin.labels" . | indent 8}}
     spec:
-{{- if (eq "openshift" .Values.orchestrator.name) }}
-      nodeSelector:
-        node-role.kubernetes.io/compute: "true"
-{{- end}}
       serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       containers:
         - name: pure-flex

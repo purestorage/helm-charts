@@ -44,7 +44,7 @@ The following table lists the configurable parameters and their default values.
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `flexPath`                  | Full path of directory to install flex plugin, works with image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
-| `nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) | `{}` |
+| `nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule flex-plugin. See [this](https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html#using-node-selectors) for setting node selectors on Openshift. | `{}` |
 | `tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
 | `affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
 
