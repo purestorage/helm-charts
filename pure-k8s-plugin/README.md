@@ -40,6 +40,7 @@ The following table lists the configurable parameters and their default values.
 | `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
 | `flasharray.defaultMountOpt`  | Block volume default filesystem mount options. *Not recommended to change!* |     ""    |
 | `flasharray.preemptAttachments`  | Enable/Disable attachment preemption! |     `true`    |
+| `flashblade.snapshotDirectoryEnabled`  | Enable/Disable FlashBlade snapshots |     `false`    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `flexPath`                  | Full path of directory to install flex plugin, works with image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
@@ -150,8 +151,8 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
     
     # for openshift 3.10+ on RHEL Atomic
-    root@k8s-test-openshift-0:~# find /etc/origin/node/kubelet-plugins/ -name "flex" | xargs dirname
-    /etc/origin/node/kubelet-plugins/volume/exec/pure~flex
+    root@k8s-test-openshift-0:~# find /etc/origin/kubelet-plugins/ -name "flex" | xargs dirname
+    /etc/origin/kubelet-plugins/volume/exec/pure~flex
     ```
 
 ## Platform and Software Dependencies
@@ -250,7 +251,7 @@ running the kubelet service.
 
 The kubelet configuration is then set via the `node-config.yaml` in the
 `kubeletArguments` section to set the `volume-plugin-dir`. The easiest
-path to use is something like `/etc/origin/node/kubelet-plugins` or similar
+path to use is something like `/etc/origin/kubelet-plugins` or similar
 as the node config path is passed through to the container.
 
 # License

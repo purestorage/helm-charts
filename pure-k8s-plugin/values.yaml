@@ -31,6 +31,9 @@ flasharray:
   defaultMountOpt: ""
   preemptAttachments: "true"
 
+flashblade:
+  snapshotDirectoryEnabled: "false"
+
 # there are two namespaces for this app
 # 1. namespace.pure is the backend storage namespace where volumes/shares/etc
 #    will be created.
@@ -53,7 +56,7 @@ orchestrator:
 flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
 
 # Default for Openshift 3.10+ on RHEL Atomic (containerized kubelet/origin-node)
-#flexPath: /etc/origin/node/kubelet-plugins/volume/exec
+#flexPath: /etc/origin/kubelet-plugins/volume/exec
 
 # Default for Openshift 3.9 and lower with RHEL Atomic
 #flexPath : /usr/libexec/kubernetes/kubelet-plugins/volume/exec
