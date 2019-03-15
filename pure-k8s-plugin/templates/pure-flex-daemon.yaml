@@ -25,7 +25,16 @@ spec:
             preStop:
               exec:
                 command:
-                  - "/uninstaller"
+                  - "/bin/sh"
+                  - "-c"
+                  - >
+                    touch /tmp/.uninstall_start_flag;
+                    while true; do
+                    if [ -f /tmp/.uninstall_finish_flag ]; then
+                    exit;
+                    fi;
+                    sleep 1;
+                    done
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             privileged: true
