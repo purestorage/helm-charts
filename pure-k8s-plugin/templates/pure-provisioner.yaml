@@ -39,7 +39,7 @@ spec:
           - name: PURE_DEFAULT_BLOCK_FS_TYPE
             value: {{ .Values.flasharray.defaultFSType }}
           - name: PURE_DEFAULT_ENABLE_FB_NFS_SNAPSHOT
-            value: {{ .Values.flashblade.snapshotDirectoryEnabled }}
+            value: {{ quote .Values.flashblade.snapshotDirectoryEnabled }}
       volumes:
         - name: config
           configMap:

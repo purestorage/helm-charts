@@ -3,7 +3,7 @@
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
-Minimum version of K8S FlexVol driver required is 2.0.1
+Minimum version of K8S FlexVol driver required is 2.3.0
 
 ## How to install
 
@@ -29,7 +29,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `2.2.1`                                   |
+| `image.tag`                 | The image tag to pull              | `2.3.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
@@ -253,6 +253,21 @@ The kubelet configuration is then set via the `node-config.yaml` in the
 `kubeletArguments` section to set the `volume-plugin-dir`. The easiest
 path to use is something like `/etc/origin/kubelet-plugins` or similar
 as the node config path is passed through to the container.
+
+# Release Notes
+
+## pure-k8s-plugin 2.3.0
+### Changes
+- Added flashblade.snapshotDirectoryEnabled parameter. It is default to false. 
+- flexvol driver is split into two, one for block storage and one for NFS. This allows the plugin to work properly with selinux relabeling, which is typically required by OpenShift 3.11+.
+- Miscellaneous updates to the fleet provisioning logic to make it more robust against device errors.
+
+### Known Vulnerabilities 
+- [CVE-2019-1543](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-1543)
+- [CVE-2019-0190](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-0190)
+- [CVE-2019-5747](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-5747)
+- [CVE-2018-20679](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20679)
+
 
 # License
 https://www.purestorage.com/content/dam/purestorage/pdf/legal/pure-plugin-end-user-license-agmt-sept-18-2017.pdf
