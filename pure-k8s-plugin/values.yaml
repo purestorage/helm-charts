@@ -14,9 +14,29 @@ app:
 
 # do you want to set pure as the default storageclass?
 storageclass:
-  isPureDefault: false
+  # These settings have been moved into storageclass.pure
+  # They are documented here as the chart will still use them
+  # for backwards compatibility but they will be removed
+  # in the future. If isPureDefault or pureBackend is set
+  # it will override what is in storageclass.pure
+
+  # isPureDefault: false
   # set the type of backend you want for the 'pure' storageclass
   # pureBackend: file
+
+  pure:
+    enabled: true
+    default: false
+    # set the type of backend you want for the 'pure' storageclass. block/file
+    pureBackend: block
+
+  pureFile:
+    enabled: true
+    default: false
+
+  pureBlock:
+    enabled: true
+    default: false
 
 # specify the service account name for this app
 clusterrolebinding:

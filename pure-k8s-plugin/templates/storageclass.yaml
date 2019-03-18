@@ -1,34 +1,44 @@
+{{- if .Values.storageclass.pure.enabled -}}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: pure
   annotations:
-    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.isPureDefault }}"
+    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.isPureDefault | default .Values.storageclass.default | default false }}"
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 provisioner: pure-provisioner
 parameters:
-    backend: {{ .Values.storageclass.pureBackend | default "block" | quote }}
+    backend: {{ .Values.storageclass.pureBackend | default .Values.storageclass.pure.pureBackend | default "block" | quote }}
+{{- end }}
+{{- if .Values.storageclass.pureFile.enabled }}
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: pure-file
+  annotations:
+    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.pureFile.default }}"
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 provisioner: pure-provisioner
 parameters:
     backend: file
+{{- end }}
+{{- if .Values.storageclass.pureBlock.enabled }}
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: pure-block
+  annotations:
+    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.pureBlock.default }}"
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 provisioner: pure-provisioner
 parameters:
     backend: block
+{{- end }}
