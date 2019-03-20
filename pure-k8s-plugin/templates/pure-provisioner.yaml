@@ -31,6 +31,7 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /etc/pure
+            readOnly: true
           env:
           - name: PURE_DISCOVERY_CONF
             value: /etc/pure/pure.json
