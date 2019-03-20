@@ -44,15 +44,15 @@ spec:
         - name: config
           configMap:
             name: pure-provisioner-config
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.provisioner.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.provisioner.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.provisioner.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
