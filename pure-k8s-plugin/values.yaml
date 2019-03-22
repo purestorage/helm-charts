@@ -97,19 +97,55 @@ arrays:
 # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
 nodeSelector: {}
   # disktype: ssd
-
 # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
 tolerations: []
   # - operator: Exists
-
 # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
 affinity: {}
-  # nodeAffinity: 
-  #   requiredDuringSchedulingIgnoredDuringExecution: 
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
   #     nodeSelectorTerms:
   #     - matchExpressions:
-  #       - key: e2e-az-NorthSouth 
-  #         operator: In 
+  #       - key: e2e-az-NorthSouth
+  #         operator: In
   #         values:
-  #         - e2e-az-North 
+  #         - e2e-az-North
   #         - e2e-az-South
+
+flexDaemon:
+  # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
+  nodeSelector: {}
+    # disktype: ssd
+  # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
+  tolerations: []
+    # - operator: Exists
+  # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
+  affinity: {}
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: e2e-az-NorthSouth
+    #         operator: In
+    #         values:
+    #         - e2e-az-North
+    #         - e2e-az-South
+
+provisioner:
+  # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+  nodeSelector: {}
+    # disktype: ssd
+  # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+  tolerations: []
+    # - operator: Exists
+  # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+  affinity: {}
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: e2e-az-NorthSouth
+    #         operator: In
+    #         values:
+    #         - e2e-az-North
+    #         - e2e-az-South

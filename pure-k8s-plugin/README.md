@@ -45,9 +45,15 @@ The following table lists the configurable parameters and their default values.
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | `flexPath`                  | Full path of directory to install flex plugin, works with image.tag >= 2.0.1 | `/usr/libexec/kubernetes/kubelet-plugins/volume/exec` |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
-| `nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule flex-plugin. See [this](https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html#using-node-selectors) for setting node selectors on Openshift. | `{}` |
-| `tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
-| `affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
+| `nodeSelector`              | *Deprecated* Use `flexDaemon.nodeSelector` and `provisioner.nodeSelector` instead. | `{}` |
+| `tolerations`               | *Deprecated* Use `flexDaemon.tolerations` and `provisioner.tolerations` instead | `[]` |
+| `affinity`                  | *Deprecated* Use `flexDaemon.affinity` and `provisioner.affinity` instead | `{}` |
+| `flexDaemon.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule flex-plugin. See [this](https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html#using-node-selectors) for setting node selectors on Openshift. | `{}` |
+| `flexDaemon.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
+| `flexDaemon.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
+| `provisioner.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule provisioner. See [this](https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html#using-node-selectors) for setting node selectors on Openshift. | `{}` |
+| `provisioner.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
+| `provisioner.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
 
 *Examples:
 ```yaml
@@ -73,6 +79,17 @@ arrays:
       Labels:
         rack: "6a"
 ```
+
+## Assigning Pods to Nodes
+
+It is possible to make flex-daemon and provisioner to run on specific nodes
+using `nodeSelector`, `toleration` and `affinity`. You can set these config
+separately for flex-daemon and provisioner (e.g. `flexDaemon.nodeSelector`).
+The unprefixed parameters have been deprecated but will still be used as a
+fallback if the prefixed parameters are not set. (e.g. if `nodeSelector` is
+set but `provisioner.nodeSelector` is not, provisioner will use the value of
+`nodeSelector` as a fallback) This makes sure the behaviour is backward
+compatible.
 
 ## Install the plugin in a separate namespace(i.e. project)
 For security reason, it's strongly recommended to install the plugin in a separate namespace/project. Make sure the namespace is existing, otherwise create it before installing the plugin.
