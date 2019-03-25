@@ -32,8 +32,10 @@ The following table lists the configurable parameters and their default values.
 | `image.tag`                 | The image tag to pull              | `2.2.1`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
+| `storageclass.create`       | Create default storage classes     | `true`                                    |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
-| `storageclass.pureBackend`  | Set `pure` storageclass' default backend type | `block`                               |
+| `storageclass.pureBackend`  | Set `pure` storageclass' default backend type | `block`                        |
+| `additionalStorageClasses`  | Configure additional StorageClasses | see example in values.yaml               |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `pure`                    |
 | `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
 | `flasharray.defaultFSType`  | Block volume default filesystem type. *Not recommended to change!* | `xfs`     |

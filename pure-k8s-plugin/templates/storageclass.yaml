@@ -1,5 +1,6 @@
-apiVersion: storage.k8s.io/v1
+{{- if .Values.storageclass.create -}}
 kind: StorageClass
+apiVersion: storage.k8s.io/v1
 metadata:
   name: pure
   annotations:
@@ -32,3 +33,26 @@ metadata:
 provisioner: pure-provisioner
 parameters:
     backend: block
+{{- end }}
+{{- $lables := include "pure_k8s_plugin.labels" . -}}
+{{- range .Values.additionalStorageClasses }}
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: {{ .name }}
+{{- if .annotations }}
+  annotations:
+{{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end }}
+  labels:
+{{- range $key, $value := .labels }}
+    {{ $key }}: {{ $value | quote }}
+{{- end }}
+{{ $lables | indent 4 }}
+provisioner: pure-provisioner
+parameters:
+    backend: {{ .backend | default "block" }}
+{{- end }}

@@ -14,9 +14,26 @@ app:
 
 # do you want to set pure as the default storageclass?
 storageclass:
+  create: false
   isPureDefault: false
   # set the type of backend you want for the 'pure' storageclass
   # pureBackend: file
+
+additionalStorageClasses:
+#- name: pure
+#  annotations:
+#    storageclass.beta.kubernetes.io/is-default-class: "false"
+#  labels:
+#    kubernetes.io/cluster-service: "true"
+#  backend: block
+#- name: pure-file
+#  labels:
+#    kubernetes.io/cluster-service: "true"
+#  backend: file
+#- name: pure-block
+#  labels:
+#    kubernetes.io/cluster-service: "true"
+#  backend: block
 
 # specify the service account name for this app
 clusterrolebinding:
