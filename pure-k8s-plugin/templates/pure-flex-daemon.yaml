@@ -68,8 +68,8 @@ spec:
             value: "{{ .Values.flasharray.preemptAttachments }}"
       volumes:
         - name: config
-          configMap:
-            name: pure-provisioner-config
+          secret:
+            secretName: pure-provisioner-secret
         - name: kubelet-plugins
           hostPath:
            path: {{ template "pure_k8s_plugin.flexpath" .}}
