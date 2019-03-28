@@ -49,6 +49,7 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /etc/pure
+            readOnly: true
           - name: kubelet-plugins
             mountPath: /kubelet-plugins
           env:
