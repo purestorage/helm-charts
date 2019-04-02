@@ -38,19 +38,21 @@ spec:
             value: {{ .Values.namespace.pure }}
           - name: PURE_DEFAULT_BLOCK_FS_TYPE
             value: {{ .Values.flasharray.defaultFSType }}
+          - name: PURE_DEFAULT_ENABLE_FB_NFS_SNAPSHOT
+            value: {{ quote .Values.flashblade.snapshotDirectoryEnabled }}
       volumes:
         - name: config
           configMap:
             name: pure-provisioner-config
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.provisioner.nodeSelector | default .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.provisioner.affinity | default .Values.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.provisioner.tolerations | default .Values.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}

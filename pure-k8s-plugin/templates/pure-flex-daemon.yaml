@@ -17,10 +17,6 @@ spec:
         app: pure-flex
 {{ include "pure_k8s_plugin.labels" . | indent 8}}
     spec:
-{{- if (eq "openshift" .Values.orchestrator.name) }}
-      nodeSelector:
-        node-role.kubernetes.io/compute: "true"
-{{- end}}
       serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       containers:
         - name: pure-flex
@@ -77,15 +73,15 @@ spec:
         - name: kubelet-plugins
           hostPath:
            path: {{ template "pure_k8s_plugin.flexpath" .}}
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.flexDaemon.nodeSelector | default .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.flexDaemon.affinity | default .Values.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.flexDaemon.tolerations | default .Values.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
