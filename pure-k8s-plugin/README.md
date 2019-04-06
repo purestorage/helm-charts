@@ -35,11 +35,13 @@ The following table lists the configurable parameters and their default values.
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
 | `storageclass.pureBackend`  | Set `pure` storageclass' default backend type | `block`                               |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `pure`                    |
-| `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
 | `flasharray.defaultFSType`  | Block volume default filesystem type. *Not recommended to change!* | `xfs`     |
 | `flasharray.defaultFSOpt`  | Block volume default mkfs options. *Not recommended to change!* | `-q`          |
 | `flasharray.defaultMountOpt`  | Block volume default filesystem mount options. *Not recommended to change!* |     ""    |
+| `flasharray.iSCSILoginTimeout`  | iSCSI login timeout in seconds. *Not recommended to change!* |     `20sec`    |
+| `flasharray.iSCSIAllowedCIDR`  | List of CIDR blocks allowed as iSCSI targets, e.g. 10.0.0.0/24,10.1.0.0/16. Use comma (,) as the separator, and empty string means allowing all addresses. |     ""    |
 | `flasharray.preemptAttachments`  | Enable/Disable attachment preemption! |     `true`    |
+| `flasharray.sanType`        | Block volume access protocol, either ISCSI or FC | `ISCSI`                     |
 | `flashblade.snapshotDirectoryEnabled`  | Enable/Disable FlashBlade snapshots |     `false`    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |

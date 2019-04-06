@@ -66,6 +66,10 @@ spec:
             value: "{{ .Values.flasharray.defaultMountOpt }}"
           - name: PURE_PREEMPT_RWO_ATTACHMENTS_DEFAULT
             value: "{{ .Values.flasharray.preemptAttachments }}"
+          - name: PURE_ISCSI_ALLOWED_CIDRS
+            value: "{{ .Values.flasharray.iSCSIAllowedCIDR }}"
+          - name: PURE_ISCSI_LOGIN_TIMEOUT
+            value: "{{ .Values.flasharray.iSCSILoginTimeout }}"
       volumes:
         - name: config
           configMap:
