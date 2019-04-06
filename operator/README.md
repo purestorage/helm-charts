@@ -1,4 +1,4 @@
-# PureStorage Helm Operator
+# PSO Operator
 
 ## Prerequisites
 * Openshift(3.11+) or Kubernetes(1.11+) cluster installed and running
@@ -10,7 +10,7 @@ A single install script will setup the PSO-operator. <br/>
 ```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
 
 Parameter list:<br/>
-1. ``image`` is the PSO-Operator image. If unspecified it will resolve to the released version at quay.io/purestorage/pso-operator
+1. ``image`` is the PSO Operator image. If unspecified it will resolve to the released version at quay.io/purestorage/pso-operator
 2. ``namespace`` is the namespace/project in which the PSO-operator and its entities will be installed. If unspecified the operator will create and install in 'psooperator' namespace.
 **It is recommended to install PSO Operator in a new project with no other pods.**
 3. ``orchestrator`` should be ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified ``openshift`` is assumed.
@@ -28,18 +28,18 @@ Existing line:     $KUBECTL adm new-project ${NAMESPACE}
 Change to allow volume mounts on master and infra nodes:     $KUBECTL adm new-project ${NAMESPACE} --node-selector=""
 ```
 
-2. Create a Custom Resource Definition (CRD) for the PSO-Operator. <br/>
+2. Create a Custom Resource Definition (CRD) for the PSO Operator. <br/>
 The script will wait for the CRD to be published in the cluster. The script waits uptil 10sec for the API server to setup the CRD and times out. To wait longer pass the parameter ```--timeout=<timeout_in_sec>``` to the install script.
 
 3. Create RBAC rules for the Operator.<br/>
-The PSO-Operator needs the following Cluster-level Roles and RoleBindings.
+The PSO Operator needs the following Cluster-level Roles and RoleBindings.
 
 
 | Resource        | Permissions           | Notes  |
 | ------------- |:-------------:| -----:|
-| Namespace | Get | PSO-Operator needs the ability to get created namespaces |
+| Namespace | Get | PSO Operator needs the ability to get created namespaces |
 | Storageclass | Create/Delete | Create and cleanup storage classes to be used for Provisioning |
-| ClusterRoleBinding | Create/Delete | PSO-Operator needs to create and cleanup a ClusterRoleBinding called 'pure-provisioner-rights' to ClusterRole system:persistent-volume-provisioner for provisioning PVs |
+| ClusterRoleBinding | Create/Delete | PSO Operator needs to create and cleanup a ClusterRoleBinding called 'pure-provisioner-rights' to ClusterRole system:persistent-volume-provisioner for provisioning PVs |
 | ClusterRoleBinding | Get permission on ResourceName 'pure-provisioner-rights' | PSO-operator needs the ability to get the ClusterRoleBinding it has created for provisioning. |
 <br/>
 In addition the operator needs access to multiple resources in the project/namespace that it is deployed to function correctly. Hence it is recommended to install the PSO-operator in the non-default namespace.
