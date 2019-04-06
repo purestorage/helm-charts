@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 IMAGE=quay.io/purestorage/pso-operator:v0.0.1
-NAMESPACE=pure
+NAMESPACE=psoOperator
 ORCHESTRATOR=openshift
 
 usage()
