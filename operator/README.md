@@ -10,7 +10,7 @@ A single install script sets up the PSO-operator. <br/>
 ```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
 
 Parameter list:<br/>
-1. ``image`` is the PSO Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](quay.io/purestorage/pso-operator).
+1. ``image`` is the PSO Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
 2. ``namespace`` is the namespace/project in which the PSO-operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``psooperator`` namespace.
 **It is recommended to install PSO Operator in a new project with no other pods.**
 3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``openshift`` is assumed.
