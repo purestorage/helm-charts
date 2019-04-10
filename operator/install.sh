@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 IMAGE=quay.io/purestorage/pso-operator:v0.0.1
 NAMESPACE=psoOperator
-ORCHESTRATOR=openshift
+KUBECTL=oc
 
 usage()
 {
@@ -25,9 +25,9 @@ case "$1" in
   ;;
   --orchestrator=*)
   ORCHESTRATOR="${1#*=}"
-  if [[ "${ORCHESTRATOR}" == "k8s" || "${ORCHESTRATOR}" == "K8s" ]]
+  if [[ "${ORCHESTRATOR}" == "k8s" || "${ORCHESTRATOR}" == "K8s" ]]; then
       KUBECTL=kubectl
-  elif [[ "${ORCHESTRATOR}" == "openshift" ]]
+  elif [[ "${ORCHESTRATOR}" == "openshift" ]]; then
       KUBECTL=oc
   else
       echo "orchestrator can only be 'k8s' or 'openshift'"
@@ -52,7 +52,8 @@ case "$1" in
   esac
 done
 
-if [ ! -f ${VALUESFILE} ]; then
+if [[ -z ${VALUESFILE} || ! -f ${VALUESFILE} ]]; then
+    usage
     echo "File ${VALUESFILE} for values.yaml does not exist"
     exit 1
 fi
@@ -60,7 +61,7 @@ fi
 KUBECTL_NS="${KUBECTL} apply -n ${NAMESPACE} -f"
 
 # 1. Create the namespace
-if [[ "${KUBECTL}" == "kubectl" ]]
+if [[ "${KUBECTL}" == "kubectl" ]]; then
     $KUBECTL create namespace ${NAMESPACE}
 else
     $KUBECTL adm new-project ${NAMESPACE} 
