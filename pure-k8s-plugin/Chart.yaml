@@ -3,4 +3,9 @@ description: A Helm chart for Pure Storage persistent storage driver for Kuberne
 name: pure-k8s-plugin
 version: 2.3.1
 appVersion: 2.3.0
-icon: https://github.com/purestorage/helm-charts/tree/master/pure-k8s-plugin/pure-storage.png
+icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
+keywords:
+- purestorage
+maintainers:
+- email: sales@purestorage.com
+  name: Pure Storage, Inc.
