@@ -31,6 +31,7 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /etc/pure
+            readOnly: true
           env:
           - name: PURE_DISCOVERY_CONF
             value: /etc/pure/pure.json
@@ -42,8 +43,8 @@ spec:
             value: {{ quote .Values.flashblade.snapshotDirectoryEnabled }}
       volumes:
         - name: config
-          configMap:
-            name: pure-provisioner-config
+          secret:
+            secretName: pure-provisioner-secret
     {{- with .Values.provisioner.nodeSelector | default .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

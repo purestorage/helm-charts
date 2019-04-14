@@ -49,6 +49,7 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /etc/pure
+            readOnly: true
           - name: kubelet-plugins
             mountPath: /kubelet-plugins
           env:
@@ -72,8 +73,8 @@ spec:
             value: "{{ .Values.flasharray.iSCSILoginTimeout }}"
       volumes:
         - name: config
-          configMap:
-            name: pure-provisioner-config
+          secret:
+            secretName: pure-provisioner-secret
         - name: kubelet-plugins
           hostPath:
            path: {{ template "pure_k8s_plugin.flexpath" .}}
