@@ -150,7 +150,7 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f
 
 ## How to upgrade from the legacy installation to helm version
 
-This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-fly volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
+This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 
 1. Uninstall the legacy installation by following [the instructions](https://hub.docker.com/r/purestorage/k8s/)
 2. Reinstall via helm

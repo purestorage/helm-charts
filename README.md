@@ -1,6 +1,6 @@
-# PureStorage Helm Charts
+# PureStorage Helm Charts and Helm Operator
 
-# Installation
+# Installation for Helm Chart
 
 ## Adding the `pure` repo
 
@@ -16,8 +16,9 @@ Install the helm by following the official documents:
 1. For Kubernetes
 https://docs.helm.sh/using_helm#install-helm
 
-2. For Openshift
+2. For Openshift 
 https://blog.openshift.com/getting-started-helm-openshift/
+**Starting OpenShift 3.11 the preferred installation method is using the PSO Operator. Follow the instructions in the [operator directory](./operator/README.md).**
 
 In order to enable helm tiller to install any type of services across the entire cluster, it's required to grant helm tiller with cluster admin role.
 
@@ -26,7 +27,7 @@ After helm installation, configure the cluster admin role for the service accoun
 # For K8s, for exmaple of a service account {TILLER_NAMESPACE}:default
 kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=${TILLER_NAMESPACE}:default
 
-# For Openshift:
+# For Openshift version < 3.11:
 oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${TILLER_NAMESPACE}:tiller
 ```
 
