@@ -11,7 +11,7 @@ A single install script sets up the PSO-operator. <br/>
 
 Parameter list:<br/>
 1. ``image`` is the PSO Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
-2. ``namespace`` is the namespace/project in which the PSO-operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``psooperator`` namespace.
+2. ``namespace`` is the namespace/project in which the PSO-operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``pso-operator`` namespace.
 **PSO Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the PSO operator.**
 3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``openshift`` is assumed.
 4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArrays and FlashBlades. All parameters that need a non-default value must be specified in this file. 
@@ -20,9 +20,9 @@ Refer to [Configuration for values.yaml.](../pure-k8s-plugin/README.md#configura
 ### Install script steps:
 The install script will do the following:
 1. Create New Project<br/>
-The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``psooperator`` namespace is used.<br/> 
-**OpenShift Note**: In OpenShift 3.11, the default node-selector for a project does not allow PSO-operator to mount volumes on master and infra nodes. 
-If you want to mount volumes on master and infra nodes OR run pods in the default namespace using PSO-volumes, then modify the install script as follows.<br\>
+The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pso-operator`` namespace is used.<br/> 
+**OpenShift Note**: In OpenShift 3.11, the default node-selector for a project does not allow PSO Operator to mount volumes on master and infra nodes. 
+If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then modify the install script as follows.<br/>
 ```
 Existing line:     $KUBECTL adm new-project ${NAMESPACE}
 
