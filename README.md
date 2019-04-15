@@ -18,9 +18,7 @@ https://docs.helm.sh/using_helm#install-helm
 
 2. For Openshift 
 https://blog.openshift.com/getting-started-helm-openshift/
-<br/>
 **Starting OpenShift 3.11 the preferred installation method is using the PSO Operator. Follow the instructions in the [operator directory](./operator/README.md).**
-<br/>
 
 In order to enable helm tiller to install any type of services across the entire cluster, it's required to grant helm tiller with cluster admin role.
 
