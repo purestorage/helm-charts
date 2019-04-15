@@ -12,10 +12,10 @@ A single install script sets up the PSO-operator. <br/>
 Parameter list:<br/>
 1. ``image`` is the PSO Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
 2. ``namespace`` is the namespace/project in which the PSO-operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``psooperator`` namespace.
-**PSO OPerator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the PSO operator.**
+**PSO Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the PSO operator.**
 3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``openshift`` is assumed.
 4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArrays and FlashBlades. All parameters that need a non-default value must be specified in this file. 
-Refer to [Configuration for values.yaml](../pure-k8s-plugin/README.md#configuration)
+Refer to [Configuration for values.yaml.](../pure-k8s-plugin/README.md#configuration)
 
 ### Install script steps:
 The install script will do the following:
@@ -56,7 +56,7 @@ Finally the script creates and deploys the operator using the customized paramet
 ### How to upgrade from helm install to PSO Operator
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release
-Once the helm chart has been uninstalled, follow the install instructions (above)(#installation)
+Once the helm chart has been uninstalled, follow the install instructions [above](#installation)
 
 
 ## Uninstall
