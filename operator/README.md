@@ -56,7 +56,7 @@ Finally the script creates and deploys the operator using the customized paramet
 ### How to upgrade from helm install to PSO Operator
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release
-Once the helm chart has been uninstalled, follow the install instructions [above](#installation)
+Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
 
 
 ## Uninstall
