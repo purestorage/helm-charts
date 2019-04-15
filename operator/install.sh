@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 IMAGE=quay.io/purestorage/pso-operator:v0.0.1
-NAMESPACE=psoOperator
+NAMESPACE=pso-operator
 KUBECTL=oc
 
 usage()
@@ -210,6 +210,7 @@ rules:
     - services
     - endpoints
     - configmaps
+    - secrets
     - serviceaccounts
     verbs:
     - "create"
@@ -302,6 +303,7 @@ apiVersion: purestorage.com/v1
 kind: PSOPlugin
 metadata:
   name: psoplugin-operator
+  namespace: REPLACE_NAMESPACE
 spec:
-  # Add fields here'; sed 's/.*/  &/' ${VALUESFILE}) | ${KUBECTL_NS} -
+  # Add fields here' | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|"; sed 's/.*/  &/' ${VALUESFILE}) | ${KUBECTL_NS} -
 

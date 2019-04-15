@@ -14,7 +14,8 @@ Parameter list:<br/>
 2. ``namespace`` is the namespace/project in which the PSO-operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``psooperator`` namespace.
 **PSO OPerator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the PSO operator.**
 3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``openshift`` is assumed.
-4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArrays and FlashBlades. All parameters that need a non-default value must be specified in this file.
+4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArrays and FlashBlades. All parameters that need a non-default value must be specified in this file. 
+Refer to [Configuration for values.yaml](../pure-k8s-plugin/README.md#configuration)
 
 ### Install script steps:
 The install script will do the following:
@@ -29,7 +30,7 @@ Change to allow volume mounts on master and infra nodes:     $KUBECTL adm new-pr
 ```
 
 2. Create a Custom Resource Definition (CRD) for the PSO Operator. <br/>
-The script waits for the CRD to be published in the cluster. If adter 10 seconds the API server has not setup the CRD, the script times out. To wait longer, pass the parameter 
+The script waits for the CRD to be published in the cluster. If after 10 seconds the API server has not setup the CRD, the script times out. To wait longer, pass the parameter 
 ``--timeout=<timeout_in_sec>`` to the install script.
 
 3. Create RBAC rules for the Operator.<br/>
@@ -50,6 +51,17 @@ In addition, the operator needs access to multiple resources in the project/name
 4. Creates a deployment for the Operator.<br/>
 Finally the script creates and deploys the operator using the customized parameters passed in the ``values.yaml`` file.
 
+## Upgrading
+
+### How to upgrade from helm install to PSO Operator
+This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
+Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release
+Once the helm chart has been uninstalled, follow the install instructions (above)(#installation)
+
 
 ## Uninstall
-To uninstall the PSO Operator, delete the project/namespace in which the PSO operator is installed. It is **strongly recommended** to install the PSO Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
+To uninstall the PSO Operator, run 
+```
+oc delete all --all -n <pso-operator-installed-namespace>
+```
+where ``pso-operator-installed-namespace`` is the project/namespace in which the PSO operator is installed. It is **strongly recommended** to install the PSO Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
