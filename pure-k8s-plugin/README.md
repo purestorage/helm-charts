@@ -3,7 +3,7 @@
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
-Minimum version of K8S FlexVol driver required is 2.3.0
+Minimum version of K8S FlexVol driver required is 2.4.0
 
 ## How to install
 
@@ -29,7 +29,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `2.3.0`                                   |
+| `image.tag`                 | The image tag to pull              | `2.4.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
@@ -275,11 +275,14 @@ as the node config path is passed through to the container.
 
 # Release Notes
 
-## pure-k8s-plugin 2.3.0
+## pure-k8s-plugin 2.4.0
 ### Changes
-- Added flashblade.snapshotDirectoryEnabled parameter. It is default to false. 
-- flexvol driver is split into two, one for block storage and one for NFS. This allows the plugin to work properly with selinux relabeling, which is typically required by OpenShift 3.11+.
-- Miscellaneous updates to the fleet provisioning logic to make it more robust against device errors.
+- [PSO Operator](../operator/README.md#pso-operator) is now  the preferred install method for PSO on OpenShift 3.11 and higher versions. 
+The PSO Operator packages and deploys the Pure Service Orchestrator (PSO) on OpenShift for dynamic provisioning of persistent volumes on FlashArrays and FlashBlades. The minimum supported version is OpenShift 3.11.
+This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-k8s-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
+This installation process does not require Helm installation. 
+- Added flasharray.iSCSILoginTimeout parameter with default value of 20sec.
+- Added flasharray.iSCSIAllowedCIDR parameter to list CIDR blocks allowed as iSCSI targets. The default value allows all addresses.
 
 ### Known Vulnerabilities 
 - [CVE-2019-1543](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-1543)
