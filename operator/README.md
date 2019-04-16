@@ -1,5 +1,6 @@
 # PSO Operator
-##Overview
+
+## Overview
 PSO Operator is now  the preferred install method for PSO on OpenShift 3.11 and higher versions. 
 The PSO Operator packages and deploys the Pure Service Orchestrator (PSO) on OpenShift for dynamic provisioning of persistent volumes on FlashArrays and FlashBlades. The minimum supported version is OpenShift 3.11.
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-k8s-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
