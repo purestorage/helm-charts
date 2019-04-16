@@ -67,6 +67,12 @@ flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
 # Default for GKE
 #flexPath: /home/kubernetes/flexvolume
 
+# Default for Kubespray
+#flexPath: /var/lib/kubelet/volume-plugins
+
+#Default for OpenStack Magnum
+#flexPath: /var/lib/kubelet/volumeplugins
+
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
 # and "APIToken", and for FlashBlades you need the additional "NfsEndPoint" parameter.
