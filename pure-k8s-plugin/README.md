@@ -274,15 +274,7 @@ path to use is something like `/etc/origin/kubelet-plugins` or similar
 as the node config path is passed through to the container.
 
 # Release Notes
-
-## pure-k8s-plugin 2.4.0
-### Changes
-- [PSO Operator](../operator/README.md#pso-operator) is now  the preferred install method for PSO on OpenShift 3.11 and higher versions. 
-The PSO Operator packages and deploys the Pure Service Orchestrator (PSO) on OpenShift for dynamic provisioning of persistent volumes on FlashArrays and FlashBlades. The minimum supported version is OpenShift 3.11.
-This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-k8s-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
-This installation process does not require Helm installation. 
-- Added flasharray.iSCSILoginTimeout parameter with default value of 20sec.
-- Added flasharray.iSCSIAllowedCIDR parameter to list CIDR blocks allowed as iSCSI targets. The default value allows all addresses.
+Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)
 
 ### Known Vulnerabilities 
 - [CVE-2019-1543](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-1543)
