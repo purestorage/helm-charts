@@ -65,6 +65,33 @@ if [[ "${KUBECTL}" == "kubectl" ]]; then
     $KUBECTL create namespace ${NAMESPACE}
 else
     $KUBECTL adm new-project ${NAMESPACE} 
+    
+    # Since this plugin needs to mount external volumes to containers, create a SCC to allow the flex-daemon pod to
+    # use the hostPath volume plugin
+echo '
+kind: SecurityContextConstraints
+apiVersion: v1
+metadata:
+  name: hostpath
+allowPrivilegedContainer: true
+allowHostDirVolumePlugin: true
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+fsGroup:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+' | $KUBECTL create -f -
+
+    # Grant this SCC to the service account creating the flex-daemonset
+    # extract the clusterrolebinding.serviceAccount.name from the values.yaml file if it exists.
+    SVC_ACCNT=$(awk '/clusterrolebinding:/,0' ${VALUESFILE} | grep 'name:' | sed  ' s/#.*$//; s/^.*://; s/ *$//; /^$/d;' | head -1)
+    if [[ -z ${SVC_ACCNT} ]]; then
+        SVC_ACCNT=pure
+    fi
+    $KUBECTL adm policy add-scc-to-user hostpath -n ${NAMESPACE} -z ${SVC_ACCNT} 
 fi
 
 # 2. Create CRD and wait until TIMEOUT seconds for the CRD to be established.
