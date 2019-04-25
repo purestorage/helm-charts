@@ -64,6 +64,11 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
 Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release
 Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
 
+### Apply changes in ``values.yaml``
+The ``upgrade.sh`` script is used to apply changes from ``values.yaml`` as follows.
+```
+./upgrade.sh -f values.yaml
+```
 
 ## Uninstall
 To uninstall the PSO Operator, run 
