@@ -8,7 +8,7 @@ release: {{ .Release.Name | quote }}
 
 {{/* Define the flexpath to install pureflex
 */}}
-{{ define "pure_k8s_plugin.flexpath" -}}<<<<<<< dinathom/operator_fixes
+{{ define "pure_k8s_plugin.flexpath" -}}
 {{ if .Values.flexPath -}}
 {{ .Values.flexPath }}
 {{ else if eq .Values.orchestrator.name "k8s" -}}
