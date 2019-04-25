@@ -87,7 +87,7 @@ supplementalGroups:
 
     # Grant this SCC to the service account creating the flex-daemonset
     # extract the clusterrolebinding.serviceAccount.name from the values.yaml file if it exists.
-    SVC_ACCNT=$(awk '/clusterrolebinding:/,0' ${VALUESFILE} | grep 'name:' | sed  ' s/#.*$//; s/^.*://; s/ *$//; /^$/d;' | head -1)
+    SVC_ACCNT=$( cat ${VALUESFILE} | sed 's/#.*$//' | awk '/clusterrolebinding:/,0' | grep 'name:' | sed  ' s/^.*://; s/ *$//; /^$/d;' | head -1)
     if [[ -z ${SVC_ACCNT} ]]; then
         SVC_ACCNT=pure
     fi
@@ -240,10 +240,7 @@ rules:
     - secrets
     - serviceaccounts
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
+    - "*"
   - apiGroups:
     - ""
     resources:
@@ -256,20 +253,13 @@ rules:
     - deployments
     - daemonsets
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
+    - "*"
   - apiGroups:
     - extensions
     resources:
     - daemonsets
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
-    - "patch"
+    - "*"
 
 ---
 
