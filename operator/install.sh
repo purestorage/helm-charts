@@ -240,10 +240,7 @@ rules:
     - secrets
     - serviceaccounts
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
+    - "*"
   - apiGroups:
     - ""
     resources:
@@ -256,20 +253,13 @@ rules:
     - deployments
     - daemonsets
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
+    - "*"
   - apiGroups:
     - extensions
     resources:
     - daemonsets
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
-    - "patch"
+    - "*"
 
 ---
 

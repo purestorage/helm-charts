@@ -8,6 +8,10 @@ metadata:
 spec:
   updateStrategy:
     type: RollingUpdate
+    rollingUpdate:
+# flex-daemon may not be running on some nodes in the cluster like master/infra nodes. This affects the maxUnavailable nodes for a RollingUpdate.
+# Set maxUnavailable to 100% so that a Rolling Update is possible for any cluster configuration.
+      maxUnavailable: 100%
   selector:
     matchLabels:
       app: pure-flex
