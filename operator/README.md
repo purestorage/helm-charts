@@ -65,9 +65,9 @@ Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uni
 Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
 
 ### Apply changes in ``values.yaml``
-The ``upgrade.sh`` script is used to apply changes from ``values.yaml`` as follows.
+The ``update.sh`` script is used to apply changes from ``values.yaml`` as follows.
 ```
-./upgrade.sh -f values.yaml
+./update.sh -f values.yaml
 ```
 
 ## Uninstall
