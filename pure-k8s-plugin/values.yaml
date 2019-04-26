@@ -30,6 +30,7 @@ flasharray:
   defaultFSOpt: "-q"
   defaultMountOpt: ""
   preemptAttachments: "true"
+  iSCSILoginTimeout: 20
 
 flashblade:
   snapshotDirectoryEnabled: "false"
