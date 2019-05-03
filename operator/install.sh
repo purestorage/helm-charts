@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v0.0.2
+IMAGE=quay.io/purestorage/pso-operator:v0.0.3
 NAMESPACE=pso-operator
 KUBECTL=oc
 
@@ -161,11 +161,12 @@ rules:
     verbs:
     - "create"
     - "delete"
-# PSO operator needs to create/delete a ClusterRoleBinding with the ClusterRole system:persistent-volume-provisioner for provisioning PVs
+# PSO operator needs to create/delete a ClusterRole and ClusterRoleBinding for provisioning PVs
   - apiGroups:
     - rbac.authorization.k8s.io
     resources:
     - clusterrolebindings
+    - clusterroles
     verbs:
     - "create"
     - "delete"
@@ -173,42 +174,71 @@ rules:
     - rbac.authorization.k8s.io
     resources:
     - clusterrolebindings
+    - clusterroles
     resourceNames:
     - "pure-provisioner-rights"
+    - "pure-provisioner-clusterrole"
     verbs:
     - "get"
 # On Openshift ClusterRoleBindings belong to a different apiGroup.
-# PSO operator needs to create/delete a ClusterRoleBinding with the ClusterRole system:persistent-volume-provisioner for provisioning PVs
   - apiGroups:
     - authorization.openshift.io
     resources:
     - clusterrolebindings
+    - clusterroles
     verbs:
     - "create"
     - "delete"
-# PSO creates the ClusterRoleBinding "pure-provisioner-rights" and should be able to get this by resource name
+# PSO creates the "pure-provisioner-clusterrole" and "pure-provisioner-rights" and should be able
+# to get this by resource name
   - apiGroups:
     - authorization.openshift.io
     resources:
     - clusterrolebindings
+    - clusterroles
     resourceNames:
     - "pure-provisioner-rights"
+    - "pure-provisioner-clusterrole"
     verbs:
     - "get"
----
-# This ClusterRoleBinding is needed to create "pure-provisioner-rights" ClusterRoleBinding with ClusterRole system:persistent-volume-provisioner
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  name: pso-operator-volume-provisioner
-subjects:
-- kind: ServiceAccount
-  name: default
-  namespace: REPLACE_NAMESPACE
-roleRef:
-  kind: ClusterRole
-  name: system:persistent-volume-provisioner
-  apiGroup: rbac.authorization.k8s.io
+# Need the same permissions as pure-provisioner-clusterrole to be able to create it
+  - apiGroups:
+    - ""
+    resources:
+    - persistentvolumes
+    verbs:
+    - "create"
+    - "delete"
+    - "get"
+    - "list"
+    - "watch"
+    - "update"
+  - apiGroups:
+    - ""
+    resources:
+    - persistentvolumeclaims
+    verbs:
+    - "get"
+    - "list"
+    - "update"
+    - "watch"
+  - apiGroups:
+    - storage.k8s.io
+    resources:
+    - storageclasses
+    verbs:
+    - "get"
+    - "list"
+    - "watch"
+  - apiGroups:
+    - ""
+    resources:
+    - "events"
+    verbs:
+    - "create"
+    - "patch"
+    - "update"
+    - "watch"
 
 ---
 kind: ClusterRoleBinding
@@ -260,6 +290,26 @@ rules:
     - daemonsets
     verbs:
     - "*"
+  - apiGroups:
+    - rbac.authorization.k8s.io
+    resources:
+    - roles
+    - rolebindings
+    verbs:
+    - "create"
+    - "delete"
+    - "list"
+    - "get"
+  - apiGroups:
+    - authorization.openshift.io
+    resources:
+    - roles
+    - rolebindings
+    verbs:
+    - "create"
+    - "delete"
+    - "list"
+    - "get"
 
 ---
 
