@@ -296,20 +296,14 @@ rules:
     - roles
     - rolebindings
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
+    - "*"
   - apiGroups:
     - authorization.openshift.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "create"
-    - "delete"
-    - "list"
-    - "get"
+    - "*"
 
 ---
 
