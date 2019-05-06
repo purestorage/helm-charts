@@ -3,7 +3,7 @@
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
-Minimum version of K8S FlexVol driver required is 2.4.0
+Minimum version of K8S FlexVol driver required is 2.5.0
 
 ## How to install
 
@@ -29,7 +29,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `2.4.0`                                   |
+| `image.tag`                 | The image tag to pull              | `2.5.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
