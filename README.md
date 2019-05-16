@@ -1,4 +1,4 @@
-# PureStorage Helm Charts and PSO Operator
+# Pure Storage Helm Charts and PSO Operator
 
 # Installation of PSO Operator
 Follow instructions in the [operator.](./operator/README.md#overview)
