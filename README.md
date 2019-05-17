@@ -1,32 +1,46 @@
-# Pure Storage Helm Charts and PSO Operator
+# Pure Service Orchestrator (PSO) Helm Charts
 
-# Installation of PSO Operator
-Follow instructions in the [operator.](./operator/README.md#overview)
+## What is PSO?
+Pure Service Orchestrator (PSO) delivers storage-as-a-service for containers, giving developers the agility of public cloud with the reliability and security of on-premises infrastructure.
 
+**Smart Provisioning**<br/>
+PSO automatically makes the best provisioning decision for each storage request – in real-time – by assessing multiple factors such as performance load, the capacity and health of your arrays, and policy tags.
 
-# Installation for Helm Chart
+**Elastic Scaling**<br/>
+Uniting all your Pure FlashArray and FlashBlade™ arrays on a single shared infrastructure, and supporting file and block as needed, PSO makes adding new arrays effortless, so you can scale as your environment grows.
 
-## Adding the `pure` repo
+**Transparent Recovery**<br/>
+To ensure your services stay robust, PSO self-heals – so you’re protected against data corruption caused by issues such as node failure, array performance limits, and low disk space.
+
+## Installation
+PSO can be deployed via an Operator or from the Helm chart.
+
+### PSO Operator
+PSO Operator is now the preferred installation method for PSO on OpenShift version 3.11 and higher. The PSO Operator is also supported on Kubernetes version 1.11 and higher.<br/>
+For installation, see the [Operator Documentation](./operator/README.md#overview).
+
+### Helm Chart
+The helm chart (pure-k8s-plugin) deploys PSO on your Kubernetes cluster.
+
+#### Adding the `pure` repo
 
 ```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
 ```
 
-## Helm Setup
-Please ensure you have a correct service account with cluster-admin role in K8s/Openshift for Helm. 
-
-Install the helm by following the official documents:
-1. For Kubernetes
+#### Helm Setup
+Install Helm by following the official documents:
+1. For Kubernetes<br/>
 https://docs.helm.sh/using_helm#install-helm
 
-2. For Openshift 
-https://blog.openshift.com/getting-started-helm-openshift/
+2. For OpenShift<br/>
+https://blog.openshift.com/getting-started-helm-openshift/<br/>
 **Starting OpenShift 3.11 the preferred installation method is using the PSO Operator. Follow the instructions in the [operator directory](./operator/README.md).**
 
-In order to enable helm tiller to install any type of services across the entire cluster, it's required to grant helm tiller with cluster admin role.
+In order to enable Tiller (the server-side component of Helm) to install any type of service across the entire cluster, it's required to grant Tiller a cluster-admin role.
 
-After helm installation, configure the cluster admin role for the service account of the helm tiller. You need to figure out the correct service account.
+After the Helm installation, configure the cluster admin role for the service account of Tiller. You will need to determine the correct service account.
 ```bash
 # For K8s, for exmaple of a service account {TILLER_NAMESPACE}:default
 kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=${TILLER_NAMESPACE}:default
@@ -37,20 +51,8 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${TIL
 
 For more details, please see https://docs.helm.sh/using_helm/
 
-# Updating Charts
-We serve charts using a github page with its root at [./docs](./docs) when the helm source is updated
-we need to do something like:
+## Contributing
+We welcome contributions. The PSO Helm Charts project is under [Apache 2.0 license](https://github.com/purestorage/helm-charts/blob/master/LICENSE). We accept contributions via GitHub pull requests.
 
-```bash
-helm package ./$CHART_NAME
-cp $CHART_NAME.tgz ./docs
-helm repo index docs --url https://purestorage.github.io/helm-charts
-```
-
-Luckily there is a helper script to make this easy:
-
-```bash
-./update.sh
-```
-
-You can then commit the changes and have them become available once merged.
+## Report a Bug
+For filing bugs, suggesting improvements, or requesting new features, please open an [issue](https://github.com/purestorage/helm-charts/issues).
