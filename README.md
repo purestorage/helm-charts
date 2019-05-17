@@ -7,7 +7,7 @@ Pure Service Orchestrator (PSO) delivers storage-as-a-service for containers, gi
 PSO automatically makes the best provisioning decision for each storage request – in real-time – by assessing multiple factors such as performance load, the capacity and health of your arrays, and policy tags.
 
 **Elastic Scaling**<br/>
-Uniting all your Pure FlashArray and FlashBlade™ arrays on a single shared infrastructure, and supporting file and block as needed, PSO makes adding new arrays effortless, so you can scale as your environment grows.
+Uniting all your Pure FlashArray™ and FlashBlade™ arrays on a single shared infrastructure, and supporting file and block as needed, PSO makes adding new arrays effortless, so you can scale as your environment grows.
 
 **Transparent Recovery**<br/>
 To ensure your services stay robust, PSO self-heals – so you’re protected against data corruption caused by issues such as node failure, array performance limits, and low disk space.
@@ -42,7 +42,7 @@ In order to enable Tiller (the server-side component of Helm) to install any typ
 
 After the Helm installation, configure the cluster admin role for the service account of Tiller. You will need to determine the correct service account.
 ```bash
-# For K8s, for exmaple of a service account {TILLER_NAMESPACE}:default
+# For K8s with example service account "{TILLER_NAMESPACE}:default"
 kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=${TILLER_NAMESPACE}:default
 
 # For Openshift version < 3.11:
