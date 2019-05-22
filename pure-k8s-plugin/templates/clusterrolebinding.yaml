@@ -37,7 +37,7 @@ metadata:
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 roleRef:
-  apiVersion: rbac.authorization.k8s.io/v1beta1
+  apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: pure-provisioner-clusterrole
 subjects:
@@ -70,7 +70,7 @@ metadata:
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 roleRef:
-  apiVersion: rbac.authorization.k8s.io/v1beta1
+  apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: pure-provisioner-role
 subjects:
