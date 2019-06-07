@@ -3,7 +3,7 @@
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
-Minimum version of K8S FlexVol driver required is 2.5.0
+Minimum version of K8S FlexVol driver required is 2.5.2
 
 ## How to install
 
@@ -277,11 +277,7 @@ as the node config path is passed through to the container.
 Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)
 
 ### Known Vulnerabilities 
-- [CVE-2019-1543](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-1543)
-- [CVE-2019-0190](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-0190)
-- [CVE-2019-5747](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-5747)
-- [CVE-2018-20679](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20679)
-
+None
 
 # License
 https://www.purestorage.com/content/dam/purestorage/pdf/legal/pure-plugin-end-user-license-agmt-sept-18-2017.pdf
