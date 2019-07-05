@@ -1,0 +1,34 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: pure
+  annotations:
+    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.isPureDefault }}"
+  labels:
+    kubernetes.io/cluster-service: "true"
+{{ include "pure_csi_plugin.labels" . | indent 4}}
+provisioner: pure-csi # Name of the CSIDriver.
+parameters:
+    backend: {{ .Values.storageclass.pureBackend | default "block" | quote }}
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: pure-file
+  labels:
+    kubernetes.io/cluster-service: "true"
+{{ include "pure_csi_plugin.labels" . | indent 4}}
+provisioner: pure-csi # Name of the CSIDriver. 
+parameters:
+    backend: file
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: pure-block
+  labels:
+    kubernetes.io/cluster-service: "true"
+{{ include "pure_csi_plugin.labels" . | indent 4}}
+provisioner: pure-csi # Name of the CSIDriver.
+parameters:
+    backend: block

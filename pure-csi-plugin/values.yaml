@@ -4,11 +4,11 @@
 
 image:
   name: purestorage/k8s
-  tag: 2.5.2
+  tag: 3.0.0
   pullPolicy: IfNotPresent
 
 # this option is to enable/disable the debug mode of this app
-# for pure-provisioner and pure-flex-daemon
+# for pure-csi-driver
 app:
   debug: false
 
@@ -42,37 +42,9 @@ namespace:
   pure: k8s
 
 # support k8s or openshift
-# if you want to install flex into a different place, you need to
-# overwrite the flexpath.
 orchestrator:
   # name is either 'k8s' or 'openshift'
   name: k8s
-
-# flexPath is for image.tag >= 2.0
-# `flexPath` needs to align with kubelet "volume-plugin-dir" configuration
-# by default in Kubernetes it is '/usr/libexec/kubernetes/kubelet-plugins/volume/exec'
-# Select an option below or customize for the environment.
-
-# Default for Kubernetes and OpenShift on RHEL Server
-flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
-
-# Default for Openshift 3.10+ on RHEL Atomic (containerized kubelet/origin-node)
-#flexPath: /etc/origin/kubelet-plugins/volume/exec
-
-# Default for Openshift 3.9 and lower with RHEL Atomic
-#flexPath : /usr/libexec/kubernetes/kubelet-plugins/volume/exec
-
-# Default for RKE
-#flexPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
-
-# Default for GKE
-#flexPath: /home/kubernetes/flexvolume
-
-# Default for Kubespray
-#flexPath: /var/lib/kubelet/volume-plugins
-
-#Default for OpenStack Magnum
-#flexPath: /var/lib/kubelet/volumeplugins
 
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
@@ -101,25 +73,7 @@ arrays:
   #    Labels:
   #      rack: "6a"
 
-# These values map directly to yaml in the deployment spec, see the kubernetes docs for info
-nodeSelector: {}
-  # disktype: ssd
-# These values map directly to yaml in the deployment spec, see the kubernetes docs for info
-tolerations: []
-  # - operator: Exists
-# These values map directly to yaml in the deployment spec, see the kubernetes docs for info
-affinity: {}
-  # nodeAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #     nodeSelectorTerms:
-  #     - matchExpressions:
-  #       - key: e2e-az-NorthSouth
-  #         operator: In
-  #         values:
-  #         - e2e-az-North
-  #         - e2e-az-South
-
-flexDaemon:
+mounter:
   # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
   nodeSelector: {}
     # disktype: ssd
