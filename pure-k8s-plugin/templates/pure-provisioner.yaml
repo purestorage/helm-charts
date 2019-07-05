@@ -23,7 +23,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /k8s-provisioner
-            - '-logtostderr=false'
+            - '-logtostderr=true'
+            - '-log_file_max_size=32'
             - '-stderrthreshold=2'
 {{- if eq .Values.app.debug true}}
             - '--debug'
