@@ -46,10 +46,10 @@ The following table lists the configurable parameters and their default values.
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
-| `mounter.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule flex-plugin. See [this](https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html#using-node-selectors) for setting node selectors on Openshift. | `{}` |
+| `mounter.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule CSI node plugin. | `{}` |
 | `mounter.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
 | `mounter.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
-| `provisioner.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule provisioner. See [this](https://docs.openshift.com/container-platform/3.11/admin_guide/managing_projects.html#using-node-selectors) for setting node selectors on Openshift. | `{}` |
+| `provisioner.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule provisioner. | `{}` |
 | `provisioner.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
 | `provisioner.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
 
@@ -83,7 +83,6 @@ arrays:
 It is possible to make CSI Node Plugin and CSI Controller Plugin to run on specific nodes
 using `nodeSelector`, `toleration` and `affinity`. You can set these config
 separately for Node Plugin and Controller Plugin using `mounter.nodeSelector` and `provisioner.nodeSelector` respectively.
-Our old flexVolume chart `pure-k8s-plugin`'s  `values.yaml` is compatible with our `pure-csi-plugin` chart and can be used with our CSI driver with no changes.
 
 ## Install the plugin in a separate namespace(i.e. project)
 For security reason, it's strongly recommended to install the plugin in a separate namespace/project. Make sure the namespace is existing, otherwise create it before installing the plugin.
@@ -97,13 +96,7 @@ helm install --name pure-storage-driver pure/pure-csi-plugin --namespace <namesp
 
 Run the Install
 ```
-# For Openshift only:
-#   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
-#   You can find the serviceaccount info from your values.yaml (if not in it, find in the default values.yaml).
-#   The service account should be "system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>"
-oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>
-
-# Install the plugin (works for both openshift and kubernetes)
+# Install the plugin 
 helm install --name pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
@@ -140,31 +133,9 @@ helm search pure-csi-plugin -l
 helm upgrade pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
 ```
 
-## How to upgrade from the legacy installation to helm version
+## How to upgrade from the flexvolume to CSI
 
-This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
-
-1. Uninstall the legacy installation by following [the instructions](https://hub.docker.com/r/purestorage/k8s/)
-2. Reinstall via helm
-    a. Convert pure.json into arrays info in your values.yaml, (online tool: https://www.json2yaml.com/)
-3. Ensure either `flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter. 
-    a. How to find the full path of the directory for pure flex plugin (i.e. `volume-plugin-dir`) 
-    ```
-    # ssh to a node which has pure flex plugin installed, and check the default value of "volume-plugin-dir" from "kubelet --help"
-    # and then find the full path of the directory as below:
-
-    # for k8s
-    root@k8s-test-k8s-0:~# find /usr/libexec/kubernetes/kubelet-plugins/ -name "flex" | xargs dirname
-    /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
-
-    # for openshift on RHEL Server
-    root@k8s-test-openshift-0:~# find /usr/libexec/kubernetes/kubelet-plugins/ -name "flex" | xargs dirname
-    /usr/libexec/kubernetes/kubelet-plugins/volume/exec/pure~flex
-    
-    # for openshift 3.10+ on RHEL Atomic
-    root@k8s-test-openshift-0:~# find /etc/origin/kubelet-plugins/ -name "flex" | xargs dirname
-    /etc/origin/kubelet-plugins/volume/exec/pure~flex
-    ```
+Upgrade from flexvolume to CSI is not currently supported and will be worked on in an upcoming release.
 
 ## Platform and Software Dependencies
 - #### Operating Systems Supported*:
@@ -173,8 +144,7 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
   - RHEL 7
   - Ubuntu 16.04
 - #### Environments Supported*:
-  - Kubernetes 1.6+
-  - OpenShift 3.6+
+  - Kubernetes 1.13+
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
@@ -186,93 +156,12 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
 
 _* Please see release notes for details_
 
-## Containerized Kubelet
-
-If Kubernetes is deployed using containerized kubelet services then there
-may be steps required to ensure it can use the FlexVolume plugin. In general
-there are a few requirements that must be met for the plugin to work.
-
-### Requirements
-The container running the kubelet service must have:
-
-* Access to the host systems PID namespace
-* Access to host devices and sysfs (`/dev` & `/sys`)
-* Access to the kubelet volume plugin directory
-
-For the volume plugin directory this defaults to `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`
-but can be adjusted with the kubelet `volume-plugin-dir` option. Where
-possible the containerized kubelet should have this directory passed in from
-the host system.
-
-To change the volume plugin directory a few steps are required:
-
-* Update the kubelet service to use the `volume-plugin-dir` option, and
-  direct it to the new location.
-* Ensure the kubelet container is configured to mount the new location
-  into the container.
-* Ensure that the `pure-flex-daemon.yaml` is configured to to use the
-  new plugin directory for the `kubelet-plugins` host volume mount.
-
-This allows for the `pure-flex` plugin to be installed in the new location
-on the filesystem, and for the kubelet to have access to the plugin.
-
-
-
-## Platform Specific Considerations
-
-Some Kubernetes environments will require special configuration, especially
-on restrictive host operating systems where parts of it are mounted read-only.
-
-### CentOS/RHEL Atomic
-Atomic is configured to have the `/usr` directory tree mounted
-as read-only. This will cause problems installing the `pure-flex` plugin
-as write permission is required.
-
-To get things working an alternate plugin directory should be used, a
-good option is `/etc/kubernetes/volumeplugins/`. This is convienient for
-both because it is writable, and the kubelet container will already be
-mounting the `/etc/kubernetes/` directory in to the kubelet.
-
-Once changed the kublet parameters need to be updated to set the
-`volume-plugin-dir` to be `/etc/kubernetes/volumeplugins/`, and the
-`pure-flex` DaemonSet needs to be adjusted to install there as well
-via the `flexPath` option in your `values.yaml`.
-
-### CoreOS
-Similar to the Atomic hosts this has a read-only `/usr` tree and requires
-the plugin to be installed to an alternate location. Follow the same
-recommendations to use `/etc/kubernetes/volumeplugins/` and adjust
-the kubelet service to use the `--volume-plugin-dir` CLI argument and
-mount the `/etc/kubernetes` directory into the container.
-
-### OpenShift
-Specify the `orchestrator.name` to be `openshift` and configure the other
-OpenShift specific options.
-
-**Note: the deployment is done with the default service account,
-and requires privileged containers. This means you may need to modify
-the service account used to use a new or existing service account with
-the right permissions or add the privileged scc to the default service
-account.**
-
-### OpenShift Containerized Deployment
-When deploying OpenShift with the containerized deployment method it is
-going to require mounting the plugin directory through to the container
-running the kubelet service.
-
-The kubelet configuration is then set via the `node-config.yaml` in the
-`kubeletArguments` section to set the `volume-plugin-dir`. The easiest
-path to use is something like `/etc/origin/kubelet-plugins` or similar
-as the node config path is passed through to the container.
 
 # Release Notes
 Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)
 
 ### Known Vulnerabilities 
-- [CVE-2019-1543](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-1543)
-- [CVE-2019-0190](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-0190)
-- [CVE-2019-5747](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-5747)
-- [CVE-2018-20679](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20679)
+None
 
 
 # License

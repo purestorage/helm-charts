@@ -7,7 +7,7 @@ metadata:
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi_plugin.labels" . | indent 4}}
-provisioner: pure-provisioner # Name of the CSIDriver. Must match name from flex-driver to handle upgrades.
+provisioner: pure-csi # Name of the CSIDriver.
 parameters:
     backend: {{ .Values.storageclass.pureBackend | default "block" | quote }}
 ---
@@ -18,7 +18,7 @@ metadata:
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi_plugin.labels" . | indent 4}}
-provisioner: pure-provisioner # Name of the CSIDriver. Must match name from flex-driver to handle upgrades.
+provisioner: pure-csi # Name of the CSIDriver. 
 parameters:
     backend: file
 ---
@@ -29,6 +29,6 @@ metadata:
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi_plugin.labels" . | indent 4}}
-provisioner: pure-provisioner # Name of the CSIDriver. Must match name from flex-driver to handle upgrades.
+provisioner: pure-csi # Name of the CSIDriver.
 parameters:
     backend: block

@@ -39,7 +39,7 @@ spec:
 apiVersion: storage.k8s.io/v1beta1
 kind: CSIDriver
 metadata:
-  name: pure-provisioner
+  name: pure-csi
 spec:
   attachRequired: false
 {{ end }}
@@ -56,7 +56,7 @@ spec:
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
-# flex-daemon may not be running on some nodes in the cluster like master/infra nodes. This affects the maxUnavailable nodes for a RollingUpdate.
+# CSI node plugin may not be running on some nodes in the cluster like master/infra nodes. This affects the maxUnavailable nodes for a RollingUpdate.
 # Set maxUnavailable to 100% so that a Rolling Update is possible for any cluster configuration.
       maxUnavailable: 100%
   selector:
@@ -203,6 +203,7 @@ spec:
             path: /var/lib/pure-csi-data/
             type: DirectoryOrCreate
           name: csi-data-dir
+{{- if .Values.mounter -}}
     {{- with .Values.mounter.nodeSelector | default .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
@@ -215,3 +216,19 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+{{- else -}}
+{{- if .Values.flexDaemon -}}
+    {{- with .Values.flexDaemon.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.flexDaemon.affinity | default .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.flexDaemon.tolerations | default .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+{{- end -}}
+{{- end -}}
