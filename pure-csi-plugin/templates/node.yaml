@@ -78,7 +78,6 @@ spec:
               exec:
                 command: ["/bin/sh", "-c", "rm -rf /registration/pure-csi /registration/pure-csi-reg.sock"]
           args:
-            - --v=5
             - --csi-address=/csi/csi.sock
             - --kubelet-registration-path=/var/lib/kubelet/plugins/pure-csi/csi.sock
           securityContext:

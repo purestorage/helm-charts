@@ -1,9 +1,11 @@
 # pure-csi-plugin
 
+This helm chart installs the CSI plugin on a Kubernetes cluster.
+
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
-Minimum version of CSI Spec is v1.0.0
+Minimum version of CSI specification is v1.0.0
 
 ## How to install
 
@@ -106,7 +108,6 @@ option will take precedence.
 helm install --name pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
-            --set orchestrator.name=k8s
 ```
 
 ## How to update `arrays` info

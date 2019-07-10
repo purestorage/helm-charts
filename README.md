@@ -20,7 +20,8 @@ PSO Operator is now the preferred installation method for PSO on OpenShift versi
 For installation, see the [Operator Documentation](./operator/README.md#overview).
 
 ### Helm Chart
-The helm chart (pure-k8s-plugin) deploys PSO on your Kubernetes cluster.
+**pure-k8s-plugin** deploys PSO flexvolume plugin on your Kubernetes cluster. 
+**pure-csi-plugin** deploys PSO CSI pkugin on your Kubernetes cluster. 
 
 #### Adding the `pure` repo
 

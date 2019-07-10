@@ -7,7 +7,7 @@ metadata:
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi_plugin.labels" . | indent 4}}
-provisioner: pure-csi # Name of the CSIDriver.
+provisioner: pure-csi # This must match the name of the CSIDriver. And the name of the CSI plugin from the RPC 'GetPluginInfo'
 parameters:
     backend: {{ .Values.storageclass.pureBackend | default "block" | quote }}
 ---
@@ -18,7 +18,7 @@ metadata:
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi_plugin.labels" . | indent 4}}
-provisioner: pure-csi # Name of the CSIDriver. 
+provisioner: pure-csi # This must match the name of the CSIDriver. And the name of the CSI plugin from the RPC 'GetPluginInfo'
 parameters:
     backend: file
 ---
@@ -29,6 +29,6 @@ metadata:
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi_plugin.labels" . | indent 4}}
-provisioner: pure-csi # Name of the CSIDriver.
+provisioner: pure-csi # This must match the name of the CSIDriver. And the name of the CSI plugin from the RPC 'GetPluginInfo'
 parameters:
     backend: block
