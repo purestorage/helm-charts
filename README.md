@@ -15,12 +15,15 @@ To ensure your services stay robust, PSO self-heals – so you’re protected ag
 ## Installation
 PSO can be deployed via an Operator or from the Helm chart.
 
-### PSO Operator
-PSO Operator is now the preferred installation method for PSO on OpenShift version 3.11 and higher. The PSO Operator is also supported on Kubernetes version 1.11 and higher.<br/>
-For installation, see the [Operator Documentation](./operator/README.md#overview).
+### PSO Operators
+PSO has Operator-based install available for both its Flexvolume plugin and CSI plugin. This install method does not need Helm installation. 
+The Pure Flex Operator is supported for OpenShift and Kubernetes.
+Pure Flex Operator is now the preferred installation method for FlexVolume on OpenShift version 3.11 and higher.<br/>
+For installation, see the [Flex Operator Documentation](./operator-k8s-plugin/README.md#overview) or the [CSI Operator Documentation](./operator-csi-plugin/README.md#overview)..
 
 ### Helm Chart
-The helm chart (pure-k8s-plugin) deploys PSO on your Kubernetes cluster.
+**pure-k8s-plugin** deploys PSO Flexvolume plugin on your Kubernetes cluster. 
+**pure-csi-plugin** deploys PSO CSI plugin on your Kubernetes cluster. 
 
 #### Adding the `pure` repo
 

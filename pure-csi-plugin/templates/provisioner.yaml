@@ -1,0 +1,108 @@
+# Service defined here, plus serviceName below in StatefulSet,
+# are needed only because of condition explained in
+# https://github.com/kubernetes/kubernetes/issues/69608
+kind: Service
+apiVersion: v1
+metadata:
+  name: pure-provisioner
+  labels:
+    app: pure-provisioner
+spec:
+  selector:
+    app: pure-provisioner
+  ports:
+    - name: dummy
+      port: 12345
+---
+# Why does this need to be a statefulset?
+# Because we need only one copy of the provisioner running
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: pure-provisioner
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "pure_csi_plugin.labels" . | indent 4}}
+
+spec:
+  serviceName: "pure-provisioner"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pure-provisioner
+  template:
+    metadata:
+      labels:
+        app: pure-provisioner
+{{ include "pure_csi_plugin.labels" . | indent 8}}
+    spec:
+      serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
+      containers:
+        - name: pure-csi-container
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "/csi-server"
+            - "-endpoint=$(CSI_ENDPOINT)"
+            - "-nodeid=$(KUBE_NODE_NAME)"
+{{- if eq .Values.app.debug true}}
+            - "-debug"
+{{- end}}
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - name: config
+              mountPath: /etc/pure
+              readOnly: true
+          env:
+          - name: CSI_ENDPOINT
+            value: unix:///csi/csi.sock
+          - name: PURE_DISCOVERY_CONF
+            value: /etc/pure/pure.json
+          - name: PURE_K8S_NAMESPACE
+            value: {{ .Values.namespace.pure }}
+          - name: PURE_DEFAULT_BLOCK_FS_TYPE
+            value: {{ .Values.flasharray.defaultFSType }}
+          - name: PURE_DEFAULT_ENABLE_FB_NFS_SNAPSHOT
+            value: {{ quote .Values.flashblade.snapshotDirectoryEnabled }}
+
+        # This is the external provisioner sidecar
+        - name: csi-provisioner
+          image: quay.io/k8scsi/csi-provisioner:v1.1.0
+          args:
+            - --csi-address=/csi/csi.sock
+            - --connection-timeout=15s
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+
+# This is the cluster-driver-registrar sidecar that allows helm-install without CRD-hooks for the CSIDriver CRD
+# The reason we do not want a crd-hook with helm-chart is to avoid upgrade issues like: https://github.com/helm/helm/issues/4489
+{{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
+        - name: cluster-driver-registrar
+          image: quay.io/k8scsi/csi-cluster-driver-registrar:v1.0.1
+          args:
+            - "--csi-address=/csi/csi.sock"
+            - "--driver-requires-attachment=false"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+{{ end }}
+      volumes:
+        - name: socket-dir
+          emptyDir: {}
+        - name: config
+          secret:
+            secretName: pure-provisioner-secret
+    {{- with .Values.provisioner.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.provisioner.affinity | default .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.provisioner.tolerations | default .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
