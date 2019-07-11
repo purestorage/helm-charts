@@ -47,8 +47,7 @@ The PSO Operator needs the following Cluster-level Roles and RoleBindings.
 | ------------- |:-------------:| -----:|
 | Namespace | Get | PSO Operator needs the ability to get created namespaces |
 | Storageclass | Create/Delete | Create and cleanup storage classes to be used for Provisioning |
-| ClusterRoleBinding | Create/Delete | PSO Operator needs to create and cleanup a ClusterRoleBinding called ``pure-provisioner-rights`` to the ClusterRole ``system:persistent-volume-provisioner`` for provisioning PVs |
-| ClusterRoleBinding | Get permission on ResourceName ``pure-provisioner-rights`` | PSO-operator needs the ability to get the ClusterRoleBinding it has created for provisioning. |
+| ClusterRoleBinding | Create/Delete/Get | PSO Operator needs to create and cleanup a ClusterRoleBinding called ``pure-provisioner-rights`` to the ClusterRole ``system:persistent-volume-provisioner`` for provisioning PVs |
 <br/>
 In addition, the operator needs access to multiple resources in the project/namespace that it is deployed in to function correctly. Hence it is recommended to install the PSO-operator in the non-default namespace.
 <br/>
