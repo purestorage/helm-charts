@@ -1,0 +1,11 @@
+apiVersion: v1
+description: A Helm chart for Pure Service Orchestrator CSI driver
+name: pure-csi-plugin
+version: 3.0.0
+appVersion: 3.0.0
+icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi-plugin/pure-storage.png
+keywords:
+- purestorage
+maintainers:
+- email: sales@purestorage.com
+  name: Pure Storage, Inc.

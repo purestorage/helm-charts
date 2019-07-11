@@ -1,5 +1,7 @@
 # pure-k8s-plugin
 
+This helm chart installs the flexvolume plugin on a Kubernetes cluster.
+
 ## Version restrictions
 
 Minimum Helm version required is 2.9.1
