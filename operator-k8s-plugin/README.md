@@ -2,7 +2,7 @@
 
 ## Overview
 Pure Flex Operator is now  the preferred install method for PSO on OpenShift 3.11 and higher versions. 
-The Pure Flex Operator packages and deploys the Pure Service Orchestrator (PSO) Flexvolume driver on OpenShift for dynamic provisioning of persistent volumes on FlashArrays and FlashBlades. The minimum supported version is OpenShift 3.11.
+The Pure Flex Operator packages and deploys the Pure Service Orchestrator (PSO) Flexvolume driver on OpenShift for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances. The minimum supported version is OpenShift 3.11.
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-k8s-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
 
@@ -20,7 +20,7 @@ Parameter list:<br/>
 2. ``namespace`` is the namespace/project in which the Pure Flex Operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``pso-operator`` namespace.
 **Pure Flex Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the Pure Flex operator.**
 3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``openshift`` is assumed.
-4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArrays and FlashBlades. All parameters that need a non-default value must be specified in this file. 
+4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
 Refer to [Configuration for values.yaml.](../pure-k8s-plugin/README.md#configuration)
 
 ### Install script steps:
