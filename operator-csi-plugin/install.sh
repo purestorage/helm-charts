@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v0.0.5
-NAMESPACE=pso-operator
-KUBECTL=oc
+IMAGE=quay.io/dinathom/my-pso-operator:csi-v1.0.0
+NAMESPACE=pure-csi-operator
+KUBECTL=kubectl
 
 usage()
 {
@@ -170,15 +170,6 @@ rules:
     verbs:
     - "create"
     - "delete"
-  - apiGroups:
-    - rbac.authorization.k8s.io
-    resources:
-    - clusterrolebindings
-    - clusterroles
-    resourceNames:
-    - "pure-provisioner-rights"
-    - "pure-provisioner-clusterrole"
-    verbs:
     - "get"
 # On Openshift ClusterRoleBindings belong to a different apiGroup.
   - apiGroups:
@@ -189,17 +180,6 @@ rules:
     verbs:
     - "create"
     - "delete"
-# PSO creates the "pure-provisioner-clusterrole" and "pure-provisioner-rights" and should be able
-# to get this by resource name
-  - apiGroups:
-    - authorization.openshift.io
-    resources:
-    - clusterrolebindings
-    - clusterroles
-    resourceNames:
-    - "pure-provisioner-rights"
-    - "pure-provisioner-clusterrole"
-    verbs:
     - "get"
 # Need the same permissions as pure-provisioner-clusterrole to be able to create it
   - apiGroups:
@@ -230,6 +210,7 @@ rules:
     - "get"
     - "list"
     - "watch"
+# Need the same permissions as external-provisioner-runner clusterrole to be able to create it
   - apiGroups:
     - ""
     resources:
@@ -239,6 +220,57 @@ rules:
     - "patch"
     - "update"
     - "watch"
+    - "list"
+    - "get"
+  - apiGroups:
+    - snapshot.storage.k8s.io
+    resources:
+    - "volumesnapshots"
+    verbs:
+    - "get"
+    - "list"
+  - apiGroups:
+    - snapshot.storage.k8s.io
+    resources:
+    - "volumesnapshotcontents"
+    verbs:
+    - "get"
+    - "list"
+  - apiGroups: 
+    - storage.k8s.io
+    resources: 
+    - "csinodes"
+    verbs: 
+    - "get"
+    - "list"
+    - "watch"
+  - apiGroups: 
+    - ""
+    resources:
+    - "nodes"
+    verbs:
+    - "get"
+    - "list"
+    - "watch"
+# Need the same permissions as driver-registrat-runner clusterrole to be able to create it. Only for K8s 1.13
+  - apiGroups: 
+    - "apiextensions.k8s.io"
+    resources: 
+    - "customresourcedefinitions"
+    verbs: 
+    - "*"
+  - apiGroups: 
+    - "csi.storage.k8s.io"
+    resources:
+    - "csidrivers"
+    verbs: 
+    - "*"
+  - apiGroups: 
+    - "storage.k8s.io"
+    resources:
+    - "csidrivers"
+    verbs: 
+    - "*"
 
 ---
 kind: ClusterRoleBinding
@@ -282,6 +314,7 @@ rules:
     resources:
     - deployments
     - daemonsets
+    - statefulsets
     verbs:
     - "*"
   - apiGroups:
