@@ -174,9 +174,9 @@ spec:
           - --health-port=9898
 
       volumes:
-        -  secret:
+        - secret:
             secretName: pure-provisioner-secret
-           name: config
+          name: config
         - hostPath:
             path: /dev
           name: dev
@@ -216,6 +216,7 @@ spec:
 {{ toYaml . | indent 8 }}
     {{- end }}
 {{- else -}}
+# Look at the flexDaemon nodeSelector values too because we may be using a flex-plugin values.yaml and we honor the old values.yaml
 {{- if .Values.flexDaemon -}}
     {{- with .Values.flexDaemon.nodeSelector | default .Values.nodeSelector }}
       nodeSelector:

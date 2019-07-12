@@ -18,7 +18,7 @@ Parameter list:<br/>
 1. ``image`` is the Pure CSI Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
 2. ``namespace`` is the namespace/project in which the Pure CSI Operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``pure-csi-operator`` namespace.
 **Pure CSI Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the Pure CSI Operator.**
-3. ``orchestrator`` defaults to ``k8s`` since ``openshift`` does not have CSI v1.0.0 support yet.
+3. ``orchestrator`` defaults to ``k8s`` 
 4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
 Refer to [Configuration for values.yaml.](../pure-csi-plugin/README.md#configuration)
 
