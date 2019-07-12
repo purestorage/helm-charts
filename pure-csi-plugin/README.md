@@ -7,6 +7,16 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
 Minimum Helm version required is 2.9.1
 Minimum version of CSI specification is v1.0.0
 
+## Additional configuration for K8s 1.13
+For details see the [CSI documentation](https://kubernetes-csi.github.io/docs/csi-driver-object.html). 
+In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable the use of a CSI driver on these versions, do the following:
+
+1. Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=CSIDriverRegistry=true```
+2. Either ensure the CSIDriver CRD is installed cluster with the following command:
+```
+$> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
+```
+
 ## How to install
 
 Add the Pure Storage helm repo
