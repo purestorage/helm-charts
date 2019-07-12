@@ -35,7 +35,7 @@ Create your own values.yaml and install the helm chart with it, and keep it. Eas
 the default [./values.yaml](./values.yaml)
 
 ### Configuration
-{{./values.yaml}} 
+{{@./values.yaml}} 
 The following table lists the configurable parameters and their default values.
 
 |             Parameter       |            Description             |                    Default                |
