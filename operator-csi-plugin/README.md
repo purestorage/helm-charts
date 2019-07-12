@@ -24,7 +24,7 @@ Refer to [Configuration for values.yaml.](../pure-csi-plugin/README.md#configura
 
 ### Install script steps:
 The install script will do the following:
-1. Create New Project<br/>
+1. Create New Project.<br/>
 The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pure-csi-operator`` namespace is used.<br/> 
 
 2. Create a Custom Resource Definition (CRD) for the Pure CSI Operator. <br/>
@@ -53,7 +53,8 @@ Finally the script creates and deploys the operator using the customized paramet
 
 ### How to upgrade from helm install to Pure CSI Operator
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
-Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release
+
+Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release.
 Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
 
 ### Apply changes in ``values.yaml``

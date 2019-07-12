@@ -86,26 +86,26 @@ arrays:
 
 ## Assigning Pods to Nodes
 
-It is possible to make flex-daemon and provisioner to run on specific nodes
+It is possible to make flex-daemon and provisioner run on specific nodes
 using `nodeSelector`, `toleration` and `affinity`. You can set these config
 separately for flex-daemon and provisioner (e.g. `flexDaemon.nodeSelector`).
 The unprefixed parameters have been deprecated but will still be used as a
 fallback if the prefixed parameters are not set. (e.g. if `nodeSelector` is
 set but `provisioner.nodeSelector` is not, provisioner will use the value of
-`nodeSelector` as a fallback) This makes sure the behaviour is backward
+`nodeSelector` as a fallback) This makes sure the behavior is backward
 compatible.
 
-## Install the plugin in a separate namespace(i.e. project)
+## Install the plugin in a separate namespace (i.e. project)
 For security reason, it's strongly recommended to install the plugin in a separate namespace/project. Make sure the namespace is existing, otherwise create it before installing the plugin.
 
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
-Dry run the installation, and make sure your values.yaml working correctly.
+Dry run the installation, and make sure your values.yaml is working correctly:
 ```
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
-Run the Install
+Run the Install:
 ```
 # For Openshift only:
 #   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
@@ -117,7 +117,7 @@ oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<cluste
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
-The value in your values.yaml will overwrite the one in pure-k8s-plugin/values.yaml, but any specified with the `--set`
+The values in your values.yaml overwrite the ones in pure-k8s-plugin/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
@@ -128,7 +128,7 @@ helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namesp
 
 ## How to update `arrays` info
 
-Update your values.yaml with the correct arrays info, and then upgrade the helm as below
+Update your values.yaml with the correct arrays info, and then upgrade the helm as below.
 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
@@ -139,8 +139,8 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f
 # Upgrading
 ## How to upgrade the driver version
 
-It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml, use the version of
-the helm repository with the tag version required. This will ensure the supporting changes are present in the templates.
+It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml. Use the version of
+the helm repository with the tag version required. This ensures the supporting changes are present in the templates.
 ```
 # list the avaiable version of the plugin
 helm repo update
@@ -154,10 +154,10 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f
 
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 
-1. Uninstall the legacy installation by following [the instructions](https://hub.docker.com/r/purestorage/k8s/)
-2. Reinstall via helm
-    a. Convert pure.json into arrays info in your values.yaml, (online tool: https://www.json2yaml.com/)
-3. Ensure either `flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter. 
+1. Uninstall the legacy installation by following [the instructions](https://hub.docker.com/r/purestorage/k8s/).
+2. Reinstall via helm<br/>
+    a. Convert pure.json into arrays info in your values.yaml (online tool: https://www.json2yaml.com/).
+3. Ensure `flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter.<br/> 
     a. How to find the full path of the directory for pure flex plugin (i.e. `volume-plugin-dir`) 
     ```
     # ssh to a node which has pure flex plugin installed, and check the default value of "volume-plugin-dir" from "kubelet --help"

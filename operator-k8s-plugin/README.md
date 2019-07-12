@@ -25,7 +25,7 @@ Refer to [Configuration for values.yaml.](../pure-k8s-plugin/README.md#configura
 
 ### Install script steps:
 The install script will do the following:
-1. Create New Project<br/>
+1. Create New Project.<br/>
 The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pso-operator`` namespace is used.<br/> 
 **OpenShift Note**: In OpenShift 3.11, the default node-selector for a project does not allow PSO Operator to mount volumes on master and infra nodes. 
 If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then modify the install script as follows.<br/>
@@ -60,7 +60,7 @@ Finally the script creates and deploys the operator using the customized paramet
 
 ### How to upgrade from helm install to Pure Flex Operator
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
-Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release
+Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release.
 Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
 
 ### Apply changes in ``values.yaml``
