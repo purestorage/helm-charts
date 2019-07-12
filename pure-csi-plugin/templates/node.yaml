@@ -34,7 +34,7 @@
 #                information (like podName, podUID, etc.) during mount operations.
 #              type: string
 #  version: v1alpha1
-#{{ end }}
+# {{ end }}
 ---
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "13") }}
 # For Kubernetes v1.13, this is not needed, because
