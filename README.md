@@ -12,6 +12,11 @@ Uniting all your Pure FlashArray™ and FlashBlade™ arrays on a single shared 
 **Transparent Recovery**<br/>
 To ensure your services stay robust, PSO self-heals – so you’re protected against data corruption caused by issues such as node failure, array performance limits, and low disk space.
 
+## Hardware Pre-Requisites
+PSO can be used with any of the following hardware appliances and associated minimum version of appliance code:
+  * Pure Storage FlashArray (minimum Purity code version 4.8)
+  * Pure Storage FlashBlade (minimum Purity version 2.2.0)
+
 ## Installation
 PSO can be deployed via an Operator or from the Helm chart.
 
