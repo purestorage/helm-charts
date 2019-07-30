@@ -58,7 +58,7 @@ metadata:
   name: pure-csi
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "pure_csi_plugin.labels" . | indent 4}}
+{{ include "pure_csi.labels" . | indent 4}}
 
 spec:
   updateStrategy:
@@ -74,7 +74,7 @@ spec:
     metadata:
       labels:
         app: pure-csi
-{{ include "pure_csi_plugin.labels" . | indent 8}}
+{{ include "pure_csi.labels" . | indent 8}}
     spec:
       hostNetwork: true
       hostPID: true

@@ -1,4 +1,4 @@
-# pure-csi-plugin
+# pure-csi
 
 This helm chart installs the CSI plugin on a Kubernetes cluster.
 
@@ -23,7 +23,7 @@ Add the Pure Storage helm repo
 ```
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
-helm search pure-csi-plugin
+helm search pure-csi
 ```
 
 Optional (offline installation): Download the helm chart
@@ -102,19 +102,19 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 
 Dry run the installation, and make sure your values.yaml is working correctly.
 ```
-helm install --name pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 ```
 # Install the plugin 
-helm install --name pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
+helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
-The values in your values.yaml overwrite the ones in pure-csi-plugin/values.yaml, but any specified with the `--set`
+The values in your values.yaml overwrite the ones in pure-csi/values.yaml, but any specified with the `--set`
 option will take precedence.
 ```
-helm install --name pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
 ```
@@ -126,7 +126,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
 ```
-helm upgrade pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
+helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
 # Upgrading
@@ -137,10 +137,10 @@ the helm repository with the tag version required. This ensures the supporting c
 ```
 # list the avaiable version of the plugin
 helm repo update
-helm search pure-csi-plugin -l
+helm search pure-csi -l
 
 # select a target chart version to upgrade as
-helm upgrade pure-storage-driver pure/pure-csi-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
+helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
 ```
 
 ## How to upgrade from the flexvolume to CSI

@@ -22,7 +22,7 @@ metadata:
   name: pure-provisioner
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "pure_csi_plugin.labels" . | indent 4}}
+{{ include "pure_csi.labels" . | indent 4}}
 
 spec:
   serviceName: "pure-provisioner"
@@ -34,7 +34,7 @@ spec:
     metadata:
       labels:
         app: pure-provisioner
-{{ include "pure_csi_plugin.labels" . | indent 8}}
+{{ include "pure_csi.labels" . | indent 8}}
     spec:
       serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       containers:
