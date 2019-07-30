@@ -28,7 +28,7 @@ For installation, see the [Flex Operator Documentation](./operator-k8s-plugin/RE
 
 ### Helm Chart
 **pure-k8s-plugin** deploys PSO Flexvolume plugin on your Kubernetes cluster. 
-**pure-csi-plugin** deploys PSO CSI plugin on your Kubernetes cluster. 
+**pure-csi** deploys PSO CSI plugin on your Kubernetes cluster. 
 
 #### Adding the `pure` repo
 

@@ -2,7 +2,7 @@
 
 ## Overview
 The Pure CSI Operator packages and deploys the Pure Service Orchestrator (PSO) CSI plugin on Kubernetes for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances. 
-This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-csi-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
+This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-csi Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
 
 ## Prerequisites
@@ -20,7 +20,7 @@ Parameter list:<br/>
 **Pure CSI Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the Pure CSI Operator.**
 3. ``orchestrator`` defaults to ``k8s`` 
 4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
-Refer to [Configuration for values.yaml.](../pure-csi-plugin/README.md#configuration)
+Refer to [Configuration for values.yaml.](../pure-csi/README.md#configuration)
 
 ### Install script steps:
 The install script will do the following:

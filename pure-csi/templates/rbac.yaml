@@ -23,7 +23,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: external-provisioner-runner
   labels:
-{{ include "pure_csi_plugin.labels" . | indent 4}}
+{{ include "pure_csi.labels" . | indent 4}}
 rules:
   # The following rule should be uncommented for plugins that require secrets
   # for provisioning.
@@ -61,7 +61,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: csi-provisioner-role
   labels:
-{{ include "pure_csi_plugin.labels" . | indent 4}}
+{{ include "pure_csi.labels" . | indent 4}}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.clusterrolebinding.serviceAccount.name }}
@@ -95,7 +95,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: driver-registrar-runner
   labels:
-{{ include "pure_csi_plugin.labels" . | indent 4}}
+{{ include "pure_csi.labels" . | indent 4}}
 rules:
   - apiGroups: [""]
     resources: ["events"]
@@ -123,7 +123,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: csi-driver-registrar-role
   labels:
-{{ include "pure_csi_plugin.labels" . | indent 4}}
+{{ include "pure_csi.labels" . | indent 4}}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.clusterrolebinding.serviceAccount.name }}
