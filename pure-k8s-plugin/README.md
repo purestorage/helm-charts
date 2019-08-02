@@ -1,11 +1,28 @@
 # pure-k8s-plugin
 
-This helm chart installs the flexvolume plugin on a Kubernetes cluster.
+This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
 
-## Version restrictions
+## Platform and Software Dependencies
+- #### Operating Systems Supported*:
+  - CentOS 7
+  - RHEL 7
+  - CoreOS (Ladybug 1298.6.0 and above)
+  - Ubuntu 16.04
+  - For Platform specific requirements see
+- #### Environments Supported*:
+  - Kubernetes 1.6+
+  - Minimum Helm version required is 2.9.1
+  - [OpenShift](#openshift) 3.6+
+- #### Other software dependencies:
+  - Latest linux multipath software package for your operating system (Required)
+  - Latest Filesystem utilities/drivers (XFS by default, Required)
+  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
+  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
+- #### FlashArray and FlashBlade:
+  - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
 
-Minimum Helm version required is 2.9.1
-Minimum version of K8S FlexVol driver required is 2.5.2
+_* Please see release notes for details_
 
 ## How to install
 
@@ -21,7 +38,7 @@ Optional (offline installation): Download the helm chart
 git clone https://github.com/purestorage/helm-charts.git
 ```
 
-Create your own values.yaml and install the helm chart with it, and keep it. Easiest way is to copy
+Create your own `values.yaml` and install the helm chart with it, and keep it. The easiest way is to copy
 the default [./values.yaml](./values.yaml)
 
 ### Configuration
@@ -31,7 +48,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `2.5.0`                                   |
+| `image.tag`                 | The image tag to pull              | `2.5.2`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
@@ -81,8 +98,7 @@ arrays:
       APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
       NfsEndPoint: "1.2.3.9"
       Labels:
-        rack: "6a"
-```
+        rack: "6a"```
 
 ## Assigning Pods to Nodes
 
@@ -101,9 +117,7 @@ For security reason, it's strongly recommended to install the plugin in a separa
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
 Dry run the installation, and make sure your values.yaml is working correctly:
-```
-helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
-```
+```helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug```
 
 Run the Install:
 ```
@@ -117,14 +131,12 @@ oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<cluste
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
-The values in your values.yaml overwrite the ones in pure-k8s-plugin/values.yaml, but any specified with the `--set`
+The values in your `values.yaml` overwrite the ones in `pure-k8s-plugin/values.yaml`, but any specified with the `--set`
 option will take precedence.
-```
-helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+```helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
-            --set orchestrator.name=openshift
-```
+            --set orchestrator.name=openshift```
 
 ## How to update `arrays` info
 
@@ -132,9 +144,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
-```
-helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
-```
+```helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...```
 
 # Upgrading
 ## How to upgrade the driver version
@@ -154,9 +164,9 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f
 
 This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 
-1. Uninstall the legacy installation by following [the instructions](https://hub.docker.com/r/purestorage/k8s/).
+1. Uninstall the legacy installation using the install script provided as `./install.sh --uninstall`.
 2. Reinstall via helm<br/>
-    a. Convert pure.json into arrays info in your values.yaml (online tool: https://www.json2yaml.com/).
+    a. Convert `pure.json` into the `arrays` info in your `values.yaml` (online tool: https://www.json2yaml.com/).
 3. Ensure `flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter.<br/> 
     a. How to find the full path of the directory for pure flex plugin (i.e. `volume-plugin-dir`) 
     ```
@@ -175,26 +185,6 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     root@k8s-test-openshift-0:~# find /etc/origin/kubelet-plugins/ -name "flex" | xargs dirname
     /etc/origin/kubelet-plugins/volume/exec/pure~flex
     ```
-
-## Platform and Software Dependencies
-- #### Operating Systems Supported*:
-  - CentOS 7
-  - CoreOS (Ladybug 1298.6.0 and above)
-  - RHEL 7
-  - Ubuntu 16.04
-- #### Environments Supported*:
-  - Kubernetes 1.6+
-  - OpenShift 3.6+
-- #### Other software dependencies:
-  - Latest linux multipath software package for your operating system (Required)
-  - Latest Filesystem utilities/drivers (XFS by default, Required)
-  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
-  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
-  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
-- #### FlashArray and FlashBlade:
-  - The FlashArray and/or FlashBlade should be connected to the compute nodes using Pure's best practices
-
-_* Please see release notes for details_
 
 ## Containerized Kubelet
 
@@ -226,14 +216,12 @@ To change the volume plugin directory a few steps are required:
 This allows for the `pure-flex` plugin to be installed in the new location
 on the filesystem, and for the kubelet to have access to the plugin.
 
-
-
 ## Platform Specific Considerations
 
 Some Kubernetes environments will require special configuration, especially
 on restrictive host operating systems where parts of it are mounted read-only.
 
-### CentOS/RHEL Atomic
+### Atomic
 Atomic is configured to have the `/usr` directory tree mounted
 as read-only. This will cause problems installing the `pure-flex` plugin
 as write permission is required.
