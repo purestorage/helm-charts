@@ -2,17 +2,41 @@
 
 ## Overview
 Pure Flex Operator is now the preferred install method for PSO on OpenShift 3.11 and higher versions. 
-The Pure Flex Operator packages and deploys the Pure Service Orchestrator (PSO) Flexvolume driver on OpenShift for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances. The minimum supported version is OpenShift 3.11.
+The Pure Flex Operator packages and deploys the Pure Service Orchestrator (PSO) Flexvolume driver on OpenShift for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances.
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-k8s-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
 
-## Prerequisites
-* OpenShift (3.11+) or Kubernetes (1.11+) cluster installed and running.
-* Access to a user account that has cluster-admin privileges.
+
+## Platform and Software Dependencies
+- #### Operating Systems Supported*:
+  - CentOS 7
+  - CoreOS (Ladybug 1298.6.0 and above)
+  - RHEL 7
+  - Ubuntu 16.04
+- #### Environments Supported*:
+  - Kubernetes 1.11+
+    - Access to a user account that has cluster-admin privileges.
+  - OpenShift 3.11+
+    - Access to a user account that has cluster-admin privileges.
+- #### Other software dependencies:
+  - Latest linux multipath software package for your operating system (Required)
+  - Latest Filesystem utilities/drivers (XFS by default, Required)
+  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
+  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
+- #### FlashArray and FlashBlade:
+  - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
+
+_* Please see release notes for details_
 
 ## Installation
 
-A single install script sets up the PSO-operator. <br/>
+Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version.</br>
+```git clone --branch <version> https://github.com/purestorage/helm-charts.git```
+
+Create your own `values.yaml`. The easiest way is to copy the default [./values.yaml](./values.yaml) with `wget`.
+
+Run the install script to set up the PSO-operator. <br/>
 ```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
 
 Parameter list:<br/>

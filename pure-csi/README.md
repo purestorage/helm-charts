@@ -2,12 +2,28 @@
 
 This helm chart installs the CSI plugin on a Kubernetes cluster.
 
-## Version restrictions
+## Platform and Software Dependencies
+- #### Operating Systems Supported*:
+  - CentOS 7
+  - CoreOS (Ladybug 1298.6.0 and above)
+  - RHEL 7
+  - Ubuntu 16.04
+- #### Environments Supported*:
+  - Kubernetes 1.13+
+  - Minimum Helm version required is 2.9.1.
+  - OpenShift 3.11
+- #### Other software dependencies:
+  - Latest linux multipath software package for your operating system (Required)
+  - Latest Filesystem utilities/drivers (XFS by default, Required)
+  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
+  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
+- #### FlashArray and FlashBlade:
+  - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
 
-Minimum Helm version required is 2.9.1.
-Minimum version of CSI specification is v1.0.0.
+_* Please see release notes for details_
 
-## Additional configuration for K8s 1.13
+## Additional configuration for Kuberenetes 1.13
 For details see the [CSI documentation](https://kubernetes-csi.github.io/docs/csi-driver-object.html). 
 In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable the use of a CSI driver on these versions, do the following:
 
@@ -146,26 +162,6 @@ helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_
 ## How to upgrade from the flexvolume to CSI
 
 Upgrade from flexvolume to CSI is not currently supported and is being considered for an upcoming release.
-
-## Platform and Software Dependencies
-- #### Operating Systems Supported*:
-  - CentOS 7
-  - CoreOS (Ladybug 1298.6.0 and above)
-  - RHEL 7
-  - Ubuntu 16.04
-- #### Environments Supported*:
-  - Kubernetes 1.13+
-- #### Other software dependencies:
-  - Latest linux multipath software package for your operating system (Required)
-  - Latest Filesystem utilities/drivers (XFS by default, Required)
-  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
-  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
-  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
-- #### FlashArray and FlashBlade:
-  - The FlashArray and/or FlashBlade should be connected to the compute nodes using Pure's best practices
-
-_* Please see release notes for details_
-
 
 # Release Notes
 Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)

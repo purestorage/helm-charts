@@ -5,13 +5,45 @@ The Pure CSI Operator packages and deploys the Pure Service Orchestrator (PSO) C
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-csi Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
 
-## Prerequisites
-* Kubernetes (1.13+) cluster installed and running with CSI-enabled. On K8s 1.13 CSI is still alpha and needs to be enabled using the feature-gate ```CSIDriverRegistry``` on kubelet and the control plane.
-* Access to a user account that has cluster-admin privileges.
+## Platform and Software Dependencies
+- #### Operating Systems Supported*:
+  - CentOS 7
+  - CoreOS (Ladybug 1298.6.0 and above)
+  - RHEL 7
+  - Ubuntu 16.04
+- #### Environments Supported*:
+  - Kubernetes 1.13+
+    - Access to a user account that has cluster-admin privileges.
+  - CSI specification v1.0.0
+- #### Other software dependencies:
+  - Latest linux multipath software package for your operating system (Required)
+  - Latest Filesystem utilities/drivers (XFS by default, Required)
+  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
+  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
+- #### FlashArray and FlashBlade:
+  - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
+
+_* Please see release notes for details_
+
+## Additional configuration for Kuberenetes 1.13
+For details see the [CSI documentation](https://kubernetes-csi.github.io/docs/csi-driver-object.html). 
+In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable the use of a CSI driver on these versions, do the following:
+
+1. Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=CSIDriverRegistry=true```
+2. Either ensure the CSIDriver CRD is installed cluster with the following command:
+```
+$> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
+```
 
 ## Installation
 
-A single install script sets up the Pure CSI Operator. <br/>
+Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version.</br>
+```git clone --branch <version> https://github.com/purestorage/helm-charts.git```
+
+Create your own `values.yaml`. The easiest way is to copy the default [./values.yaml](./values.yaml) with `wget`.
+
+Run the install script to set up the Pure CSI Operator. <br/>
 ```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
 
 Parameter list:<br/>

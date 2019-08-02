@@ -12,6 +12,25 @@ Uniting all your Pure FlashArray™ and FlashBlade™ arrays on a single shared 
 **Transparent Recovery**<br/>
 To ensure your services stay robust, PSO self-heals – so you’re protected against data corruption caused by issues such as node failure, array performance limits, and low disk space.
 
+## Software Pre-Requisites
+- #### Operating Systems Supported*:
+  - CentOS 7
+  - CoreOS (Ladybug 1298.6.0 and above)
+  - RHEL 7
+  - Ubuntu 16.04
+- #### Environments Supported*:
+  - Refer to the README for the type of PSO installation required
+- #### Other software dependencies:
+  - Latest linux multipath software package for your operating system (Required)
+  - Latest Filesystem utilities/drivers (XFS by default, Required)
+  - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
+  - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
+- #### FlashArray and FlashBlade:
+  - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
+
+_* Please see release notes for details_
+
 ## Hardware Pre-Requisites
 PSO can be used with any of the following hardware appliances and associated minimum version of appliance code:
   * Pure Storage FlashArray (minimum Purity code version 4.8)
@@ -20,22 +39,15 @@ PSO can be used with any of the following hardware appliances and associated min
 ## Installation
 PSO can be deployed via an Operator or from the Helm chart.
 
-### PSO Operators
-PSO has Operator-based install available for both its Flexvolume plugin and CSI plugin. This install method does not need Helm installation. 
+### PSO Operator
+PSO has Operator-based install available for both its FlexVolume plugin and CSI plugin. This install method does not need Helm installation. 
 The Pure Flex Operator is supported for OpenShift and Kubernetes.
 Pure Flex Operator is now the preferred installation method for FlexVolume on OpenShift version 3.11 and higher.<br/>
 For installation, see the [Flex Operator Documentation](./operator-k8s-plugin/README.md#overview) or the [CSI Operator Documentation](./operator-csi-plugin/README.md#overview)..
 
 ### Helm Chart
-**pure-k8s-plugin** deploys PSO Flexvolume plugin on your Kubernetes cluster. 
+**pure-k8s-plugin** deploys PSO FlexVolume plugin on your Kubernetes cluster.</br> 
 **pure-csi** deploys PSO CSI plugin on your Kubernetes cluster. 
-
-#### Adding the `pure` repo
-
-```bash
-helm repo add pure https://purestorage.github.io/helm-charts
-helm repo update
-```
 
 #### Helm Setup
 Install Helm by following the official documents:
@@ -58,6 +70,8 @@ oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:${TIL
 ```
 
 For more details, please see https://docs.helm.sh/using_helm/
+
+Refer to the [k8s-plugin README](./pure-k8s-plugin/README.md) or the [csi-plugin README](./pure-csi/README.md) for further installation steps.
 
 ## Contributing
 We welcome contributions. The PSO Helm Charts project is under [Apache 2.0 license](https://github.com/purestorage/helm-charts/blob/master/LICENSE). We accept contributions via GitHub pull requests.
