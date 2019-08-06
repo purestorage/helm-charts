@@ -1,0 +1,112 @@
+# Default values for csi-plugin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  name: purestorage/k8s
+  tag: 5.0.0
+  pullPolicy: IfNotPresent
+
+# this option is to enable/disable the debug mode of this app
+# for pure-csi-driver
+app:
+  debug: false
+
+# do you want to set pure as the default storageclass?
+storageclass:
+  isPureDefault: false
+  # set the type of backend you want for the 'pure' storageclass
+  # pureBackend: file
+
+# specify the service account name for this app
+clusterrolebinding:
+  serviceAccount:
+    name: pure
+
+# support ISCSI or FC, not case sensitive
+flasharray:
+  sanType: ISCSI
+  defaultFSType: xfs
+  defaultFSOpt: "-q"
+  defaultMountOpt: ""
+  preemptAttachments: "true"
+  iSCSILoginTimeout: 20
+
+flashblade:
+  snapshotDirectoryEnabled: "false"
+
+# there are two namespaces for this app
+# 1. namespace.pure is the backend storage namespace where volumes/shares/etc
+#    will be created.
+namespace:
+  pure: k8s
+
+# support k8s or openshift
+orchestrator:
+  # name is either 'k8s' or 'openshift'
+  name: k8s
+
+# arrays specify what storage arrays should be managed by the plugin, this is
+# required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
+# and "APIToken", and for FlashBlades you need the additional "NfsEndPoint" parameter.
+# The labels are optional, and can be any key-value pair for use with the "fleet"
+# provisioner. An example is shown below:
+arrays:
+  #FlashArrays:
+  #  - MgmtEndPoint: "1.2.3.4"
+  #    APIToken: "a526a4c6-18b0-a8c9-1afa-3499293574bb"
+  #    Labels:
+  #      rack: "22"
+  #      env: "prod"
+  #  - MgmtEndPoint: "1.2.3.5"
+  #    APIToken: "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+  #FlashBlades:
+  #  - MgmtEndPoint: "1.2.3.6"
+  #    APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
+  #    NfsEndPoint: "1.2.3.7"
+  #    Labels:
+  #      rack: "7b"
+  #      env: "dev"
+  #  - MgmtEndPoint: "1.2.3.8"
+  #    APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
+  #    NfsEndPoint: "1.2.3.9"
+  #    Labels:
+  #      rack: "6a"
+
+mounter:
+  # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
+  nodeSelector: {}
+    # disktype: ssd
+  # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
+  tolerations: []
+    # - operator: Exists
+  # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
+  affinity: {}
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: e2e-az-NorthSouth
+    #         operator: In
+    #         values:
+    #         - e2e-az-North
+    #         - e2e-az-South
+
+provisioner:
+  # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+  nodeSelector: {}
+    # disktype: ssd
+  # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+  tolerations: []
+    # - operator: Exists
+  # These values map directly to yaml in the deployment spec, see the kubernetes docs for info
+  affinity: {}
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: e2e-az-NorthSouth
+    #         operator: In
+    #         values:
+    #         - e2e-az-North
+    #         - e2e-az-South
