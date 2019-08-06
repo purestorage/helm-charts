@@ -32,7 +32,10 @@ _* Please see release notes for details_
 ## Installation
 
 Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version.</br>
-```git clone --branch <version> https://github.com/purestorage/helm-charts.git```
+```
+git clone --branch <version> https://github.com/purestorage/helm-charts.git
+cd operator-k8s-plugin
+```
 
 Create your own `values.yaml`. The easiest way is to copy the default [./values.yaml](./values.yaml) with `wget`.
 
@@ -43,7 +46,7 @@ Parameter list:<br/>
 1. ``image`` is the Pure Flex Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
 2. ``namespace`` is the namespace/project in which the Pure Flex Operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``pso-operator`` namespace.
 **Pure Flex Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the Pure Flex operator.**
-3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``openshift`` is assumed.
+3. ``orchestrator`` should be either ``k8s`` or ``openshift`` depending on which orchestrator is being used. If unspecified, ``k8s`` is assumed.
 4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
 Refer to [Configuration for values.yaml.](../pure-k8s-plugin/README.md#configuration)
 
@@ -94,8 +97,22 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 ```
 
 ## Uninstall
-To uninstall the Pure Flex Operator, run 
+To uninstall the Pure CSI Operator, run
 ```
-oc delete all --all -n <pso-operator-installed-namespace>
+kubectl delete all --all -n <pure-csi-operator-installed-namespace>
 ```
-where ``pso-operator-installed-namespace`` is the project/namespace in which the Pure Flex operator is installed. It is **strongly recommended** to install the Pure Flex Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
+where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
+
+If you are using OpenShift, replace `kubectl` with `oc`.
+To completely remove the CustomResourceDefinition used by the Operator run
+```
+kubectl delete crd psoplugins.purestorage.com
+```
+If the CRD fails to delete you may be experiencing a known issue. Resolve this by running:
+```
+kubectl patch crd/psoplugins.purestorage.com -p '{"metadata":{"finalizers":[]}}' --type=merge
+```
+If you are using OpenShift, replace `kubectl` with `oc` in the above commands.
+
+# License
+https://www.purestorage.com/content/dam/purestorage/pdf/legal/pure-plugin-end-user-license-agmt-sept-18-2017.pdf

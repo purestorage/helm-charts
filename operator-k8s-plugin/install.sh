@@ -2,15 +2,16 @@
 IMAGE=quay.io/purestorage/pso-operator:v0.0.5
 NAMESPACE=pso-operator
 KUBECTL=oc
+ORCHESTRATOR=k8s
 
 usage()
 {
     echo "Usage : $0 --image=<imagename> --namespace=<namespace> --orchestrator=<orchestrator> -f <values.yaml>"
-    exit
 }
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     usage
+    exit
 fi
 
 while (("$#")); do
@@ -53,8 +54,8 @@ case "$1" in
 done
 
 if [[ -z ${VALUESFILE} || ! -f ${VALUESFILE} ]]; then
+    echo "File ${VALUESFILE} does not exist"
     usage
-    echo "File ${VALUESFILE} for values.yaml does not exist"
     exit 1
 fi
 

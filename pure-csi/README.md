@@ -23,7 +23,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
 
 _* Please see release notes for details_
 
-## Additional configuration for Kuberenetes 1.13
+## Additional configuration for Kubernetes 1.13 Only
 For details see the [CSI documentation](https://kubernetes-csi.github.io/docs/csi-driver-object.html). 
 In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable the use of a CSI driver on these versions, do the following:
 
