@@ -98,7 +98,8 @@ arrays:
       APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
       NfsEndPoint: "1.2.3.9"
       Labels:
-        rack: "6a"```
+        rack: "6a"
+```
 
 ## Assigning Pods to Nodes
 
@@ -117,9 +118,11 @@ For security reason, it's strongly recommended to install the plugin in a separa
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
 Dry run the installation, and make sure your values.yaml is working correctly:
-```helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug```
+```
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+```
 
-Run the Install:
+**Run the Install:**
 ```
 # For Openshift only:
 #   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
@@ -133,10 +136,12 @@ helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namesp
 
 The values in your `values.yaml` overwrite the ones in `pure-k8s-plugin/values.yaml`, but any specified with the `--set`
 option will take precedence.
-```helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+```
+helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
-            --set orchestrator.name=openshift```
+            --set orchestrator.name=openshift
+```
 
 ## How to update `arrays` info
 
@@ -144,7 +149,13 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
-```helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...```
+```
+helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
+```
+
+# Using Snapshots with a FlashArray
+
+More details on using the snapshot functionality can be found [here](../docs/flex-snapshot-for-flasharray.md)
 
 # Upgrading
 ## How to upgrade the driver version
