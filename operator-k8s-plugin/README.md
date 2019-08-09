@@ -96,12 +96,16 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 ./update.sh -f values.yaml
 ```
 
+## Using Snapshots with a FlashArray
+
+More details on using the snapshot functionality can be found [here](../docs/flex-snapshot-for-flasharray.md)
+
 ## Uninstall
-To uninstall the Pure CSI Operator, run
+To uninstall the Pure FlexVolume Operator, run
 ```
-kubectl delete all --all -n <pure-csi-operator-installed-namespace>
+kubectl delete all --all -n <pure-k8s-operator-installed-namespace>
 ```
-where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
+where ``pure-k8s-operator-installed-namespace`` is the project/namespace in which the Pure FlexVolume Operator is installed. It is **strongly recommended** to install the Pure FlexVolume Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
 
 If you are using OpenShift, replace `kubectl` with `oc`.
 To completely remove the CustomResourceDefinition used by the Operator run
