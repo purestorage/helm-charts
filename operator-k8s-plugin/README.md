@@ -100,6 +100,10 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 
 More details on using the snapshot functionality can be found [here](../docs/flex-snapshot-for-flasharray.md)
 
+# Using Labels to control volume topology
+
+More details on using configuration labels can be found [here](../docs/flex-volume-using-labels.md)
+
 ## Uninstall
 To uninstall the Pure FlexVolume Operator, run
 ```
