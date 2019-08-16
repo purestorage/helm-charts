@@ -157,6 +157,10 @@ helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f
 
 More details on using the snapshot functionality can be found [here](../docs/flex-snapshot-for-flasharray.md)
 
+# Using Labels to control volume topology
+
+More details on using configuration labels can be found [here](../docs/flex-volume-using-labels.md)
+
 # Upgrading
 ## How to upgrade the driver version
 
