@@ -80,10 +80,10 @@ spec:
       hostPID: true
       containers:
         - name: node-driver-registrar
-          {{- with .Values.csi.nodeDriverRegistrar }}
+          {{- with .Values.csi.nodeDriverRegistrar.image }}
           image: "{{ .name }}:{{ .tag }}"
           imagePullPolicy: {{ .pullPolicy }}
-          {{-end }}
+          {{- end }}
           lifecycle:
             preStop:
               exec:
@@ -178,10 +178,10 @@ spec:
           volumeMounts:
           - mountPath: /csi
             name: socket-dir
-          {{- with .Values.csi.livenessProbe }}
+          {{- with .Values.csi.livenessProbe.image }}
           image: "{{ .name }}:{{ .tag }}"
           imagePullPolicy: {{ .pullPolicy }}
-          {{-end }}
+          {{- end }}
           args:
           - --csi-address=/csi/csi.sock
           - --connection-timeout=3s
