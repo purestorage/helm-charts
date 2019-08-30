@@ -68,14 +68,28 @@ spec:
 
         # This is the external provisioner sidecar
         - name: csi-provisioner
+{{- if eq .Values.featuregate.VolumePVCDataSource true}}
+          image: quay.io/k8scsi/csi-provisioner:v1.4.0-rc1
+{{ else }}
           image: quay.io/k8scsi/csi-provisioner:v1.1.0
+{{- end }}
           args:
             - --csi-address=/csi/csi.sock
             - --connection-timeout=15s
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-
+{{ if eq .Values.featuregate.VolumeSnapshotDataSource true}}
+        - name: csi-snapshotter
+          image: quay.io/k8scsi/csi-snapshotter:v1.1.0
+          args:
+            - "--csi-address=/csi/csi.sock"
+            - "--connection-timeout=15s"
+            - "--leader-election=false"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+{{ end }}
 # This is the cluster-driver-registrar sidecar that allows helm-install without CRD-hooks for the CSIDriver CRD
 # The reason we do not want a crd-hook with helm-chart is to avoid upgrade issues like: https://github.com/helm/helm/issues/4489
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}

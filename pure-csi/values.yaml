@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 5.0.0
+  tag: 5.0.1
   pullPolicy: IfNotPresent
 
 # this option is to enable/disable the debug mode of this app
@@ -22,6 +22,11 @@ storageclass:
 clusterrolebinding:
   serviceAccount:
     name: pure
+
+# specify the feature gates
+featuregate:
+  VolumePVCDataSource: false # This feature enable clone or snapshot via PVC, please make sure you have kubernetes 1.15+ environment.
+  VolumeSnapshotDataSource: false # This feature need kebernetes 1.14+ environment, it will install the csi-snapshotter image.
 
 # support ISCSI or FC, not case sensitive
 flasharray:
