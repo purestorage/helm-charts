@@ -92,7 +92,8 @@ supplementalGroups:
     if [[ -z ${SVC_ACCNT} ]]; then
         SVC_ACCNT=pure
     fi
-    $KUBECTL adm policy add-scc-to-user hostpath -n ${NAMESPACE} -z ${SVC_ACCNT} 
+    $KUBECTL adm policy add-scc-to-user hostpath -n ${NAMESPACE} -z ${SVC_ACCNT}
+    $KUBECTL adm policy add-scc-to-user privileged -n ${NAMESPACE} -z ${SVC_ACCNT}
 fi
 
 # 2. Create CRD and wait until TIMEOUT seconds for the CRD to be established.
