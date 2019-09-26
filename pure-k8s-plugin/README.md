@@ -8,6 +8,7 @@ This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
   - RHEL 7
   - CoreOS (Ladybug 1298.6.0 and above)
   - Ubuntu 16.04
+  - Ubuntu 18.04
   - For Platform specific requirements see
 - #### Environments Supported*:
   - Kubernetes 1.6+

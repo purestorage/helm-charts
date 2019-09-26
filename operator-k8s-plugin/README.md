@@ -13,6 +13,7 @@ This installation process does not require Helm installation.
   - CoreOS (Ladybug 1298.6.0 and above)
   - RHEL 7
   - Ubuntu 16.04
+  - Ubuntu 18.04
 - #### Environments Supported*:
   - Kubernetes 1.11+
     - Access to a user account that has cluster-admin privileges.

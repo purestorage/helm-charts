@@ -8,6 +8,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - CoreOS (Ladybug 1298.6.0 and above)
   - RHEL 7
   - Ubuntu 16.04
+  - Ubuntu 18.04
 - #### Environments Supported*:
   - Kubernetes 1.13+
   - Minimum Helm version required is 2.9.1.
