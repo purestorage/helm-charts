@@ -18,6 +18,7 @@ To ensure your services stay robust, PSO self-heals – so you’re protected ag
   - CoreOS (Ladybug 1298.6.0 and above)
   - RHEL 7
   - Ubuntu 16.04
+  - Ubuntu 18.04
 - #### Environments Supported*:
   - Refer to the README for the type of PSO installation required
 - #### Other software dependencies:
