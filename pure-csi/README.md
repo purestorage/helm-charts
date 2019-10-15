@@ -80,16 +80,12 @@ The following table lists the configurable parameters and their default values.
 | `provisioner.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
 | `provisioner.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
 | `csi.provisioner.image.name` | The image name of the csi-provisioner | `quay.io/k8scsi/csi-provisioner` |
-| `csi.provisioner.image.tag`  | The image tag of the csi-provisioner | `v1.1.0` |
 | `csi.provisioner.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `csi.clusterDriverRegistrar.image.name` | The image name of the csi-cluster-driver-registrar | `quay.io/k8scsi/csi-cluster-driver-registrar` |
-| `csi.clusterDriverRegistrar.image.tag`  | The image tag of the csi-cluster-driver-registrar | `v1.0.1` |
 | `csi.clusterDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `csi.nodeDriverRegistrar.image.name` | The image name of the csi-node-driver-registrar | `quay.io/k8scsi/csi-node-driver-registrar` |
-| `csi.nodeDriverRegistrar.image.tag`  | The image tag of the csi-node-driver-registrar | `v1.1.0` |
 | `csi.nodeDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `csi.livenessProbe.image.name` | The image name of the csi livenessprobe | `quay.io/k8scsi/livenessprobe` |
-| `csi.livenessProbe.image.tag`  | The image tag of the csi livenessprobe | `v1.1.0` |
 | `csi.livenessProbe.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 
 *Examples:

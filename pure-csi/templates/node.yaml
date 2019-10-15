@@ -81,7 +81,7 @@ spec:
       containers:
         - name: node-driver-registrar
           {{- with .Values.csi.nodeDriverRegistrar.image }}
-          image: "{{ .name }}:{{ .tag }}"
+          image: "{{ .name }}:v1.1.0"
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           lifecycle:
@@ -179,7 +179,7 @@ spec:
           - mountPath: /csi
             name: socket-dir
           {{- with .Values.csi.livenessProbe.image }}
-          image: "{{ .name }}:{{ .tag }}"
+          image: "{{ .name }}:v1.1.0"
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:

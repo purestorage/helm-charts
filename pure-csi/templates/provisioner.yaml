@@ -69,7 +69,7 @@ spec:
         # This is the external provisioner sidecar
         - name: csi-provisioner
           {{- with .Values.csi.provisioner.image }}
-          image: "{{ .name }}:{{ .tag }}"
+          image: "{{ .name }}:v1.1.0"
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
@@ -84,7 +84,7 @@ spec:
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
         - name: cluster-driver-registrar
           {{- with .Values.csi.clusterDriverRegistrar.image }}
-          image: "{{ .name }}:{{ .tag }}"
+          image: "{{ .name }}:v1.0.1"
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:

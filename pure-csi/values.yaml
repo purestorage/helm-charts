@@ -11,22 +11,18 @@ csi:
   provisioner:
     image:
       name: quay.io/k8scsi/csi-provisioner
-      tag: v1.1.0
       pullPolicy: IfNotPresent
   clusterDriverRegistrar:
     image:
       name: quay.io/k8scsi/csi-cluster-driver-registrar
-      tag: v1.0.1
       pullPolicy: IfNotPresent
   nodeDriverRegistrar:
     image:
       name: quay.io/k8scsi/csi-node-driver-registrar
-      tag: v1.1.0
       pullPolicy: IfNotPresent
   livenessProbe:
     image:
       name: quay.io/k8scsi/livenessprobe
-      tag: v1.1.0
       pullPolicy: IfNotPresent
 
 
