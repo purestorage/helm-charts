@@ -80,6 +80,14 @@ The following table lists the configurable parameters and their default values.
 | `provisioner.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule provisioner. | `{}` |
 | `provisioner.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
 | `provisioner.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
+| `csi.provisioner.image.name` | The image name of the csi-provisioner | `quay.io/k8scsi/csi-provisioner` |
+| `csi.provisioner.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.clusterDriverRegistrar.image.name` | The image name of the csi-cluster-driver-registrar | `quay.io/k8scsi/csi-cluster-driver-registrar` |
+| `csi.clusterDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.nodeDriverRegistrar.image.name` | The image name of the csi-node-driver-registrar | `quay.io/k8scsi/csi-node-driver-registrar` |
+| `csi.nodeDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.livenessProbe.image.name` | The image name of the csi livenessprobe | `quay.io/k8scsi/livenessprobe` |
+| `csi.livenessProbe.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 
 *Examples:
 ```yaml

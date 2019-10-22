@@ -68,7 +68,10 @@ spec:
 
         # This is the external provisioner sidecar
         - name: csi-provisioner
-          image: quay.io/k8scsi/csi-provisioner:v1.1.0
+          {{- with .Values.csi.provisioner.image }}
+          image: "{{ .name }}:v1.1.0"
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
           args:
             - --csi-address=/csi/csi.sock
             - --connection-timeout=15s
@@ -80,7 +83,10 @@ spec:
 # The reason we do not want a crd-hook with helm-chart is to avoid upgrade issues like: https://github.com/helm/helm/issues/4489
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
         - name: cluster-driver-registrar
-          image: quay.io/k8scsi/csi-cluster-driver-registrar:v1.0.1
+          {{- with .Values.csi.clusterDriverRegistrar.image }}
+          image: "{{ .name }}:v1.0.1"
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
           args:
             - "--csi-address=/csi/csi.sock"
             - "--driver-requires-attachment=false"
