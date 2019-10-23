@@ -33,6 +33,10 @@ In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable 
 ```
 $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
 ```
+## CSI Snapshot and Clone features for Kubernetes
+For details see the [CSI volume snapshot](https://kubernetes-csi.github.io/docs/snapshot-restore-feature.html) and [CSI volume clone](https://kubernetes-csi.github.io/docs/volume-cloning.html).
+1. For snapshot feature, ensure you have Kubernetes 1.13+, the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumeSnapshotDataSource=true```
+2. For clone feature, ensure you have Kubernetes 1.15+, Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumePVCDataSource=true```
 
 ## How to install
 
