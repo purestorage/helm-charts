@@ -12,6 +12,10 @@ csi:
     image:
       name: quay.io/k8scsi/csi-provisioner
       pullPolicy: IfNotPresent
+  snapshotter:
+    image:
+      name: quay.io/k8scsi/csi-snapshotter
+      pullPolicy: IfNotPresent
   clusterDriverRegistrar:
     image:
       name: quay.io/k8scsi/csi-cluster-driver-registrar

@@ -69,7 +69,7 @@ spec:
         # This is the external provisioner sidecar
         - name: csi-provisioner
           {{- with .Values.csi.provisioner.image }}
-          image: "{{ .name }}:v1.1.0"
+          image: "{{ .name }}:v1.4.0-rc1"
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
@@ -78,7 +78,17 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-
+        - name: csi-snapshotter
+          {{- with .Values.csi.snapshotter.image }}
+          image: "{{ .name }}:v1.1.0"
+          {{- end }}
+          args:
+            - "--csi-address=/csi/csi.sock"
+            - "--connection-timeout=15s"
+            - "--leader-election=false"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
 # This is the cluster-driver-registrar sidecar that allows helm-install without CRD-hooks for the CSIDriver CRD
 # The reason we do not want a crd-hook with helm-chart is to avoid upgrade issues like: https://github.com/helm/helm/issues/4489
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
