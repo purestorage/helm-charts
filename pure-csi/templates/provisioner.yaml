@@ -69,7 +69,7 @@ spec:
         # This is the external provisioner sidecar
         - name: csi-provisioner
           {{- with .Values.csi.provisioner.image }}
-          image: "{{ .name }}:v1.4.0-rc1"
+          image: "{{ .name }}:v1.4.0"
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
