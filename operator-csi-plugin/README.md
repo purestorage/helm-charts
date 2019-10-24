@@ -37,6 +37,11 @@ In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable 
 $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
 ```
 
+## CSI Snapshot and Clone features for Kubernetes
+CSI Operator v5.0.2 starts to support CSI 1.0 Snapshot and Clone features. For details see the [CSI volume snapshot](https://kubernetes-csi.github.io/docs/snapshot-restore-feature.html) and [CSI volume clone](https://kubernetes-csi.github.io/docs/volume-cloning.html).
+1. For snapshot feature, ensure you have Kubernetes 1.13+; ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumeSnapshotDataSource=true```
+2. For clone feature, ensure you have Kubernetes 1.15+; ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumePVCDataSource=true```
+
 ## Installation
 
 Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version. Information on this can be found [here](https://github.com/purestorage/helm-charts/releases)</br>
