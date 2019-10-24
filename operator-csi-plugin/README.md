@@ -47,6 +47,12 @@ cd operator-csi-plugin
 
 Create your own `values.yaml`. The easiest way is to copy the default [./values.yaml](./values.yaml) with `wget`.
 
+For OpenShift 4.x the pso-operator needs to be run with a privileged SCC. The pso-operator uses the default user. To add the SCC to the default user:
+```
+oc adm policy add-scc-to-user privileged -z default -n pure-csi-operator
+```
+The pure-csi-operator namespace/project is created by the install script (see below).
+
 Run the install script to set up the Pure CSI Operator. <br/>
 ```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
 
