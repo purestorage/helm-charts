@@ -230,13 +230,33 @@ rules:
     verbs:
     - "get"
     - "list"
+    - "watch"
+    - "update"
+  - apiGroups:
+    - snapshot.storage.k8s.io
+    resources:
+    - "volumesnapshots/status"
+    verbs:
+    - "update"
   - apiGroups:
     - snapshot.storage.k8s.io
     resources:
     - "volumesnapshotcontents"
     verbs:
+    - "create"
     - "get"
     - "list"
+    - "watch"
+    - "update"
+    - "delete"
+  - apiGroups:
+    - snapshot.storage.k8s.io
+    resources:
+    - "volumesnapshotclasses"
+    verbs:
+    - "get"
+    - "list"
+    - "watch"
   - apiGroups: 
     - storage.k8s.io
     resources: 
