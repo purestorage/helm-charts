@@ -124,4 +124,4 @@ kubectl patch crd/psoplugins.purestorage.com -p '{"metadata":{"finalizers":[]}}'
 If you are using OpenShift, replace `kubectl` with `oc` in the above commands.
 
 # License
-https://www.purestorage.com/content/dam/purestorage/pdf/legal/pure-plugin-end-user-license-agmt-sept-18-2017.pdf
+https://www.purestorage.com/content/dam/pdf/en/legal/pure-storage-plugin-end-user-license-agreement.pdf
