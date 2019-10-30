@@ -81,6 +81,7 @@ spec:
         - name: csi-snapshotter
           {{- with .Values.csi.snapshotter.image }}
           image: "{{ .name }}:v1.1.0"
+          imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
             - "--csi-address=/csi/csi.sock"
