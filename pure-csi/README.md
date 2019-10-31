@@ -92,6 +92,8 @@ The following table lists the configurable parameters and their default values.
 | `csi.nodeDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `csi.livenessProbe.image.name` | The image name of the csi livenessprobe | `quay.io/k8scsi/livenessprobe` |
 | `csi.livenessProbe.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.snapshotter.image.name` | The image name of the csi snapshotter | `quay.io/k8scsi/csi-snapshotter` |
+| `csi.snapshotter.image.pullPolicy` | Image pull policy | `IfNotPresent` |
 
 *Examples:
 ```yaml
