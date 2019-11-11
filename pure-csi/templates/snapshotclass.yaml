@@ -1,0 +1,11 @@
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshotClass
+metadata:
+  name: pure-snapshot
+  annotations:
+  snapshot.storage.kubernetes.io/is-default-class: "true"
+  labels:
+{{ include "pure_csi.labels" . | indent 4}}
+snapshotter: pure-csi
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
