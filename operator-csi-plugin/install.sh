@@ -254,8 +254,6 @@ rules:
     resources:
     - "volumesnapshotclasses"
     verbs:
-    - "create"
-    - "delete"
     - "get"
     - "list"
     - "watch"
