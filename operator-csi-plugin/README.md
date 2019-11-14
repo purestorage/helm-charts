@@ -13,6 +13,7 @@ This installation process does not require Helm installation.
   - Ubuntu 16.04
   - Ubuntu 18.04
 - #### Environments Supported*:
+  - AWS EKS 1.14
   - Kubernetes 1.13+
     - Access to a user account that has cluster-admin privileges.
   - CSI specification v1.0.0
@@ -41,6 +42,8 @@ $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master
 CSI Operator v5.0.2 starts to support CSI 1.0 Snapshot and Clone features. For details see the [CSI volume snapshot](https://kubernetes-csi.github.io/docs/snapshot-restore-feature.html) and [CSI volume clone](https://kubernetes-csi.github.io/docs/volume-cloning.html).
 1. For snapshot feature, ensure you have Kubernetes 1.13+; ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumeSnapshotDataSource=true```
 2. For clone feature, ensure you have Kubernetes 1.15+; ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumePVCDataSource=true```
+
+*Note:* It is not currently possible to open feature gates in [AWS EKS](https://github.com/aws/containers-roadmap/issues/512), therefore these features are not available on EKS
 
 ## Installation
 
