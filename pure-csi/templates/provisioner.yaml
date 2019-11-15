@@ -69,7 +69,7 @@ spec:
         # This is the external provisioner sidecar
         - name: csi-provisioner
           {{- with .Values.csi.provisioner.image }}
-          image: "{{ .name }}:v1.4.0"
+          image: {{ .name | default "quay.io/k8scsi/csi-provisioner" }}:v1.4.0
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
@@ -80,7 +80,7 @@ spec:
               mountPath: /csi
         - name: csi-snapshotter
           {{- with .Values.csi.snapshotter.image }}
-          image: "{{ .name }}:v1.1.0"
+          image: {{ .name | default "quay.io/k8scsi/csi-snapshotter" }}:v1.2.2
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
@@ -95,7 +95,7 @@ spec:
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
         - name: cluster-driver-registrar
           {{- with .Values.csi.clusterDriverRegistrar.image }}
-          image: "{{ .name }}:v1.0.1"
+          image: {{ .name | default "quay.io/k8scsi/csi-cluster-driver-registrar" }}:v1.0.1
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
