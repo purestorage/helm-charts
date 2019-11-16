@@ -113,6 +113,7 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 ## Uninstall
 To uninstall the Pure CSI Operator, run 
 ```
+kubectl delete PSOPlugin/psoplugin-operator
 kubectl delete all --all -n <pure-csi-operator-installed-namespace>
 ```
 where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
@@ -121,10 +122,6 @@ If you are using OpenShift, replace `kubectl` with `oc`.
 To completely remove the CustomResourceDefinition used by the Operator run
 ```
 kubectl delete crd psoplugins.purestorage.com
-```
-If the CRD fails to delete you may be experiencing a known issue. Resolve this by running:
-```
-kubectl patch crd/psoplugins.purestorage.com -p '{"metadata":{"finalizers":[]}}' --type=merge
 ```
 If you are using OpenShift, replace `kubectl` with `oc` in the above commands.
 
