@@ -108,7 +108,7 @@ More details on using configuration labels can be found [here](../docs/flex-volu
 ## Uninstall
 To uninstall the Pure FlexVolume Operator, run
 ```
-kubectl delete PSOPlugin/psoplugin-operator
+kubectl delete PSOPlugin/psoplugin-operator -n <pure-k8s-operator-installed-namespace>
 kubectl delete all --all -n <pure-k8s-operator-installed-namespace>
 ```
 where ``pure-k8s-operator-installed-namespace`` is the project/namespace in which the Pure FlexVolume Operator is installed. It is **strongly recommended** to install the Pure FlexVolume Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
