@@ -113,7 +113,7 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 ## Uninstall
 To uninstall the Pure CSI Operator, run 
 ```
-kubectl delete PSOPlugin/psoplugin-operator
+kubectl delete PSOPlugin/psoplugin-operator -n <pure-csi-operator-installed-namespace>
 kubectl delete all --all -n <pure-csi-operator-installed-namespace>
 ```
 where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
