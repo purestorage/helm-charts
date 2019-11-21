@@ -422,3 +422,23 @@ metadata:
 spec:
   # Add fields here' | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|"; sed 's/.*/  &/' ${VALUESFILE}) | ${KUBECTL_NS} -
 
+counter=0
+TIMEOUT=30
+
+while true; do
+   result=$(${KUBECTL} get crd/volumesnapshotclasses.snapshot.storage.k8s.io -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' --ignore-not-found | grep -i true)
+  if [ $? -eq 0 ]; then
+     break
+  fi
+  counter=$(($counter+1))
+  if [ $counter -gt $TIMEOUT ]; then
+     break
+  fi
+  sleep 1
+done
+
+if [ $counter -gt $TIMEOUT ]; then
+   echo "VolumeSnapshotClasss CRD not found!"
+else
+    $KUBECTL apply -f ../pure-csi/snapshotclass.yaml
+fi
