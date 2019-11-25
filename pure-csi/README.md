@@ -150,6 +150,24 @@ helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f
             --set namespace.pure=k8s_xxx \
 ```
 
+## Install the VolumeSnapshotClass
+Make sure you have related CRDs in your system before installing it:
+```
+kubectl get crds
+```
+You should see CRDs like this:
+```
+NAME                                             CREATED AT
+volumesnapshotclasses.snapshot.storage.k8s.io    2019-11-21T17:25:23Z
+volumesnapshotcontents.snapshot.storage.k8s.io   2019-11-21T17:25:23Z
+volumesnapshots.snapshot.storage.k8s.io          2019-11-21T17:25:23Z
+```
+
+To install the VolumeSnapshotClass:
+```
+kubectl apply -f https://github.com/purestorage/helm-charts/blob/master/pure-csi/snapshotclass.yaml
+```
+
 ## How to update `arrays` info
 
 Update your values.yaml with the correct arrays info, and then upgrade the helm as below.
