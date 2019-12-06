@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pure-csi.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "pure-csi.name" . }}
+    helm.sh/chart: {{ include "pure-csi.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "pure-csi.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+  - name: dummy
+    port: 12345
+

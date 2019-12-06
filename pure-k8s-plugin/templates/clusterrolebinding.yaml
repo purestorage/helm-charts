@@ -1,19 +1,78 @@
-{{- if (eq "k8s" .Values.orchestrator.name) }}
+# Create a service account for installation
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.clusterrolebinding.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+
+---
+
 apiVersion: rbac.authorization.k8s.io/v1beta1
-{{- else }}
-apiVersion: authorization.openshift.io/v1
-{{- end}}
+kind: ClusterRole
+metadata:
+  labels:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+  name: pure-provisioner-clusterrole
+rules:
+- apiGroups: [""]
+  resources: ["persistentvolumes"]
+  verbs: ["create", "delete", "get", "list", "watch", "update"]
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["get", "list", "update", "watch"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch", "update", "watch"]
+
+---
+
+# Assign cluster role to the service account
+apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   name: pure-provisioner-rights
   labels:
 {{ include "pure_k8s_plugin.labels" . | indent 4}}
 roleRef:
-{{- if (eq "k8s" .Values.orchestrator.name) }}
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-{{- end }}
-  name: system:persistent-volume-provisioner
+  name: pure-provisioner-clusterrole
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.clusterrolebinding.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: pure-provisioner-role
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get", "list", "watch", "create", "delete", "update", "patch"]
+
+---
+
+# Assign role to the service account
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: pure-provisioner-rights-ns
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "pure_k8s_plugin.labels" . | indent 4}}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pure-provisioner-role
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.clusterrolebinding.serviceAccount.name }}

@@ -16,13 +16,15 @@ spec:
         app: pure-provisioner
 {{ include "pure_k8s_plugin.labels" . | indent 8}}
     spec:
+      serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       containers:
         - name: pure-provisioner
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /k8s-provisioner
-            - '-logtostderr=false'
+            - '-logtostderr=true'
+            - '-log_file_max_size=32'
             - '-stderrthreshold=2'
 {{- if eq .Values.app.debug true}}
             - '--debug'
@@ -30,12 +32,29 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /etc/pure
+            readOnly: true
           env:
           - name: PURE_DISCOVERY_CONF
             value: /etc/pure/pure.json
           - name: PURE_K8S_NAMESPACE
             value: {{ .Values.namespace.pure }}
+          - name: PURE_DEFAULT_BLOCK_FS_TYPE
+            value: {{ .Values.flasharray.defaultFSType }}
+          - name: PURE_DEFAULT_ENABLE_FB_NFS_SNAPSHOT
+            value: {{ quote .Values.flashblade.snapshotDirectoryEnabled }}
       volumes:
         - name: config
-          configMap:
-            name: pure-provisioner-config
+          secret:
+            secretName: pure-provisioner-secret
+    {{- with .Values.provisioner.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.provisioner.affinity | default .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.provisioner.tolerations | default .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

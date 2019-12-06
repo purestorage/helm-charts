@@ -8,6 +8,10 @@ metadata:
 spec:
   updateStrategy:
     type: RollingUpdate
+    rollingUpdate:
+# flex-daemon may not be running on some nodes in the cluster like master/infra nodes. This affects the maxUnavailable nodes for a RollingUpdate.
+# Set maxUnavailable to 100% so that a Rolling Update is possible for any cluster configuration.
+      maxUnavailable: 100%
   selector:
     matchLabels:
       app: pure-flex
@@ -17,6 +21,7 @@ spec:
         app: pure-flex
 {{ include "pure_k8s_plugin.labels" . | indent 8}}
     spec:
+      serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       containers:
         - name: pure-flex
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
@@ -24,16 +29,7 @@ spec:
             preStop:
               exec:
                 command:
-                  - "/bin/sh"
-                  - "-c"
-                  - >
-                    touch /tmp/.uninstall_start_flag;
-                    while true; do
-                    if [ -f /tmp/.uninstall_finish_flag ]; then
-                    exit;
-                    fi;
-                    sleep 1;
-                    done
+                  - "/uninstaller"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             privileged: true
@@ -48,6 +44,7 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /etc/pure
+            readOnly: true
           - name: kubelet-plugins
             mountPath: /kubelet-plugins
           env:
@@ -63,10 +60,28 @@ spec:
             value: "{{ .Values.flasharray.defaultFSOpt }}"
           - name: PURE_DEFAULT_BLOCK_MNT_OPT
             value: "{{ .Values.flasharray.defaultMountOpt }}"
+          - name: PURE_PREEMPT_RWO_ATTACHMENTS_DEFAULT
+            value: "{{ .Values.flasharray.preemptAttachments }}"
+          - name: PURE_ISCSI_ALLOWED_CIDRS
+            value: "{{ .Values.flasharray.iSCSIAllowedCIDR }}"
+          - name: PURE_ISCSI_LOGIN_TIMEOUT
+            value: "{{ .Values.flasharray.iSCSILoginTimeout }}"
       volumes:
         - name: config
-          configMap:
-            name: pure-provisioner-config
+          secret:
+            secretName: pure-provisioner-secret
         - name: kubelet-plugins
           hostPath:
            path: {{ template "pure_k8s_plugin.flexpath" .}}
+    {{- with .Values.flexDaemon.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.flexDaemon.affinity | default .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.flexDaemon.tolerations | default .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

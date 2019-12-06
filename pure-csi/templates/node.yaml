@@ -1,0 +1,248 @@
+# On K8s 1.12 and 1.13 you need to create this CRD on the cluster before the helm install. 
+# This is because CSI is still alpha on these versions and the CSIDriver object is a CRD. 
+# Our helm chart cannot create this CRD because if affects other CSI-drivers that may be installed 
+# on the cluster. 
+# See https://kubernetes-csi.github.io/docs/csi-driver-object.html for details.
+# Inlining the CRD definition here in comments if you want to copy and apply.
+#
+# {{ if and (eq .Capabilities.KubeVersion.Major "1") (lt .Capabilities.KubeVersion.Minor "14") }}
+# apiVersion: apiextensions.k8s.io/v1beta1
+# kind: CustomResourceDefinition
+# metadata:
+#  name: csidrivers.csi.storage.k8s.io
+#  labels:
+#    addonmanager.kubernetes.io/mode: Reconcile
+# spec:
+#  group: csi.storage.k8s.io
+#  names:
+#    kind: CSIDriver
+#    plural: csidrivers
+#  scope: Cluster
+#  validation:
+#    openAPIV3Schema:
+#      properties:
+#        spec:
+#          description: Specification of the CSI Driver.
+#          properties:
+#            attachRequired:
+#              description: Indicates this CSI volume driver requires an attach operation,
+#                and that Kubernetes should call attach and wait for any attach operation
+#                to complete before proceeding to mount.
+#              type: boolean
+#            podInfoOnMountVersion:
+#              description: Indicates this CSI volume driver requires additional pod
+#                information (like podName, podUID, etc.) during mount operations.
+#              type: string
+#  version: v1alpha1
+# {{ end }}
+---
+{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "13") }}
+# For Kubernetes v1.13, this is not needed, because
+# we should be using cluster-driver-registrar sidecar
+# container.
+# For v1.14, this object needs to be created manually.
+# When controller-attach-detach comes in, we will start
+# using the controller sidecar, and we can delete
+# this object.
+apiVersion: storage.k8s.io/v1beta1
+kind: CSIDriver
+metadata:
+  name: pure-csi
+spec:
+  attachRequired: false
+{{ end }}
+---
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: pure-csi
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "pure_csi.labels" . | indent 4}}
+
+spec:
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+# CSI node plugin may not be running on some nodes in the cluster like master/infra nodes. This affects the maxUnavailable nodes for a RollingUpdate.
+# Set maxUnavailable to 100% so that a Rolling Update is possible for any cluster configuration.
+      maxUnavailable: 100%
+  selector:
+    matchLabels:
+      app: pure-csi
+  template:
+    metadata:
+      labels:
+        app: pure-csi
+{{ include "pure_csi.labels" . | indent 8}}
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+        - name: node-driver-registrar
+          {{- with .Values.csi.nodeDriverRegistrar.image }}
+          image: {{ .name | default "quay.io/k8scsi/csi-node-driver-registrar" }}:v1.1.0
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "rm -rf /registration/pure-csi /registration/pure-csi-reg.sock"]
+          args:
+            - --csi-address=/csi/csi.sock
+            - --kubelet-registration-path=/var/lib/kubelet/plugins/pure-csi/csi.sock
+          securityContext:
+            privileged: true
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          volumeMounts:
+          - mountPath: /csi
+            name: socket-dir
+          - mountPath: /registration
+            name: registration-dir
+          - mountPath: /csi-data-dir
+            name: csi-data-dir
+
+        - name: pure-csi-container
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "/csi-server"
+            - "-endpoint=$(CSI_ENDPOINT)"
+            - "-nodeid=$(KUBE_NODE_NAME)"
+{{- if eq .Values.app.debug true}}
+            - "-debug"
+{{- end}}
+          env:
+           - name: CSI_ENDPOINT
+             value: unix:///csi/csi.sock
+           - name: KUBE_NODE_NAME
+             valueFrom:
+               fieldRef:
+                 apiVersion: v1
+                 fieldPath: spec.nodeName
+           - name: PURE_DISCOVERY_CONF
+             value: /etc/pure/pure.json
+           - name: PURE_FLASHARRAY_SAN_TYPE
+             value: {{ .Values.flasharray.sanType | upper }}
+           - name: PURE_K8S_NAMESPACE
+             value: {{ .Values.namespace.pure }}
+           - name: PURE_DEFAULT_BLOCK_FS_TYPE
+             value: {{ .Values.flasharray.defaultFSType }}
+           - name: PURE_DEFAULT_BLOCK_FS_OPT
+             value: "{{ .Values.flasharray.defaultFSOpt }}"
+           - name: PURE_DEFAULT_BLOCK_MNT_OPT
+             value: "{{ .Values.flasharray.defaultMountOpt }}"
+           - name: PURE_PREEMPT_RWO_ATTACHMENTS_DEFAULT
+             value: "{{ .Values.flasharray.preemptAttachments }}"
+           - name: PURE_ISCSI_ALLOWED_CIDRS
+             value: "{{ .Values.flasharray.iSCSIAllowedCIDR }}"
+           - name: PURE_ISCSI_LOGIN_TIMEOUT
+             value: "{{ .Values.flasharray.iSCSILoginTimeout }}"
+          securityContext:
+            privileged: true
+          ports:
+          - containerPort: 9898
+            name: healthz
+            protocol: TCP
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: healthz
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 2
+          volumeMounts:
+            - mountPath: /etc/pure
+              name: config
+              readOnly: true
+            - mountPath: /dev
+              name: dev
+            - mountPath: /csi
+              name: socket-dir
+            - mountPath: /var/lib/kubelet/pods
+              mountPropagation: Bidirectional
+              name: mountpoint-dir
+            - mountPath: /var/lib/kubelet/plugins
+              mountPropagation: Bidirectional
+              name: plugins-dir
+            - mountPath: /csi-data-dir
+              name: csi-data-dir
+
+        - name: liveness-probe
+          volumeMounts:
+          - mountPath: /csi
+            name: socket-dir
+          {{- with .Values.csi.livenessProbe.image }}
+          image: {{ .name | default "quay.io/k8scsi/livenessprobe" }}:v1.1.0
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+          args:
+          - --csi-address=/csi/csi.sock
+          - --connection-timeout=3s
+          - --health-port=9898
+
+      volumes:
+        - secret:
+            secretName: pure-provisioner-secret
+          name: config
+        - hostPath:
+            path: /dev
+          name: dev
+        - hostPath:
+            path: /var/lib/kubelet/plugins/pure-csi
+            type: DirectoryOrCreate
+          name: socket-dir
+        - hostPath:
+            path: /var/lib/kubelet/pods
+            type: DirectoryOrCreate
+          name: mountpoint-dir
+        - hostPath:
+            path: /var/lib/kubelet/plugins_registry
+            type: Directory
+          name: registration-dir
+        - hostPath:
+            path: /var/lib/kubelet/plugins
+            type: Directory
+          name: plugins-dir
+        - hostPath:
+            # 'path' is where PV data is persisted on host.
+            # using /tmp is also possible while the PVs will not available after plugin container recreation or host reboot
+            path: /var/lib/pure-csi-data/
+            type: DirectoryOrCreate
+          name: csi-data-dir
+{{- if .Values.mounter -}}
+    {{- with .Values.mounter.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.mounter.affinity | default .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.mounter.tolerations | default .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+{{- else -}}
+# Look at the flexDaemon nodeSelector values too because we may be using a flex-plugin values.yaml and we honor the old values.yaml
+{{- if .Values.flexDaemon -}}
+    {{- with .Values.flexDaemon.nodeSelector | default .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.flexDaemon.affinity | default .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.flexDaemon.tolerations | default .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+{{- end -}}
+{{- end -}}

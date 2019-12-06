@@ -4,3 +4,4 @@
 *.swo
 *~
 .idea
+/operator/helm-charts/**
