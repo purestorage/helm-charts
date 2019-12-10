@@ -18,7 +18,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Latest Filesystem utilities/drivers (XFS by default, Required)
   - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
   - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
-  - Latest FC initiator software for your operating system (Optional, required for FC connectivity)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity, *FC Supported on Bare-metal K8s installations only*)
 - #### FlashArray and FlashBlade:
   - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
 
