@@ -99,10 +99,10 @@ In addition, the operator needs access to multiple resources in the project/name
 4. Creates a deployment for the Operator.<br/>
 Finally the script creates and deploys the operator using the customized parameters passed in the ``values.yaml`` file.
 
-## Upgrading
+## Migrating from Helm to Operator
 
-### How to upgrade from helm install to Pure CSI Operator
-This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
+### How to migrate from helm install to Pure CSI Operator
+This migration will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 
 Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release.
 Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
