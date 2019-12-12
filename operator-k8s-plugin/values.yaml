@@ -5,7 +5,7 @@
 image:
   name: purestorage/k8s
   tag: 2.5.4
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 # this option is to enable/disable the debug mode of this app
 # for pure-provisioner and pure-flex-daemon

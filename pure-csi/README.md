@@ -62,7 +62,7 @@ The following table lists the configurable parameters and their default values.
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
 | `image.tag`                 | The image tag to pull              | `5.0.3`                                   |
-| `image.pullPolicy`          | Image pull policy                  | `IfNotPresent`                            |
+| `image.pullPolicy`          | Image pull policy                  | `Always      `                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
 | `storageclass.pureBackend`  | Set `pure` storageclass' default backend type | `block`                               |
@@ -85,15 +85,15 @@ The following table lists the configurable parameters and their default values.
 | `provisioner.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
 | `provisioner.affinity`                  | [Affinity](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity) | `{}` |
 | `csi.provisioner.image.name` | The image name of the csi-provisioner | `quay.io/k8scsi/csi-provisioner` |
-| `csi.provisioner.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.provisioner.image.pullPolicy` | Image pull policy | `Always      ` |
 | `csi.clusterDriverRegistrar.image.name` | The image name of the csi-cluster-driver-registrar | `quay.io/k8scsi/csi-cluster-driver-registrar` |
-| `csi.clusterDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.clusterDriverRegistrar.image.pullPolicy` | Image pull policy | `Always      ` |
 | `csi.nodeDriverRegistrar.image.name` | The image name of the csi-node-driver-registrar | `quay.io/k8scsi/csi-node-driver-registrar` |
-| `csi.nodeDriverRegistrar.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.nodeDriverRegistrar.image.pullPolicy` | Image pull policy | `Always      ` |
 | `csi.livenessProbe.image.name` | The image name of the csi livenessprobe | `quay.io/k8scsi/livenessprobe` |
-| `csi.livenessProbe.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.livenessProbe.image.pullPolicy` | Image pull policy | `Always      ` |
 | `csi.snapshotter.image.name` | The image name of the csi snapshotter | `quay.io/k8scsi/csi-snapshotter` |
-| `csi.snapshotter.image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `csi.snapshotter.image.pullPolicy` | Image pull policy | `Always      ` |
 
 *Examples:
 ```yaml
