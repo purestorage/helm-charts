@@ -177,7 +177,7 @@ volumesnapshots.snapshot.storage.k8s.io          2019-11-21T17:25:23Z
 To install the VolumeSnapshotClass:
 
 ```bash
-kubectl apply -f https://github.com/purestorage/helm-charts/blob/master/pure-csi/snapshotclass.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
 ```
 
 ## How to update `arrays` info
