@@ -37,7 +37,7 @@ $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master
 
 ## CSI Snapshot and Clone features for Kubernetes
 
-More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md.md)
+More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md)
 
 ## How to install
 

@@ -45,7 +45,7 @@ $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master
 
 ## CSI Snapshot and Clone features for Kubernetes
 
-More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md.md)
+More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md)
 
 *Note:* It is not currently possible to open feature gates in [AWS EKS](https://github.com/aws/containers-roadmap/issues/512), therefore these features are not available on EKS
 
