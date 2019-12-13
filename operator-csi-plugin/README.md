@@ -1,11 +1,14 @@
+
 # Pure CSI Operator
 
 ## Overview
+
 The Pure CSI Operator packages and deploys the Pure Service Orchestrator (PSO) CSI plugin on Kubernetes for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances. 
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-csi Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
 
 ## Platform and Software Dependencies
+
 - #### Operating Systems Supported*:
   - CentOS 7
   - CoreOS (Ladybug 1298.6.0 and above)
@@ -29,26 +32,28 @@ This installation process does not require Helm installation.
 _* Please see release notes for details_
 
 ## Additional configuration for Kubernetes 1.13 Only
+
 For details see the [CSI documentation](https://kubernetes-csi.github.io/docs/csi-driver-object.html). 
 In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable the use of a CSI driver on these versions, do the following:
 
 1. Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=CSIDriverRegistry=true```
 2. Either ensure the CSIDriver CRD is installed cluster with the following command:
-```
+
+```bash
 $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
 ```
 
 ## CSI Snapshot and Clone features for Kubernetes
-CSI Operator v5.0.2 starts to support CSI 1.0 Snapshot and Clone features. For details see the [CSI volume snapshot](https://kubernetes-csi.github.io/docs/snapshot-restore-feature.html) and [CSI volume clone](https://kubernetes-csi.github.io/docs/volume-cloning.html).
-1. For snapshot feature, ensure you have Kubernetes 1.13+; ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumeSnapshotDataSource=true```
-2. For clone feature, ensure you have Kubernetes 1.15+; ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumePVCDataSource=true```
+
+More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md.md)
 
 *Note:* It is not currently possible to open feature gates in [AWS EKS](https://github.com/aws/containers-roadmap/issues/512), therefore these features are not available on EKS
 
 ## Installation
 
 Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version. Information on this can be found [here](https://github.com/purestorage/helm-charts/releases)</br>
-```
+
+```bash
 git clone --branch <version> https://github.com/purestorage/helm-charts.git
 cd operator-csi-plugin
 ```
@@ -56,13 +61,18 @@ cd operator-csi-plugin
 Create your own `values.yaml`. The easiest way is to copy the default [./values.yaml](./values.yaml) with `wget`.
 
 For OpenShift 4.x the pso-operator needs to be run with a privileged SCC. The pso-operator uses the default user. To add the SCC to the default user:
-```
+
+```bash
 oc adm policy add-scc-to-user privileged -z default -n pure-csi-operator
 ```
+
 The pure-csi-operator namespace/project is created by the install script (see below).
 
 Run the install script to set up the Pure CSI Operator. <br/>
-```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
+
+```bash
+install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>
+```
 
 Parameter list:<br/>
 1. ``image`` is the Pure CSI Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
@@ -73,14 +83,13 @@ Parameter list:<br/>
 Refer to [Configuration for values.yaml.](../pure-csi/README.md#configuration)
 
 ### Install script steps:
+
 The install script will do the following:
 1. Create New Project.<br/>
 The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pure-csi-operator`` namespace is used.<br/> 
-
 2. Create a Custom Resource Definition (CRD) for the Pure CSI Operator. <br/>
 The script waits for the CRD to be published in the cluster. If after 10 seconds the API server has not setup the CRD, the script times out. To wait longer, pass the parameter 
 ``--timeout=<timeout_in_sec>`` to the install script.
-
 3. Create RBAC rules for the Operator.<br/>
 The Pure CSI Operator needs the following Cluster-level Roles and RoleBindings.
 
@@ -99,34 +108,42 @@ In addition, the operator needs access to multiple resources in the project/name
 4. Creates a deployment for the Operator.<br/>
 Finally the script creates and deploys the operator using the customized parameters passed in the ``values.yaml`` file.
 
-## Upgrading
+## Migrating from Helm to Operator
 
-### How to upgrade from helm install to Pure CSI Operator
-This upgrade will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
+### How to migrate from helm install to Pure CSI Operator
+
+This migration will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
 
 Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release.
 Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
 
 ### Apply changes in ``values.yaml``
+
 The ``update.sh`` script is used to apply changes from ``values.yaml`` as follows.
-```
+
+```bash
 ./update.sh -f values.yaml
 ```
 
 ## Uninstall
+
 To uninstall the Pure CSI Operator, run 
-```
+```bash
 kubectl delete PSOPlugin/psoplugin-operator -n <pure-csi-operator-installed-namespace>
 kubectl delete all --all -n <pure-csi-operator-installed-namespace>
 ```
+
 where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
 
 If you are using OpenShift, replace `kubectl` with `oc`.
 To completely remove the CustomResourceDefinition used by the Operator run
-```
+
+```bash
 kubectl delete crd psoplugins.purestorage.com
 ```
+
 If you are using OpenShift, replace `kubectl` with `oc` in the above commands.
 
 # License
+
 https://www.purestorage.com/content/dam/pdf/en/legal/pure-storage-plugin-end-user-license-agreement.pdf
