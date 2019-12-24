@@ -30,25 +30,28 @@ In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable 
 
 1. Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=CSIDriverRegistry=true```
 2. Either ensure the CSIDriver CRD is installed cluster with the following command:
-```
+
+```bash
 $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
 ```
+
 ## CSI Snapshot and Clone features for Kubernetes
-For details see the [CSI volume snapshot](https://kubernetes-csi.github.io/docs/snapshot-restore-feature.html) and [CSI volume clone](https://kubernetes-csi.github.io/docs/volume-cloning.html).
-1. For snapshot feature, ensure you have Kubernetes 1.13+, the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumeSnapshotDataSource=true```
-2. For clone feature, ensure you have Kubernetes 1.15+, Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=VolumePVCDataSource=true```
+
+More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md)
 
 ## How to install
 
 Add the Pure Storage helm repo
-```
+
+```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
 helm search pure-csi
 ```
 
 Optional (offline installation): Download the helm chart
-```
+
+```bash
 git clone https://github.com/purestorage/helm-charts.git
 ```
 
@@ -61,7 +64,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `5.0.3`                                   |
+| `image.tag`                 | The image tag to pull              | `5.0.4`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always      `                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
@@ -96,6 +99,7 @@ The following table lists the configurable parameters and their default values.
 | `csi.snapshotter.image.pullPolicy` | Image pull policy | `Always      ` |
 
 *Examples:
+
 ```yaml
 arrays:
   FlashArrays:
@@ -132,31 +136,38 @@ For security reason, it's strongly recommended to install the plugin in a separa
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
 Dry run the installation, and make sure your values.yaml is working correctly.
-```
+
+```bash
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
-```
+
+```bash
 # Install the plugin 
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The values in your values.yaml overwrite the ones in pure-csi/values.yaml, but any specified with the `--set`
 option will take precedence.
-```
+
+```bash
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
 ```
 
 ## Install the VolumeSnapshotClass
+
 Make sure you have related CRDs in your system before installing it:
-```
+
+```bash
 kubectl get crds
 ```
+
 You should see CRDs like this:
-```
+
+```bash
 NAME                                             CREATED AT
 volumesnapshotclasses.snapshot.storage.k8s.io    2019-11-21T17:25:23Z
 volumesnapshotcontents.snapshot.storage.k8s.io   2019-11-21T17:25:23Z
@@ -164,8 +175,9 @@ volumesnapshots.snapshot.storage.k8s.io          2019-11-21T17:25:23Z
 ```
 
 To install the VolumeSnapshotClass:
-```
-kubectl apply -f https://github.com/purestorage/helm-charts/blob/master/pure-csi/snapshotclass.yaml
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
 ```
 
 ## How to update `arrays` info
@@ -174,7 +186,8 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
-```
+
+```bash
 helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
@@ -183,7 +196,8 @@ helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_
 
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml. Use the version of
 the helm repository with the tag version required. This ensures the supporting changes are present in the templates.
-```
+
+```bash
 # list the avaiable version of the plugin
 helm repo update
 helm search pure-csi -l
@@ -197,11 +211,12 @@ helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_
 Upgrade from flexvolume to CSI is not currently supported and is being considered for an upcoming release.
 
 # Release Notes
+
 Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)
 
-### Known Vulnerabilities 
+## Known Vulnerabilities 
 None
 
-
 # License
+
 https://www.purestorage.com/content/dam/pdf/en/legal/pure-storage-plugin-end-user-license-agreement.pdf
