@@ -51,7 +51,8 @@ flasharray:
   sanType: ISCSI
   defaultFSType: xfs
   defaultFSOpt: "-q"
-  defaultMountOpt: ""
+  defaultMountOpt:
+    - discard
   preemptAttachments: "true"
   iSCSILoginTimeout: 20
 
