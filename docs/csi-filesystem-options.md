@@ -8,15 +8,16 @@ The feature allows Kubernetes end-users to create persistent volumes with custom
 Users can customize the filesystem type (`FsType`) with create options (`CreateOptions`) during the volume staging phase and customize mount options (`MountOptions`) during the volume publish phase.    
 
 The feature leverages Kubernetes `StorageClass` to carry the customized FS options to the underlying storage backend. 
-Before this feature, users could only set up these parameters via [configureation](../pure-csi/README.md) in the values.yaml file. Then all persistent volumes used the same options, and the settings could not be changed after PSO had loaded.
+Before this feature, users could only set up these parameters via [configuration](../pure-csi/README.md) in the values.yaml file. Then all persistent volumes used the same options, and the settings could not be changed after PSO had loaded.
 With this feature, users can customize the FS options for persistent volumes on-the-fly through various StorageClass settings to meet different application needs.
-   
-  
+
+
 ## Dependencies
 
 The following dependencies must be true before the customized filesystem options can be used:
 
 * Kubernetes already running, deployed, configured, etc
+* For the `MountOptions` feature, ensure you have Kubernetes 1.8+ installed.
 * PSO correctly installed and using [Pure CSI Driver v5.0.5](https://github.com/purestorage/helm-charts/releases/tag/5.0.5)+.
 
 ##  FileSystem Options
@@ -71,7 +72,7 @@ PSO recommends users to use `xfs` to achieve the best performance.
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: pure-block-vfat-1
+  name: pure-block-xfs
   labels:
     kubernetes.io/cluster-service: "true"
 provisioner: pure-csi 
