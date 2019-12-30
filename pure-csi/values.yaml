@@ -5,29 +5,29 @@
 image:
   name: purestorage/k8s
   tag: 5.0.4
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 csi:
   provisioner:
     image:
       name: quay.io/k8scsi/csi-provisioner
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   snapshotter:
     image:
       name: quay.io/k8scsi/csi-snapshotter
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   clusterDriverRegistrar:
     image:
       name: quay.io/k8scsi/csi-cluster-driver-registrar
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   nodeDriverRegistrar:
     image:
       name: quay.io/k8scsi/csi-node-driver-registrar
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   livenessProbe:
     image:
       name: quay.io/k8scsi/livenessprobe
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
 
 
 # this option is to enable/disable the debug mode of this app
