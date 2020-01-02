@@ -99,7 +99,7 @@ fi
 counter=0
 TIMEOUT=10
 echo "
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: psoplugins.purestorage.com
@@ -139,7 +139,7 @@ fi
 # 3. Create RBAC for the PSO-Operator
 echo '
 kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: pso-operator
 rules:
@@ -295,7 +295,7 @@ rules:
 
 ---
 kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: pso-operator-role
 subjects:
@@ -309,7 +309,7 @@ roleRef:
 
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: pso-operator
 rules:
@@ -362,7 +362,7 @@ rules:
 ---
 
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: default-account-pso-operator
 subjects:
