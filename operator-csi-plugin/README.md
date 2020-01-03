@@ -49,6 +49,10 @@ More details on using the snapshot and clone functionality can be found [here](.
 
 *Note:* It is not currently possible to open feature gates in [AWS EKS](https://github.com/aws/containers-roadmap/issues/512), therefore these features are not available on EKS
 
+## Using Per-Volume FileSystem Options with Kubernetes
+
+More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
+
 ## Installation
 
 Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version. Information on this can be found [here](https://github.com/purestorage/helm-charts/releases)</br>

@@ -37,7 +37,11 @@ $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master
 
 ## CSI Snapshot and Clone features for Kubernetes
 
-More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md)
+More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md).
+
+##Using Per-Volume FileSystem Options with Kubernetes
+
+More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
 
 ## How to install
 
