@@ -3,7 +3,7 @@ kind: StorageClass
 metadata:
   name: pure
   annotations:
-    storageclass.beta.kubernetes.io/is-default-class: "{{ .Values.storageclass.isPureDefault }}"
+    storageclass.kubernetes.io/is-default-class: "{{ .Values.storageclass.isPureDefault }}"
   labels:
     kubernetes.io/cluster-service: "true"
 {{ include "pure_csi.labels" . | indent 4}}
