@@ -53,6 +53,11 @@ More details on using the snapshot and clone functionality can be found [here](.
 
 More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
 
+## PSO use of StorageClass
+
+Whilst there are some default `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own cu
+stom storage classes that can be used by PSO.
+
 ## Installation
 
 Clone this GitHub repository, selecting the version of the operator you wish to install. We recommend using the latest released version. Information on this can be found [here](https://github.com/purestorage/helm-charts/releases)</br>
