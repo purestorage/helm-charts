@@ -152,11 +152,11 @@ rules:
   - apiGroups:
     - purestorage.com
     resources:
-    - "*"
+    - \"*\"
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - namespaces
     verbs:
@@ -166,8 +166,8 @@ rules:
     resources:
     - storageclasses
     verbs:
-    - "create"
-    - "delete"
+    - \"create\"
+    - \"delete\"
 # PSO operator needs to create/delete a ClusterRole and ClusterRoleBinding for provisioning PVs
   - apiGroups:
     - rbac.authorization.k8s.io
@@ -175,9 +175,9 @@ rules:
     - clusterrolebindings
     - clusterroles
     verbs:
-    - "create"
-    - "delete"
-    - "get"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
 # On Openshift ClusterRoleBindings belong to a different apiGroup.
   - apiGroups:
     - authorization.openshift.io
@@ -185,47 +185,47 @@ rules:
     - clusterrolebindings
     - clusterroles
     verbs:
-    - "create"
-    - "delete"
-    - "get"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
 # Need the same permissions as pure-provisioner-clusterrole to be able to create it
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - persistentvolumes
     verbs:
-    - "create"
-    - "delete"
-    - "get"
-    - "list"
-    - "watch"
-    - "update"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
+    - \"update\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - persistentvolumeclaims
     verbs:
-    - "get"
-    - "list"
-    - "update"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"update\"
+    - \"watch\"
   - apiGroups:
     - storage.k8s.io
     resources:
     - storageclasses
     verbs:
-    - "get"
-    - "list"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
-    - "events"
+    - \"events\"
     verbs:
-    - "create"
-    - "patch"
-    - "update"
-    - "watch"
+    - \"create\"
+    - \"patch\"
+    - \"update\"
+    - \"watch\"
 
 ---
 kind: ClusterRoleBinding
@@ -248,7 +248,7 @@ metadata:
   name: pso-operator
 rules:
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - pods
     - services
@@ -257,9 +257,9 @@ rules:
     - secrets
     - serviceaccounts
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - namespaces
     verbs:
@@ -270,27 +270,27 @@ rules:
     - deployments
     - daemonsets
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - extensions
     resources:
     - daemonsets
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - rbac.authorization.k8s.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - authorization.openshift.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "*"
+    - \"*\"
 
 ---
 
@@ -342,7 +342,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "pso-operator"
+              value: \"pso-operator\"
 " | sed "s|REPLACE_IMAGE|${IMAGE}|" | ${KUBECTL_NS} -
 
 # 5. Use the values.yaml file to create a customized PSO operator instance

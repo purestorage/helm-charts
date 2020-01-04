@@ -152,11 +152,11 @@ rules:
   - apiGroups:
     - purestorage.com
     resources:
-    - "*"
+    - \"*\"
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - namespaces
     verbs:
@@ -166,8 +166,8 @@ rules:
     resources:
     - storageclasses
     verbs:
-    - "create"
-    - "delete"
+    - \"create\"
+    - \"delete\"
 # PSO operator needs to create/delete a ClusterRole and ClusterRoleBinding for provisioning PVs
   - apiGroups:
     - rbac.authorization.k8s.io
@@ -175,9 +175,9 @@ rules:
     - clusterrolebindings
     - clusterroles
     verbs:
-    - "create"
-    - "delete"
-    - "get"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
 # On Openshift ClusterRoleBindings belong to a different apiGroup.
   - apiGroups:
     - authorization.openshift.io
@@ -185,119 +185,119 @@ rules:
     - clusterrolebindings
     - clusterroles
     verbs:
-    - "create"
-    - "delete"
-    - "get"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
 # Need the same permissions as pure-provisioner-clusterrole to be able to create it
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - persistentvolumes
     verbs:
-    - "create"
-    - "delete"
-    - "get"
-    - "list"
-    - "watch"
-    - "update"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
+    - \"update\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - persistentvolumeclaims
     verbs:
-    - "get"
-    - "list"
-    - "update"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"update\"
+    - \"watch\"
   - apiGroups:
     - storage.k8s.io
     resources:
     - storageclasses
     verbs:
-    - "get"
-    - "list"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
 # Need the same permissions as external-provisioner-runner clusterrole to be able to create it
   - apiGroups:
-    - ""
+    - \"\"
     resources:
-    - "events"
+    - \"events\"
     verbs:
-    - "create"
-    - "patch"
-    - "update"
-    - "watch"
-    - "list"
-    - "get"
+    - \"create\"
+    - \"patch\"
+    - \"update\"
+    - \"watch\"
+    - \"list\"
+    - \"get\"
   - apiGroups:
     - snapshot.storage.k8s.io
     resources:
-    - "volumesnapshots"
+    - \"volumesnapshots\"
     verbs:
-    - "get"
-    - "list"
-    - "watch"
-    - "update"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
+    - \"update\"
   - apiGroups:
     - snapshot.storage.k8s.io
     resources:
-    - "volumesnapshots/status"
+    - \"volumesnapshots/status\"
     verbs:
-    - "update"
+    - \"update\"
   - apiGroups:
     - snapshot.storage.k8s.io
     resources:
-    - "volumesnapshotcontents"
+    - \"volumesnapshotcontents\"
     verbs:
-    - "create"
-    - "get"
-    - "list"
-    - "watch"
-    - "update"
-    - "delete"
+    - \"create\"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
+    - \"update\"
+    - \"delete\"
   - apiGroups:
     - snapshot.storage.k8s.io
     resources:
-    - "volumesnapshotclasses"
+    - \"volumesnapshotclasses\"
     verbs:
-    - "get"
-    - "list"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
   - apiGroups: 
     - storage.k8s.io
     resources: 
-    - "csinodes"
+    - \"csinodes\"
     verbs: 
-    - "get"
-    - "list"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
   - apiGroups: 
-    - ""
+    - \"\"
     resources:
-    - "nodes"
+    - \"nodes\"
     verbs:
-    - "get"
-    - "list"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
 # Need the same permissions as driver-registrat-runner clusterrole to be able to create it. Only for K8s 1.13
   - apiGroups: 
-    - "apiextensions.k8s.io"
+    - \"apiextensions.k8s.io\"
     resources: 
-    - "customresourcedefinitions"
+    - \"customresourcedefinitions\"
     verbs: 
-    - "*"
+    - \"*\"
   - apiGroups: 
-    - "csi.storage.k8s.io"
+    - \"csi.storage.k8s.io\"
     resources:
-    - "csidrivers"
+    - \"csidrivers\"
     verbs: 
-    - "*"
+    - \"*\"
   - apiGroups: 
-    - "storage.k8s.io"
+    - \"storage.k8s.io\"
     resources:
-    - "csidrivers"
+    - \"csidrivers\"
     verbs: 
-    - "*"
+    - \"*\"
 
 ---
 kind: ClusterRoleBinding
@@ -329,9 +329,9 @@ rules:
     - secrets
     - serviceaccounts
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - namespaces
     verbs:
@@ -343,27 +343,27 @@ rules:
     - daemonsets
     - statefulsets
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - extensions
     resources:
     - daemonsets
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - rbac.authorization.k8s.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - authorization.openshift.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "*"
+    - \"*\"
 
 ---
 
@@ -415,7 +415,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "pso-operator"
+              value: \"pso-operator\"
 " | sed "s|REPLACE_IMAGE|${IMAGE}|" | ${KUBECTL_NS} -
 
 # 5. Use the values.yaml file to create a customized PSO operator instance
