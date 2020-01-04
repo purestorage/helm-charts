@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: {{ template "daemonset.apiVersion" . }}
 kind: DaemonSet
 metadata:
   name: pure-flex

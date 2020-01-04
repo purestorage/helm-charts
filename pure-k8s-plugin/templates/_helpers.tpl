@@ -17,3 +17,37 @@ release: {{ .Release.Name | quote }}
 {{ .Values.orchestrator.openshift.flexPath }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the appropriate apiVersion for deployment.
+*/}}
+{{- define "deployment.apiVersion" -}}
+{{- if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- print "apps/v1" -}}
+{{- else -}}
+{{- print "apps/v1beta1" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the appropriate apiVersion for daemonset.
+*/}}
+{{- define "daemonset.apiVersion" -}}
+{{- if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- print "apps/v1" -}}
+{{- else -}}
+{{- print "apps/v1beta1" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the appropriate apiVersion for RBAC APIs.
+*/}}
+{{- define "rbac.apiVersion" -}}
+{{- if semverCompare "^1.8-0" .Capabilities.KubeVersion.GitVersion -}}
+"rbac.authorization.k8s.io/v1"
+{{- else -}}
+"rbac.authorization.k8s.io/v1beta1"
+{{- end -}}
+{{- end -}}
+

@@ -3,6 +3,12 @@ IMAGE=quay.io/purestorage/pso-operator:v5.0.4
 NAMESPACE=pure-csi-operator
 KUBECTL=kubectl
 ORCHESTRATOR=k8s
+CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
+CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
+CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
+ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 usage()
 {
@@ -99,7 +105,7 @@ fi
 counter=0
 TIMEOUT=10
 echo "
-apiVersion: apiextensions.k8s.io/v1
+apiVersion: ${CRDAPIVERSION}
 kind: CustomResourceDefinition
 metadata:
   name: psoplugins.purestorage.com
@@ -137,9 +143,9 @@ fi
 
 
 # 3. Create RBAC for the PSO-Operator
-echo '
+echo "
 kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: ${CLUSTERROLEAPIVERSION}
 metadata:
   name: pso-operator
 rules:
@@ -295,7 +301,7 @@ rules:
 
 ---
 kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: ${CLUSTERROLEBINDINGAPIVERSION}
 metadata:
   name: pso-operator-role
 subjects:
@@ -309,7 +315,7 @@ roleRef:
 
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: ${ROLEAPIVERSION}
 metadata:
   name: pso-operator
 rules:
@@ -362,7 +368,7 @@ rules:
 ---
 
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: ${ROLEBINDINGAPIVERSION}
 metadata:
   name: default-account-pso-operator
 subjects:
@@ -372,11 +378,11 @@ roleRef:
   kind: Role
   name: pso-operator
   apiGroup: rbac.authorization.k8s.io
-' | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|" | ${KUBECTL_NS} -
+" | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|" | ${KUBECTL_NS} -
 
 # 4. Create a PSO-Operator Deployment
-echo '
-apiVersion: apps/v1
+echo "
+apiVersion: ${DEPLOYMENTAPIVERSION}
 kind: Deployment
 metadata:
   name: pso-operator
@@ -410,7 +416,7 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "pso-operator"
-' | sed "s|REPLACE_IMAGE|${IMAGE}|" | ${KUBECTL_NS} -
+" | sed "s|REPLACE_IMAGE|${IMAGE}|" | ${KUBECTL_NS} -
 
 # 5. Use the values.yaml file to create a customized PSO operator instance
 ( echo '

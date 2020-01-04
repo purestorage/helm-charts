@@ -17,7 +17,7 @@ spec:
 # Why does this need to be a statefulset?
 # Because we need only one copy of the provisioner running
 kind: StatefulSet
-apiVersion: apps/v1
+apiVersion: {{ template "statefulset.apiVersion" . }}
 metadata:
   name: pure-provisioner
   namespace: {{ .Release.Namespace }}
