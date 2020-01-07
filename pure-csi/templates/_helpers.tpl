@@ -42,7 +42,7 @@ Create chart name and version as used by the chart label.
 Return the appropriate apiVersion for deployment.
 */}}
 {{- define "deployment.apiVersion" -}}
-{{- if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.9-0" .Capabilities.KubeVersion.GitVersion -}}
 {{- print "apps/v1" -}}
 {{- else -}}
 {{- print "apps/v1beta1" -}}
@@ -53,7 +53,7 @@ Return the appropriate apiVersion for deployment.
 Return the appropriate apiVersion for daemonset.
 */}}
 {{- define "daemonset.apiVersion" -}}
-{{- if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.9-0" .Capabilities.KubeVersion.GitVersion -}}
 {{- print "apps/v1" -}}
 {{- else -}}
 {{- print "apps/v1beta1" -}}
