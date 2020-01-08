@@ -3,6 +3,12 @@ IMAGE=quay.io/purestorage/pso-operator:v0.0.7
 NAMESPACE=pso-operator
 KUBECTL=oc
 ORCHESTRATOR=k8s
+CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
+CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
+CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
+ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 usage()
 {
@@ -99,7 +105,7 @@ fi
 counter=0
 TIMEOUT=10
 echo "
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: ${CRDAPIVERSION}
 kind: CustomResourceDefinition
 metadata:
   name: psoplugins.purestorage.com
@@ -137,20 +143,20 @@ fi
 
 
 # 3. Create RBAC for the PSO-Operator
-echo '
+echo "
 kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: ${CLUSTERROLEAPIVERSION}
 metadata:
   name: pso-operator
 rules:
   - apiGroups:
     - purestorage.com
     resources:
-    - "*"
+    - \"*\"
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - namespaces
     verbs:
@@ -160,8 +166,8 @@ rules:
     resources:
     - storageclasses
     verbs:
-    - "create"
-    - "delete"
+    - \"create\"
+    - \"delete\"
 # PSO operator needs to create/delete a ClusterRole and ClusterRoleBinding for provisioning PVs
   - apiGroups:
     - rbac.authorization.k8s.io
@@ -169,9 +175,9 @@ rules:
     - clusterrolebindings
     - clusterroles
     verbs:
-    - "create"
-    - "delete"
-    - "get"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
 # On Openshift ClusterRoleBindings belong to a different apiGroup.
   - apiGroups:
     - authorization.openshift.io
@@ -179,51 +185,51 @@ rules:
     - clusterrolebindings
     - clusterroles
     verbs:
-    - "create"
-    - "delete"
-    - "get"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
 # Need the same permissions as pure-provisioner-clusterrole to be able to create it
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - persistentvolumes
     verbs:
-    - "create"
-    - "delete"
-    - "get"
-    - "list"
-    - "watch"
-    - "update"
+    - \"create\"
+    - \"delete\"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
+    - \"update\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - persistentvolumeclaims
     verbs:
-    - "get"
-    - "list"
-    - "update"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"update\"
+    - \"watch\"
   - apiGroups:
     - storage.k8s.io
     resources:
     - storageclasses
     verbs:
-    - "get"
-    - "list"
-    - "watch"
+    - \"get\"
+    - \"list\"
+    - \"watch\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
-    - "events"
+    - \"events\"
     verbs:
-    - "create"
-    - "patch"
-    - "update"
-    - "watch"
+    - \"create\"
+    - \"patch\"
+    - \"update\"
+    - \"watch\"
 
 ---
 kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: ${CLUSTERROLEBINDINGAPIVERSION}
 metadata:
   name: pso-operator-role
 subjects:
@@ -237,12 +243,12 @@ roleRef:
 
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: ${ROLEAPIVERSION}
 metadata:
   name: pso-operator
 rules:
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - pods
     - services
@@ -251,9 +257,9 @@ rules:
     - secrets
     - serviceaccounts
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
-    - ""
+    - \"\"
     resources:
     - namespaces
     verbs:
@@ -264,32 +270,32 @@ rules:
     - deployments
     - daemonsets
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - extensions
     resources:
     - daemonsets
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - rbac.authorization.k8s.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "*"
+    - \"*\"
   - apiGroups:
     - authorization.openshift.io
     resources:
     - roles
     - rolebindings
     verbs:
-    - "*"
+    - \"*\"
 
 ---
 
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: ${ROLEBINDINGAPIVERSION}
 metadata:
   name: default-account-pso-operator
 subjects:
@@ -299,11 +305,11 @@ roleRef:
   kind: Role
   name: pso-operator
   apiGroup: rbac.authorization.k8s.io
-' | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|" | ${KUBECTL_NS} -
+" | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|" | ${KUBECTL_NS} -
 
 # 4. Create a PSO-Operator Deployment
-echo '
-apiVersion: apps/v1
+echo "
+apiVersion: ${DEPLOYMENTAPIVERSION}
 kind: Deployment
 metadata:
   name: pso-operator
@@ -336,8 +342,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "pso-operator"
-' | sed "s|REPLACE_IMAGE|${IMAGE}|" | ${KUBECTL_NS} -
+              value: \"pso-operator\"
+" | sed "s|REPLACE_IMAGE|${IMAGE}|" | ${KUBECTL_NS} -
 
 # 5. Use the values.yaml file to create a customized PSO operator instance
 ( echo '
