@@ -3,12 +3,6 @@ IMAGE=quay.io/purestorage/pso-operator:v0.0.7
 NAMESPACE=pso-operator
 KUBECTL=oc
 ORCHESTRATOR=k8s
-CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
-CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
-CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
-ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
-ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
-DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 usage()
 {
@@ -58,6 +52,13 @@ case "$1" in
   ;;
   esac
 done
+
+CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
+CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
+CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
+ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 if [[ -z ${VALUESFILE} || ! -f ${VALUESFILE} ]]; then
     echo "File ${VALUESFILE} does not exist"
