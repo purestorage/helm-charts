@@ -39,9 +39,13 @@ $> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master
 
 More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md).
 
-##Using Per-Volume FileSystem Options with Kubernetes
+## Using Per-Volume FileSystem Options with Kubernetes
 
 More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
+
+## PSO use of StorageClass
+
+Whilst there are some default `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own custom storage classes that can be used by PSO.
 
 ## How to install
 
