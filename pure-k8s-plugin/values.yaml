@@ -14,6 +14,8 @@ app:
 
 # do you want to set pure as the default storageclass?
 storageclass:
+  # create the built-in StorageClasses 'pure', 'pure-file' and 'pure-block'?
+  createBuiltIn: true
   isPureDefault: false
   # set the type of backend you want for the 'pure' storageclass
   # pureBackend: file
