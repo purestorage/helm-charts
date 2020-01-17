@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v5.0.4
+IMAGE=quay.io/purestorage/pso-operator:v5.0.5
 NAMESPACE=pure-csi-operator
 KUBECTL=kubectl
 ORCHESTRATOR=k8s
