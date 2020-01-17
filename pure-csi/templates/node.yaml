@@ -135,8 +135,12 @@ spec:
              value: {{ .Values.flasharray.defaultFSType }}
            - name: PURE_DEFAULT_BLOCK_FS_OPT
              value: "{{ .Values.flasharray.defaultFSOpt }}"
+{{- $defaultMountOptString := "" }}
+{{- range .Values.flasharray.defaultMountOpt }}
+{{- $defaultMountOptString = printf "%s %s" $defaultMountOptString . }}
+{{- end}}
            - name: PURE_DEFAULT_BLOCK_MNT_OPT
-             value: "{{ .Values.flasharray.defaultMountOpt }}"
+             value: "{{$defaultMountOptString |trim}}"
            - name: PURE_PREEMPT_RWO_ATTACHMENTS_DEFAULT
              value: "{{ .Values.flasharray.preemptAttachments }}"
            - name: PURE_ISCSI_ALLOWED_CIDRS
