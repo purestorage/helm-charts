@@ -2,10 +2,25 @@ apiVersion: v1
 entries:
   pure-csi:
   - apiVersion: v1
-    appVersion: 1.0.4
-    created: "2019-12-16T14:45:13.1304542-08:00"
+    appVersion: 1.0.5
+    created: "2020-01-17T08:59:06.5161359-08:00"
     description: A Helm chart for Pure Service Orchestrator CSI driver
-    digest: b2f3bf5ce3f243c1d6665b92f03829edab6dbc08736b7f93ee85fb3037e23b0d
+    digest: f8c386c0859f348683aa90afd1d536cdbe22324d5722aad51e8def30624ebb23
+    icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/pure-storage.png
+    keywords:
+    - purestorage
+    maintainers:
+    - email: sales@purestorage.com
+      name: Pure Storage, Inc.
+    name: pure-csi
+    urls:
+    - https://purestorage.github.io/helm-charts/pure-csi-1.0.5.tgz
+    version: 1.0.5
+  - apiVersion: v1
+    appVersion: 1.0.4
+    created: "2020-01-17T08:59:06.5059731-08:00"
+    description: A Helm chart for Pure Service Orchestrator CSI driver
+    digest: c0e6b1be70e19f3f340857908bc624dbf9dcf194cf6e7b4558300cb4a7573c1a
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/pure-storage.png
     keywords:
     - purestorage
@@ -18,7 +33,7 @@ entries:
     version: 1.0.4
   - apiVersion: v1
     appVersion: 1.0.3
-    created: "2019-12-16T14:45:13.1254556-08:00"
+    created: "2020-01-17T08:59:06.4977737-08:00"
     description: A Helm chart for Pure Service Orchestrator CSI driver
     digest: 7a41f91add0640cb9dbe679c10a5475ba60bbe6195ae5df20fbd6bdf4ab4acea
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/pure-storage.png
@@ -33,7 +48,7 @@ entries:
     version: 1.0.3
   - apiVersion: v1
     appVersion: 1.0.2
-    created: "2019-12-16T14:45:13.1212885-08:00"
+    created: "2020-01-17T08:59:06.4867629-08:00"
     description: A Helm chart for Pure Service Orchestrator CSI driver
     digest: 696a9a4dc0913dd9f5da6a0f11eadfb41348700ca5053c581a42909f712f0869
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/pure-storage.png
@@ -48,7 +63,7 @@ entries:
     version: 1.0.2
   - apiVersion: v1
     appVersion: 1.0.1
-    created: "2019-12-16T14:45:13.1148838-08:00"
+    created: "2020-01-17T08:59:06.4765792-08:00"
     description: A Helm chart for Pure Service Orchestrator CSI driver
     digest: 382354d38cf8310b7d3a17816489545efc8c62e322db835d0ae2c949f90ef619
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/pure-storage.png
@@ -63,7 +78,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2019-12-16T14:45:13.1089796-08:00"
+    created: "2020-01-17T08:59:06.4662113-08:00"
     description: A Helm chart for Pure Service Orchestrator CSI driver
     digest: ffcd6cb34d2e3bb6b47f59630f9a9a5ba769a6580edb12619f3367542d8f98bc
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/pure-storage.png
@@ -79,9 +94,9 @@ entries:
   pure-k8s-plugin:
   - apiVersion: v1
     appVersion: 2.5.4
-    created: "2019-12-16T14:45:13.2474845-08:00"
+    created: "2020-01-17T08:59:06.6140001-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
-    digest: 1a3248fe98cc2657b024d251f5642329e57399816d864ae192235ab12abb9f45
+    digest: 09747e5cacc205a53e871783214d2c26f62eefe63593a03b5bad868bff2d189f
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
     keywords:
     - purestorage
@@ -94,7 +109,7 @@ entries:
     version: 2.5.4
   - apiVersion: v1
     appVersion: 2.5.2
-    created: "2019-12-16T14:45:13.2349105-08:00"
+    created: "2020-01-17T08:59:06.6087834-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: ff9cdee3dbed7d71b023f70578408f0ead9d7781fab155a2781aa827c23946ee
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
@@ -109,7 +124,7 @@ entries:
     version: 2.5.2
   - apiVersion: v1
     appVersion: 2.5.1
-    created: "2019-12-16T14:45:13.2160715-08:00"
+    created: "2020-01-17T08:59:06.60259-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: 8f05f041c091d0511ab2bd5d70b4e6fb4fd337f3ecb89511d09e3f8391a151cb
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
@@ -124,7 +139,7 @@ entries:
     version: 2.5.1
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2019-12-16T14:45:13.2110493-08:00"
+    created: "2020-01-17T08:59:06.5976452-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: f5cc239df4afef6546660b529cd0ccc37b32677172a7da9954ab49b04be3e296
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
@@ -139,7 +154,7 @@ entries:
     version: 2.5.0
   - apiVersion: v1
     appVersion: 2.4.1
-    created: "2019-12-16T14:45:13.2054095-08:00"
+    created: "2020-01-17T08:59:06.5924635-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: d9deb32fe38c10946e79a0841a66d14f77af879f9fcec36d24c03d524ffe6cc9
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
@@ -154,7 +169,7 @@ entries:
     version: 2.4.1
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2019-12-16T14:45:13.1986545-08:00"
+    created: "2020-01-17T08:59:06.5868535-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: b655dc0d0c40ed43ef30c430c3dac12cec3ab4ba85f4622daf4785ccf3b95dc3
     icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
@@ -169,7 +184,7 @@ entries:
     version: 2.4.0
   - apiVersion: v1
     appVersion: 2.3.0
-    created: "2019-12-16T14:45:13.1921633-08:00"
+    created: "2020-01-17T08:59:06.5804539-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: 09aeb2038d26e03fccefa19793de2213ef498de88b9a73e390220b6a71dd098a
     icon: https://github.com/purestorage/helm-charts/tree/master/pure-k8s-plugin/pure-storage.png
@@ -179,7 +194,7 @@ entries:
     version: 2.3.2
   - apiVersion: v1
     appVersion: 2.3.0
-    created: "2019-12-16T14:45:13.186177-08:00"
+    created: "2020-01-17T08:59:06.5751264-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: 3b80b7d5da4014178fb71a5a7650d2934a200c1189856fe64a071d5f277ff03e
     icon: https://github.com/purestorage/helm-charts/tree/master/pure-k8s-plugin/pure-storage.png
@@ -188,7 +203,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.3.1.tgz
     version: 2.3.1
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1814662-08:00"
+    created: "2020-01-17T08:59:06.5699003-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
     digest: 30a1498d2c9af4609d05ceb29016b239ee2437a94c94a87eaea604d0c484441e
     icon: https://github.com/purestorage/helm-charts/tree/master/pure-k8s-plugin/pure-storage.png
@@ -197,7 +212,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.3.0.tgz
     version: 2.3.0
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1666477-08:00"
+    created: "2020-01-17T08:59:06.5639754-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: 81673ebfa1a4380f841d6a705b5dd7c2fab300bfae6007983e58393f7407ac9b
     name: pure-k8s-plugin
@@ -205,7 +220,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.2.1.tgz
     version: 2.2.1
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1624487-08:00"
+    created: "2020-01-17T08:59:06.5586055-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: 23b5296d049f5b2a92b1b2ee9165a0c41178cea88f3bfb6eb560462ae1b5a728
     name: pure-k8s-plugin
@@ -213,7 +228,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.2.0.tgz
     version: 2.2.0
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1587276-08:00"
+    created: "2020-01-17T08:59:06.5523681-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: 939ae58208c7fbd5794a25ab14a715ecff60c79e98616e0954f7e8c16d0ed7dc
     name: pure-k8s-plugin
@@ -221,7 +236,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.1.2.tgz
     version: 2.1.2
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1531158-08:00"
+    created: "2020-01-17T08:59:06.5450503-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: cad41a8b5278f57c8d953768d9ad28df461af92183f6404d661e33973017a928
     name: pure-k8s-plugin
@@ -229,7 +244,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.1.1.tgz
     version: 2.1.1
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1447881-08:00"
+    created: "2020-01-17T08:59:06.5387472-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: bbccdbdb9426e9f801ae743b64ab9393416f9c097d5bf1d461c76484379faddd
     name: pure-k8s-plugin
@@ -237,7 +252,7 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.1.0.tgz
     version: 2.1.0
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1404715-08:00"
+    created: "2020-01-17T08:59:06.5322904-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: 05eed477a922dfcd35b3905fc0dcd50aa448fe7123bb6a5517dd9ab709dc906e
     name: pure-k8s-plugin
@@ -245,11 +260,11 @@ entries:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.0.1.tgz
     version: 2.0.1
   - apiVersion: v1
-    created: "2019-12-16T14:45:13.1367956-08:00"
+    created: "2020-01-17T08:59:06.5240112-08:00"
     description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/Openshift
     digest: 1cd0d82bf6e38183f70bd4160ddb74be76be355935ad6c41fdc1ef2403686f72
     name: pure-k8s-plugin
     urls:
     - https://purestorage.github.io/helm-charts/pure-k8s-plugin-2.0.0.tgz
     version: 2.0.0
-generated: "2019-12-16T14:45:13.101385-08:00"
+generated: "2020-01-17T08:59:06.4590059-08:00"
