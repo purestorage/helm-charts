@@ -136,8 +136,13 @@ spec:
            - name: PURE_DEFAULT_BLOCK_FS_OPT
              value: "{{ .Values.flasharray.defaultFSOpt }}"
 {{- $defaultMountOptString := "" }}
-{{- range .Values.flasharray.defaultMountOpt }}
-{{- $defaultMountOptString = printf "%s %s" $defaultMountOptString . }}
+# support either string or list for .Values.flasharray.defaultMountOpt
+{{- if kindIs "string" .Values.flasharray.defaultMountOpt }}
+  {{- $defaultMountOptString = .Values.flasharray.defaultMountOpt }}
+{{- else if or (kindIs "array" .Values.flasharray.defaultMountOpt) (kindIs "slice" .Values.flasharray.defaultMountOpt) }}
+  {{- range .Values.flasharray.defaultMountOpt }}
+    {{- $defaultMountOptString = printf "%s %s" $defaultMountOptString . }}
+  {{- end}}
 {{- end}}
            - name: PURE_DEFAULT_BLOCK_MNT_OPT
              value: "{{$defaultMountOptString |trim}}"
