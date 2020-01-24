@@ -12,12 +12,15 @@ parameters:
   backend: {{ .Values.storageclass.pureBackend | default "block" | quote }}
   csi.storage.k8s.io/fstype: {{ .Values.flasharray.defaultFSType | default "xfs" | quote }}
   createoptions: {{ .Values.flasharray.defaultFSOpt | default "-q" | quote }}
-
-{{- if .Values.flasharray.defaultMountOpt }}
+# support either string or list for .Values.flasharray.defaultMountOpt
+{{- if or (kindIs "array" .Values.flasharray.defaultMountOpt) (kindIs "slice" .Values.flasharray.defaultMountOpt) }}
 mountOptions:
   {{- range .Values.flasharray.defaultMountOpt }}
   - {{ . }}
   {{- end }}
+{{- else if kindIs "string" .Values.flasharray.defaultMountOpt}}
+mountOptions:
+  - {{ .Values.flasharray.defaultMountOpt }}
 {{- end }}
 ---
 kind: StorageClass
@@ -43,10 +46,13 @@ parameters:
   backend: block
   csi.storage.k8s.io/fstype: xfs
   createoptions: -q
-
-{{- if .Values.flasharray.defaultMountOpt }}
+# support either string or list for .Values.flasharray.defaultMountOpt
+{{- if or (kindIs "array" .Values.flasharray.defaultMountOpt) (kindIs "slice" .Values.flasharray.defaultMountOpt) }}
 mountOptions:
   {{- range .Values.flasharray.defaultMountOpt }}
   - {{ . }}
   {{- end }}
+{{- else if kindIs "string" .Values.flasharray.defaultMountOpt}}
+mountOptions:
+  - {{ .Values.flasharray.defaultMountOpt }}
 {{- end }}
