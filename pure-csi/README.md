@@ -54,7 +54,10 @@ Add the Pure Storage helm repo
 ```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
+# Helm 2
 helm search pure-csi
+# Helm 3
+helm search repo pure-csi
 ```
 
 Optional (offline installation): Download the helm chart
@@ -146,21 +149,32 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 Dry run the installation, and make sure your values.yaml is working correctly.
 
 ```bash
+# Helm 2
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+# Helm 3
+helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 
 ```bash
-# Install the plugin 
+# Install the plugin
+# Helm 2
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
+# Helm 3
+helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The values in your values.yaml overwrite the ones in pure-csi/values.yaml, but any specified with the `--set`
 option will take precedence.
 
 ```bash
+# Helm 2
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+            --set flasharray.sanType=fc \
+            --set namespace.pure=k8s_xxx \
+# Helm 3
+helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
 ```
@@ -208,7 +222,10 @@ the helm repository with the tag version required. This ensures the supporting c
 ```bash
 # list the avaiable version of the plugin
 helm repo update
+# Helm 2
 helm search pure-csi -l
+# Helm 3
+helm search repo pure-csi -l
 
 # select a target chart version to upgrade as
 helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
