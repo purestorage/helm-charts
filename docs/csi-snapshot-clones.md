@@ -95,7 +95,7 @@ To enable these features in OpenShift edit the Feature Gate Custom Resource, nam
 To validate if your feature gates have been correctly set, check the `api-server` pod in the `kube-system` namespace for one of the nodes in the cluster:
 
 ```
-kubectl describe -n kube-system pod kube-api-sever-<node name> | grep feature-gates
+kubectl describe -n kube-system pod kube-api-server-<node name> | grep feature-gates
 ```
 
 This should result is the following if the feature gates are correctly set.
