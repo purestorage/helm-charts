@@ -91,6 +91,7 @@ The following table lists the configurable parameters and their default values.
 | `flashblade.snapshotDirectoryEnabled`  | Enable/Disable FlashBlade snapshots |     `false`    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
+| `orchestrator.basePath`     | Base path of the Kubelet, should contain the `plugins`, `plugins_registry`, and `pods` directories. | `/var/lib/kubelet`                              |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
 | `mounter.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule CSI node plugin. | `{}` |
 | `mounter.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |

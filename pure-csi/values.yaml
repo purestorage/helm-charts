@@ -69,6 +69,9 @@ namespace:
 orchestrator:
   # name is either 'k8s' or 'openshift'
   name: k8s
+  # Use this to specify the base path of Kubelet. It should contain the "plugins", "plugins_registry", and "pods" directories.
+  # Default is /var/lib/kubelet. For CoreOS and Rancher, this is usually /opt/rke/var/lib/kubelet unless configured otherwise.
+  basePath: /var/lib/kubelet
 
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
