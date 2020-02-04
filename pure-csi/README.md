@@ -13,6 +13,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Kubernetes 1.13+
   - Minimum Helm version required is 2.9.1.
   - OpenShift 3.11
+  - Google Anthos 1.2.x
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
