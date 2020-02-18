@@ -300,6 +300,7 @@ rules:
     resources:
     - deployments
     - daemonsets
+    - replicasets
     verbs:
     - \"*\"
   - apiGroups:

@@ -373,6 +373,7 @@ rules:
     - deployments
     - daemonsets
     - statefulsets
+    - replicasets
     verbs:
     - \"*\"
   - apiGroups:
