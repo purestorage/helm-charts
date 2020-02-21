@@ -12,7 +12,7 @@ This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
   - For Platform specific requirements see
 - #### Environments Supported*:
   - Kubernetes 1.6+
-  - Minimum Helm version required is 3.0.0
+  - Minimum Helm version required is 3.0.3
   - [OpenShift](#openshift) 3.6+
   - AWS EKS 1.14
 - #### Other software dependencies:
