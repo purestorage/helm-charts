@@ -126,8 +126,13 @@ spec:
     storage: true
     schema:
       openAPIV3Schema:
-        type: object
         properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
           spec:
             type: object " | ${KUBECTL} apply -f -
 elif [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1beta1" ]]; then
@@ -294,15 +299,15 @@ rules:
     - \"get\"
     - \"list\"
     - \"watch\"
-  - apiGroups: 
+  - apiGroups:
     - storage.k8s.io
-    resources: 
+    resources:
     - \"csinodes\"
-    verbs: 
+    verbs:
     - \"get\"
     - \"list\"
     - \"watch\"
-  - apiGroups: 
+  - apiGroups:
     - \"\"
     resources:
     - \"nodes\"
@@ -311,23 +316,23 @@ rules:
     - \"list\"
     - \"watch\"
 # Need the same permissions as driver-registrat-runner clusterrole to be able to create it. Only for K8s 1.13
-  - apiGroups: 
+  - apiGroups:
     - \"apiextensions.k8s.io\"
-    resources: 
+    resources:
     - \"customresourcedefinitions\"
-    verbs: 
+    verbs:
     - \"*\"
-  - apiGroups: 
+  - apiGroups:
     - \"csi.storage.k8s.io\"
     resources:
     - \"csidrivers\"
-    verbs: 
+    verbs:
     - \"*\"
-  - apiGroups: 
+  - apiGroups:
     - \"storage.k8s.io\"
     resources:
     - \"csidrivers\"
-    verbs: 
+    verbs:
     - \"*\"
 
 ---

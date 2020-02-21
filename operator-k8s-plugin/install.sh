@@ -126,8 +126,13 @@ spec:
     storage: true
     schema:
       openAPIV3Schema:
-        type: object
         properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
           spec:
             type: object " | ${KUBECTL} apply -f -
 elif [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1beta1" ]]; then
