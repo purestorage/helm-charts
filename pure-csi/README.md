@@ -11,8 +11,8 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Ubuntu 18.04
 - #### Environments Supported*:
   - Kubernetes 1.13+
-  - Minimum Helm version required is 2.9.1.
-  - OpenShift 3.11
+  - Minimum Helm version required is 3.0.0.
+  - OpenShift 3.11, 4.2, 4.3
   - Google Anthos 1.2.x
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
@@ -55,9 +55,6 @@ Add the Pure Storage helm repo
 ```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
-# Helm 2
-helm search pure-csi
-# Helm 3
 helm search repo pure-csi
 ```
 
@@ -151,9 +148,6 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 Dry run the installation, and make sure your values.yaml is working correctly.
 
 ```bash
-# Helm 2
-helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
-# Helm 3
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
@@ -161,9 +155,6 @@ Run the Install
 
 ```bash
 # Install the plugin
-# Helm 2
-helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
-# Helm 3
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
@@ -171,11 +162,6 @@ The values in your values.yaml overwrite the ones in pure-csi/values.yaml, but a
 option will take precedence.
 
 ```bash
-# Helm 2
-helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
-            --set flasharray.sanType=fc \
-            --set namespace.pure=k8s_xxx \
-# Helm 3
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
@@ -224,9 +210,6 @@ the helm repository with the tag version required. This ensures the supporting c
 ```bash
 # list the avaiable version of the plugin
 helm repo update
-# Helm 2
-helm search pure-csi -l
-# Helm 3
 helm search repo pure-csi -l
 
 # select a target chart version to upgrade as
