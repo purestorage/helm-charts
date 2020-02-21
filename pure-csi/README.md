@@ -11,7 +11,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Ubuntu 18.04
 - #### Environments Supported*:
   - Kubernetes 1.13+
-  - Minimum Helm version required is 3.0.0.
+  - Minimum Helm version required is 3.0.3.
   - OpenShift 3.11, 4.2, 4.3
   - Google Anthos 1.2.x
 - #### Other software dependencies:
