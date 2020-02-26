@@ -478,5 +478,5 @@ done
 if [ $counter -gt $TIMEOUT ]; then
     echo "VolumeSnapshotClasss CRD not found!"
 else
-    $KUBECTL apply -f ../pure-csi/snapshotclass.yaml
+    $KUBECTL apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
 fi
