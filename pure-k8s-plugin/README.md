@@ -29,14 +29,17 @@ _* Please see release notes for details_
 ## How to install
 
 Add the Pure Storage helm repo
-```
+```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
+# Helm 2
 helm search pure-k8s-plugin
+# Helm 3
+helm search repo pure-k8s-plugin
 ```
 
 Optional (offline installation): Download the helm chart
-```
+```bash
 git clone https://github.com/purestorage/helm-charts.git
 ```
 
@@ -50,7 +53,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `2.5.4`                                   |
+| `image.tag`                 | The image tag to pull              | `2.5.7`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always`                                  |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
@@ -120,12 +123,15 @@ For security reason, it's strongly recommended to install the plugin in a separa
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
 Dry run the installation, and make sure your values.yaml is working correctly:
-```
+```bash
+# Helm 2
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+# Helm 3
+helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 **Run the Install:**
-```
+```bash
 # For Openshift only:
 #   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
 #   You can find the serviceaccount info from your values.yaml (if not in it, find in the default values.yaml).
@@ -133,13 +139,22 @@ helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namesp
 oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>
 
 # Install the plugin (works for both openshift and kubernetes)
+# Helm 2
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
+# Helm 3
+helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The values in your `values.yaml` overwrite the ones in `pure-k8s-plugin/values.yaml`, but any specified with the `--set`
 option will take precedence.
-```
+```bash
+# Helm 2
 helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+            --set flasharray.sanType=fc \
+            --set namespace.pure=k8s_xxx \
+            --set orchestrator.name=openshift
+# Helm 3
+helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
             --set orchestrator.name=openshift
@@ -151,7 +166,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
-```
+```bash
 helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
 ```
 
@@ -168,10 +183,13 @@ More details on using configuration labels can be found [here](../docs/flex-volu
 
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml. Use the version of
 the helm repository with the tag version required. This ensures the supporting changes are present in the templates.
-```
+```bash
 # list the avaiable version of the plugin
 helm repo update
+# Helm 2
 helm search pure-k8s-plugin -l
+# Helm 3
+helm search repo pure-k8s-plugin -l
 
 # select a target chart version to upgrade as
 helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
@@ -186,7 +204,7 @@ This upgrade will not impact the in-use volumes/filesystems from data path persp
     a. Convert `pure.json` into the `arrays` info in your `values.yaml` (online tool: https://www.json2yaml.com/).
 3. Ensure `flexPath` match up exactly with kubelet's `volume-plugin-dir` parameter.<br/> 
     a. How to find the full path of the directory for pure flex plugin (i.e. `volume-plugin-dir`) 
-    ```
+    ```bash
     # ssh to a node which has pure flex plugin installed, and check the default value of "volume-plugin-dir" from "kubelet --help"
     # and then find the full path of the directory as below:
 

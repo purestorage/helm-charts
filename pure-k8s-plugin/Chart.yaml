@@ -1,8 +1,8 @@
 apiVersion: v1
 description: A Helm chart for Pure Storage persistent storage driver for Kubernetes/OpenShift
 name: pure-k8s-plugin
-version: 2.5.4
-appVersion: 2.5.4
+version: 2.5.7
+appVersion: 2.5.7
 icon: https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-k8s-plugin/pure-storage.png
 keywords:
 - purestorage

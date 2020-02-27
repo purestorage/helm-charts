@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v0.0.7
+IMAGE=quay.io/purestorage/pso-operator:v0.0.10
 NAMESPACE=pso-operator
 KUBECTL=oc
 ORCHESTRATOR=k8s
@@ -15,42 +15,42 @@ if [[ "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 while (("$#")); do
-case "$1" in
-  --image=*)
-  IMAGE="${1#*=}"
-  shift
-  ;;
-  --namespace=*)
-  NAMESPACE="${1#*=}"
-  shift
-  ;;
-  --orchestrator=*)
-  ORCHESTRATOR="${1#*=}"
-  if [[ "${ORCHESTRATOR}" == "k8s" || "${ORCHESTRATOR}" == "K8s" ]]; then
-      KUBECTL=kubectl
-  elif [[ "${ORCHESTRATOR}" == "openshift" ]]; then
-      KUBECTL=oc
-  else
-      echo "orchestrator can only be 'k8s' or 'openshift'"
-      usage
-      exit
-  fi
-  shift
-  ;;
-  -f)
-  if [ "$#" -lt 2 ]; then
-    usage
-    exit
-  fi
-  VALUESFILE="$2"
-  shift
-  shift
-  ;;
-  -h|--help|*)
-  usage
-  exit
-  ;;
-  esac
+    case "$1" in
+        --image=*)
+            IMAGE="${1#*=}"
+            shift
+        ;;
+        --namespace=*)
+            NAMESPACE="${1#*=}"
+            shift
+        ;;
+        --orchestrator=*)
+            ORCHESTRATOR="${1#*=}"
+            if [[ "${ORCHESTRATOR}" == "k8s" || "${ORCHESTRATOR}" == "K8s" ]]; then
+                KUBECTL=kubectl
+            elif [[ "${ORCHESTRATOR}" == "openshift" ]]; then
+                KUBECTL=oc
+            else
+                echo "orchestrator can only be 'k8s' or 'openshift'"
+                usage
+                exit
+            fi
+            shift
+        ;;
+        -f)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit
+            fi
+            VALUESFILE="$2"
+            shift
+            shift
+        ;;
+        -h|--help|*)
+            usage
+            exit
+        ;;
+    esac
 done
 
 CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
@@ -72,11 +72,11 @@ KUBECTL_NS="${KUBECTL} apply -n ${NAMESPACE} -f"
 if [[ "${KUBECTL}" == "kubectl" ]]; then
     $KUBECTL create namespace ${NAMESPACE}
 else
-    $KUBECTL adm new-project ${NAMESPACE} 
-    
+    $KUBECTL adm new-project ${NAMESPACE}
+
     # Since this plugin needs to mount external volumes to containers, create a SCC to allow the flex-daemon pod to
     # use the hostPath volume plugin
-echo '
+    echo '
 kind: SecurityContextConstraints
 apiVersion: v1
 metadata:
@@ -99,13 +99,39 @@ supplementalGroups:
     if [[ -z ${SVC_ACCNT} ]]; then
         SVC_ACCNT=pure
     fi
-    $KUBECTL adm policy add-scc-to-user hostpath -n ${NAMESPACE} -z ${SVC_ACCNT} 
+    $KUBECTL adm policy add-scc-to-user hostpath -n ${NAMESPACE} -z ${SVC_ACCNT}
 fi
 
 # 2. Create CRD and wait until TIMEOUT seconds for the CRD to be established.
 counter=0
 TIMEOUT=10
-echo "
+
+if [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1" ]]; then
+    echo "
+apiVersion: ${CRDAPIVERSION}
+kind: CustomResourceDefinition
+metadata:
+  name: psoplugins.purestorage.com
+spec:
+  group: purestorage.com
+  names:
+    kind: PSOPlugin
+    listKind: PSOPluginList
+    plural: psoplugins
+    singular: psoplugin
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object " | ${KUBECTL} apply -f -
+elif [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1beta1" ]]; then
+    echo "
 apiVersion: ${CRDAPIVERSION}
 kind: CustomResourceDefinition
 metadata:
@@ -124,22 +150,26 @@ spec:
     storage: true
   subresources:
     status: {} " | ${KUBECTL} apply -f -
+else
+    echo "Cluster does not support CustomResourceDefinitions versions apiextensions.k8s.io/v1beta1 or apiextensions.k8s.io/v1, stopping..."
+    exit 1
+fi
 
 while true; do
-  result=$(${KUBECTL} get crd/psoplugins.purestorage.com -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' | grep -i true)
-  if [ $? -eq 0 ]; then
-     break
-  fi
-  counter=$(($counter+1))
-  if [ $counter -gt $TIMEOUT ]; then
-     break
-  fi
-  sleep 1
+    result=$(${KUBECTL} get crd/psoplugins.purestorage.com -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' | grep -i true)
+    if [ $? -eq 0 ]; then
+        break
+    fi
+    counter=$(($counter+1))
+    if [ $counter -gt $TIMEOUT ]; then
+        break
+    fi
+    sleep 1
 done
 
 if [ $counter -gt $TIMEOUT ]; then
-   echo "Timed out waiting for CRD"
-   exit 1
+    echo "Timed out waiting for CRD"
+    exit 1
 fi
 
 
@@ -270,6 +300,7 @@ rules:
     resources:
     - deployments
     - daemonsets
+    - replicasets
     verbs:
     - \"*\"
   - apiGroups:

@@ -1,0 +1,25 @@
+# Automatic node configuration has only been tested on GKE.
+{{ if (.Capabilities.KubeVersion.GitVersion | regexMatch "gke") }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pso-daemonset
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      name: pso-daemonset
+  template:
+    metadata:
+      labels:
+        name: pso-daemonset
+    spec:
+      hostPID: true
+      containers:
+      - name: pso-daemonset
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/sh", "-c", "/node-configure.sh"]
+        securityContext:
+          privileged: true
+{{ end }}

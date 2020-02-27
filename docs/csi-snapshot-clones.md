@@ -15,7 +15,7 @@ These features use native Kubernetes APIs to call the feature-set in the underly
 The following dependencies must be true before the snapshot and clone functionality can be used:
 
 * Kubernetes already running, deployed, configured, etc
-* PSO correctly installed and using [Pure CSI Driver v5.0.4](https://github.com/purestorage/helm-charts/releases/tag/5.0.4)+.
+* PSO correctly installed and using [Pure CSI Driver v5.0.5](https://github.com/purestorage/helm-charts/releases/tag/5.0.5)+.
 * For the snapshot feature, ensure you have Kubernetes 1.13+ installed and the `VolumeSnapshotDataSource` feature gate is enabled
 * For the clone feature, ensure you have Kubernetes 1.15+ installed and the `VolumePVCDataSource` feature gate is enabled
 
@@ -95,7 +95,7 @@ To enable these features in OpenShift edit the Feature Gate Custom Resource, nam
 To validate if your feature gates have been correctly set, check the `api-server` pod in the `kube-system` namespace for one of the nodes in the cluster:
 
 ```
-kubectl describe -n kube-system pod kube-api-sever-<node name> | grep feature-gates
+kubectl describe -n kube-system pod kube-api-server-<node name> | grep feature-gates
 ```
 
 This should result is the following if the feature gates are correctly set.

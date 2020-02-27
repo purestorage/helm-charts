@@ -13,6 +13,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Kubernetes 1.13+
   - Minimum Helm version required is 2.9.1.
   - OpenShift 3.11
+  - Google Anthos 1.2.x
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
@@ -54,7 +55,10 @@ Add the Pure Storage helm repo
 ```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
+# Helm 2
 helm search pure-csi
+# Helm 3
+helm search repo pure-csi
 ```
 
 Optional (offline installation): Download the helm chart
@@ -72,7 +76,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `5.0.4`                                   |
+| `image.tag`                 | The image tag to pull              | `5.0.7`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always      `                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
@@ -88,6 +92,7 @@ The following table lists the configurable parameters and their default values.
 | `flashblade.snapshotDirectoryEnabled`  | Enable/Disable FlashBlade snapshots |     `false`    |
 | `namespace.pure`            | Namespace for the backend storage  | `k8s`                                     |
 | `orchestrator.name`         | Orchestrator type, such as openshift, k8s | `k8s`                              |
+| `orchestrator.basePath`     | Base path of the Kubelet, should contain the `plugins`, `plugins_registry`, and `pods` directories. | `/var/lib/kubelet`                              |
 | *`arrays`                    | Array list of all the backend FlashArrays and FlashBlades | must be set by user, see an example below                |
 | `mounter.nodeSelector`              | [NodeSelectors](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) Select node-labels to schedule CSI node plugin. | `{}` |
 | `mounter.tolerations`               | [Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/#concepts)  | `[]` |
@@ -146,21 +151,32 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 Dry run the installation, and make sure your values.yaml is working correctly.
 
 ```bash
+# Helm 2
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
+# Helm 3
+helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 
 ```bash
-# Install the plugin 
+# Install the plugin
+# Helm 2
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
+# Helm 3
+helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The values in your values.yaml overwrite the ones in pure-csi/values.yaml, but any specified with the `--set`
 option will take precedence.
 
 ```bash
+# Helm 2
 helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
+            --set flasharray.sanType=fc \
+            --set namespace.pure=k8s_xxx \
+# Helm 3
+helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
 ```
@@ -208,7 +224,10 @@ the helm repository with the tag version required. This ensures the supporting c
 ```bash
 # list the avaiable version of the plugin
 helm repo update
+# Helm 2
 helm search pure-csi -l
+# Helm 3
+helm search repo pure-csi -l
 
 # select a target chart version to upgrade as
 helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
