@@ -105,34 +105,8 @@ fi
 # 2. Create CRD and wait until TIMEOUT seconds for the CRD to be established.
 counter=0
 TIMEOUT=10
-
-if [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1" ]]; then
-    echo "
-apiVersion: ${CRDAPIVERSION}
-kind: CustomResourceDefinition
-metadata:
-  name: psoplugins.purestorage.com
-spec:
-  group: purestorage.com
-  names:
-    kind: PSOPlugin
-    listKind: PSOPluginList
-    plural: psoplugins
-    singular: psoplugin
-  scope: Namespaced
-  versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          spec:
-            type: object " | ${KUBECTL} apply -f -
-elif [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1beta1" ]]; then
-    echo "
-apiVersion: ${CRDAPIVERSION}
+echo "
+apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: psoplugins.purestorage.com
@@ -150,10 +124,6 @@ spec:
     storage: true
   subresources:
     status: {} " | ${KUBECTL} apply -f -
-else
-    echo "Cluster does not support CustomResourceDefinitions versions apiextensions.k8s.io/v1beta1 or apiextensions.k8s.io/v1, stopping..."
-    exit 1
-fi
 
 while true; do
     result=$(${KUBECTL} get crd/psoplugins.purestorage.com -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' | grep -i true)
