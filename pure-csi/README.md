@@ -11,7 +11,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Ubuntu 18.04
 - #### Environments Supported*:
   - Kubernetes 1.13+
-  - Minimum Helm version required is 3.0.3.
+  - Minimum Helm version required is 3.1.0.
   - OpenShift 3.11
   - Google Anthos 1.2.x
 - #### Other software dependencies:
@@ -115,23 +115,15 @@ arrays:
   FlashArrays:
     - MgmtEndPoint: "1.2.3.4"
       APIToken: "a526a4c6-18b0-a8c9-1afa-3499293574bb"
-      Labels:
-        rack: "22"
-        env: "prod"
     - MgmtEndPoint: "1.2.3.5"
       APIToken: "b526a4c6-18b0-a8c9-1afa-3499293574bb"
   FlashBlades:
     - MgmtEndPoint: "1.2.3.6"
       APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
       NfsEndPoint: "1.2.3.7"
-      Labels:
-        rack: "7b"
-        env: "dev"
     - MgmtEndPoint: "1.2.3.8"
       APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
       NfsEndPoint: "1.2.3.9"
-      Labels:
-        rack: "6a"
 ```
 
 ## Assigning Pods to Nodes
@@ -145,6 +137,12 @@ For security reason, it's strongly recommended to install the plugin in a separa
 
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
+Create a namespace for PSO to install into
+
+```bash
+kubectl createnamespace <namespace>
+```
+
 Dry run the installation, and make sure your values.yaml is working correctly.
 
 ```bash
@@ -154,7 +152,6 @@ helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_
 Run the Install
 
 ```bash
-# Install the plugin
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
