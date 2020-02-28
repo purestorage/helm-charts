@@ -12,7 +12,7 @@ This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
   - For Platform specific requirements see
 - #### Environments Supported*:
   - Kubernetes 1.6+
-  - Minimum Helm version required is 2.9.1
+  - Minimum Helm version required is 3.0.3
   - [OpenShift](#openshift) 3.6+
   - AWS EKS 1.14
 - #### Other software dependencies:
@@ -124,9 +124,6 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 
 Dry run the installation, and make sure your values.yaml is working correctly:
 ```bash
-# Helm 2
-helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
-# Helm 3
 helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
@@ -139,21 +136,12 @@ helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f
 oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>
 
 # Install the plugin (works for both openshift and kubernetes)
-# Helm 2
-helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
-# Helm 3
 helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
 The values in your `values.yaml` overwrite the ones in `pure-k8s-plugin/values.yaml`, but any specified with the `--set`
 option will take precedence.
 ```bash
-# Helm 2
-helm install --name pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
-            --set flasharray.sanType=fc \
-            --set namespace.pure=k8s_xxx \
-            --set orchestrator.name=openshift
-# Helm 3
 helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
@@ -186,9 +174,6 @@ the helm repository with the tag version required. This ensures the supporting c
 ```bash
 # list the avaiable version of the plugin
 helm repo update
-# Helm 2
-helm search pure-k8s-plugin -l
-# Helm 3
 helm search repo pure-k8s-plugin -l
 
 # select a target chart version to upgrade as
