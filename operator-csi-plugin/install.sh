@@ -431,7 +431,7 @@ spec:
   # Add fields here' | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|"; sed 's/.*/  &/' ${VALUESFILE}) | ${KUBECTL_NS} -
 
 counter=0
-TIMEOUT=30
+TIMEOUT=300
 
 while true; do
     result=$(${KUBECTL} get crd/volumesnapshotclasses.snapshot.storage.k8s.io -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' --ignore-not-found | grep -i true)
