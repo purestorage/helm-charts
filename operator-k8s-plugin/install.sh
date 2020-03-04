@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v0.0.10
+IMAGE=quay.io/purestorage/pso-operator:v0.0.11
 NAMESPACE=pso-operator
 KUBECTL=oc
 ORCHESTRATOR=k8s
@@ -53,11 +53,14 @@ while (("$#")); do
     esac
 done
 
-CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
 CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
 CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
 ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
-ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+if [[ "${ORCHESTRATOR}" == "openshift" ]]; then
+    ROLEBINDINGAPIVERSION="rbac.authorization.k8s.io/v1beta1"
+else
+    ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+fi
 DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 if [[ -z ${VALUESFILE} || ! -f ${VALUESFILE} ]]; then
