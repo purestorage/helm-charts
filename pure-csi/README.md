@@ -140,7 +140,7 @@ Customize your values.yaml including arrays info (replacement for pure.json), an
 Create a namespace for PSO to install into
 
 ```bash
-kubectl createnamespace <namespace>
+kubectl create namespace <namespace>
 ```
 
 Dry run the installation, and make sure your values.yaml is working correctly.
