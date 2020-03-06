@@ -9,11 +9,10 @@ This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
   - CoreOS (Ladybug 1298.6.0 and above)
   - Ubuntu 16.04
   - Ubuntu 18.04
-  - For Platform specific requirements see
 - #### Environments Supported*:
   - Kubernetes 1.6+
-  - Minimum Helm version required is 3.0.3
-  - [OpenShift](#openshift) 3.6+
+  - Helm 2.9.1+ (**NOTE:** Helm3 is not supported for FlexDriver)
+  - [OpenShift](#openshift) 3.11
   - AWS EKS 1.14
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
@@ -29,16 +28,15 @@ _* Please see release notes for details_
 ## How to install
 
 Add the Pure Storage helm repo
+
 ```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
-# Helm 2
-helm search pure-k8s-plugin
-# Helm 3
 helm search repo pure-k8s-plugin
 ```
 
 Optional (offline installation): Download the helm chart
+
 ```bash
 git clone https://github.com/purestorage/helm-charts.git
 ```
@@ -118,18 +116,21 @@ set but `provisioner.nodeSelector` is not, provisioner will use the value of
 compatible.
 
 ## Install the plugin in a separate namespace (i.e. project)
+
 For security reason, it's strongly recommended to install the plugin in a separate namespace/project. Make sure the namespace is existing, otherwise create it before installing the plugin.
 
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
 Dry run the installation, and make sure your values.yaml is working correctly:
+
 ```bash
 helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 **Run the Install:**
+
 ```bash
-# For Openshift only:
+# For Openshift 3.11 only:
 #   you need to add the privileged securityContextConstraints (scc) to the service account which is created for plugin installation.
 #   You can find the serviceaccount info from your values.yaml (if not in it, find in the default values.yaml).
 #   The service account should be "system:serviceaccount:<project>:<clusterrolebinding.serviceAccount.name>"
@@ -139,8 +140,8 @@ oc adm policy add-scc-to-user privileged system:serviceaccount:<project>:<cluste
 helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
-The values in your `values.yaml` overwrite the ones in `pure-k8s-plugin/values.yaml`, but any specified with the `--set`
-option will take precedence.
+The values in your `values.yaml` overwrite the ones in `pure-k8s-plugin/values.yaml`, but any specified with the `--set` option will take precedence.
+
 ```bash
 helm install pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
@@ -154,6 +155,7 @@ Update your values.yaml with the correct arrays info, and then upgrade the helm 
 
 **Note**: Ensure that the values for `--set` options match when run with the original install step. It is highly recommended
 to use the values.yaml and not specify options with `--set` to make this easier.
+
 ```bash
 helm upgrade pure-storage-driver pure/pure-k8s-plugin --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --set ...
 ```
@@ -171,6 +173,7 @@ More details on using configuration labels can be found [here](../docs/flex-volu
 
 It's not recommended to upgrade by setting the `image.tag` in the image section of values.yaml. Use the version of
 the helm repository with the tag version required. This ensures the supporting changes are present in the templates.
+
 ```bash
 # list the avaiable version of the plugin
 helm repo update
@@ -213,6 +216,7 @@ may be steps required to ensure it can use the FlexVolume plugin. In general
 there are a few requirements that must be met for the plugin to work.
 
 ### Requirements
+
 The container running the kubelet service must have:
 
 * Access to the host systems PID namespace
@@ -242,6 +246,7 @@ Some Kubernetes environments will require special configuration, especially
 on restrictive host operating systems where parts of it are mounted read-only.
 
 ### Atomic
+
 Atomic is configured to have the `/usr` directory tree mounted
 as read-only. This will cause problems installing the `pure-flex` plugin
 as write permission is required.
@@ -257,6 +262,7 @@ Once changed the kublet parameters need to be updated to set the
 via the `flexPath` option in your `values.yaml`.
 
 ### CoreOS
+
 Similar to the Atomic hosts this has a read-only `/usr` tree and requires
 the plugin to be installed to an alternate location. Follow the same
 recommendations to use `/etc/kubernetes/volumeplugins/` and adjust
@@ -264,6 +270,7 @@ the kubelet service to use the `--volume-plugin-dir` CLI argument and
 mount the `/etc/kubernetes` directory into the container.
 
 ### OpenShift
+
 Specify the `orchestrator.name` to be `openshift` and configure the other
 OpenShift specific options.
 
@@ -274,6 +281,7 @@ the right permissions or add the privileged scc to the default service
 account.**
 
 ### OpenShift Containerized Deployment
+
 When deploying OpenShift with the containerized deployment method it is
 going to require mounting the plugin directory through to the container
 running the kubelet service.
@@ -284,10 +292,13 @@ path to use is something like `/etc/origin/kubelet-plugins` or similar
 as the node config path is passed through to the container.
 
 # Release Notes
+
 Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)
 
 ### Known Vulnerabilities 
+
 None
 
 # License
+
 https://www.purestorage.com/content/dam/pdf/en/legal/pure-storage-plugin-end-user-license-agreement.pdf
