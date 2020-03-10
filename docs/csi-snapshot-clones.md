@@ -154,7 +154,7 @@ spec:
     apiGroup: snapshot.storage.k8s.io
 ```
 
-**NOTE:** Recovery of a volume snapshot to overwite its parent persistant volume is not supported in he CSI specification, however this can be achieved with a FlashArray based PVC and snapshot using the following steps:
+**NOTE:** Recovery of a volume snapshot to overwite its parent persistant volume is not supported in the CSI specification, however this can be achieved with a FlashArray based PVC and snapshot using the following steps:
 
 1. Reduce application deployment replica count to zero to ensure there are no actives IOs through the PVC.
 2. Log on to the FlashArray hosting the underlying PV and perform a snaphot restore through the GUI. More details can be found in the FlashArray Users Guide. This can also be achieved using the `purefa_snap` Ansible module, see [here](https://github.com/Pure-Storage-Ansible/FlashArray-Collection/blob/master/collections/ansible_collections/purestorage/flasharray/docs/purefa_snap.rst) for more details.
