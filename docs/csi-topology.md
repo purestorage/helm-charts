@@ -2,24 +2,25 @@
 
 ## Introduction
 
-The Pure Service Orchestrator Kubernetes CSI driver includes support for topology. This feature allows Kubernetes to make intelligent decisions when dynamically provisioning volumes by getting scheduler input on the best place to provision a volume for a pod.
+The Pure Service Orchestrator Kubernetes CSI driver includes support for storage topology. This feature allows Kubernetes to make intelligent decisions when dynamically provisioning volumes by getting scheduler input on the best place to provision a volume for a pod.
 For example, in multi-zone clusters, volumes will get provisioned in an appropriate zone that can run your pod, allowing you to quickly deploy and scale your stateful workloads to provide high availability and better fault tolerance.
 
-It also allows topology to be further specified or constrained for both pre-provisioned and dynamic provisioned PersistentVolumes (PV)  so that the Kubernetes scheduler can correctly place a Pod using such a volume to an appropriate node.
+It also allows topology to be further specified or constrained for both pre-provisioned and dynamically provisioned PersistentVolumes (PV) so that the Kubernetes scheduler can correctly place a Pod using such a volume to an appropriate node.
   
 
 ## Dependencies
 
-The following dependencies must be true before the snapshot and clone functionality can be used:
+The following dependencies must be true before the storage topology functionality can be used:
 
 * Kubernetes already running, deployed, configured, etc
 * PSO correctly installed and using [Pure CSI Driver v6.0.0](https://github.com/purestorage/helm-charts/releases/tag/6.0.0)+.
 * Ensure you have Kubernetes 1.13+ installed, if you are using a version less than 1.13, please make sure the `VolumeScheduling` feature gate is enabled
 
 ## Caveats
-* Please make sure your backend arrays supports all topologies defined in you system. Failing to do so will potential leak volumes, since 
-PSO follows the [CSI Spec](https://github.com/container-storage-interface/spec/blob/master/spec.md) to do its best effort to provision a volume for you using the remaining preferred topologies specified by the scheduler.
-
+* Please make sure your backend arrays supports all topologies defined in your system. Failing to do so will potential leak volumes. 
+PSO follows the [CSI Spec](https://github.com/container-storage-interface/spec/blob/master/spec.md) to do its best effort to provision a volume with all possible preferred topologies specified by the scheduler.
+For example, if you wants to provision a pod to be in `region-2` by assigning the topology via `nodeAffinity`, scheduler will ask PSO to provision a volume with the preferred topologies like [`region-2` , `region-1`, `region-0`]. In this case, if your arrays don't support `region-2`, PSO end up to provision the volume in the one of the remaining regions [`region-1`, `region-0`].
+The scheduler will not provision the pod because the the volume's topology does not match the pod's requirement. This is an expected behavior, but it leaks the volume and you need to manually delete the created volume.
 ## How to Use The Topology-Aware Provisioning Feature in PSO
 It is straightforward to use the topology feature in PSO. PSO provides five pre-defined topology keys to help you label your backend arrays, such as FlashArray for FlashBlade, as well as pods and nodes resources in Kubernetes.
 These topology keys are:
@@ -33,41 +34,30 @@ These topology keys are:
 To add topology labels to your backend array, please add them in the `Labels` section of you `values.yaml` file.
 
 ```yaml
-{
-  "FlashArrays": [
-    {
-      "MgmtEndPoint": "10.0.0.1",
-      "APIToken": "",
-      "Labels": {
-        "topology.purestorage.com/zone" : "zone-0",
-        "topology.purestorage.com/region" : "region-0",
-        "topology.purestorage.com/env" : "prod",
-      }
-
-    },
-    {
-      "MgmtEndPoint": "20.0.0.1",
-      "APIToken": "",
-      "Labels": {
-        "topology.purestorage.com/zone" : "zone-1",
-        "topology.purestorage.com/region" : "region-1",
-        "topology.purestorage.com/env" : "dev",
-      }
-    }
-  ],
-  "FlashBlades": [
-    {
-      "MgmtEndPoint": "10.0.0.2",
-      "APIToken": "",
-      "NFSEndPoint": "",
-      "Labels": {
-        "topology.purestorage.com/zone" : "zone-0",
-        "topology.purestorage.com/region" : "region-0",
-        "topology.purestorage.com/env" : "prod",
-      }
-    }
-  ]
-}
+FlashArrays:
+     # fs59-20
+     - MgmtEndPoint: "20.0.0.1"
+       APIToken: ""
+       Labels:
+         topology.purestorage.com/zone : "zone-0"
+         topology.purestorage.com/region : "region-0"
+         topology.purestorage.com/env: "dev"
+     # fs59-21
+     - MgmtEndPoint: "10.0.0.2"
+       APIToken: ""
+       Labels:
+         topology.purestorage.com/zone : "zone-1"
+         topology.purestorage.com/region : "region-1"
+         topology.purestorage.com/env: "dev"
+   FlashBlades:
+     # c14-59d-36-irp
+     - MgmtEndPoint: "10.0.0.2"
+       APIToken: ""
+       NFSEndPoint: ""
+       Labels:
+         topology.purestorage.com/zone: "zone-0"
+         topology.purestorage.com/region: "region-0"
+         topology.purestorage.com/env: "dev"
 ``` 
 
 ### Example of Labeling Topology to Cluster Nodes
@@ -87,7 +77,7 @@ A new StorageClass field `volumeBindingMode` is introduced to control the volume
 You can specify two values:
 
 * `Immediate`: This the default binding method. External-provisioner will pass in all available topologies in the cluster for the driver.
-* `WaitForFirstConsumer`: external-provisioner will wait for the scheduler to pick a node. The topology of that selected node will then be set as the first entry in  CreateVolumeRequest.accessibility_requirements.preferred . All remaining topologies are still included in the requisite and preferred fields to support storage systems that span across multiple topologies.
+* `WaitForFirstConsumer`: external-provisioner will wait for the scheduler to pick a node. The topology of that selected node will then be set as the first entry in `CreateVolumeRequest.accessibility_requirements.preferred`. All remaining topologies are still included in the requisite and preferred fields to support storage systems that span across multiple topologies.
 
 ### Example of StorageClass with Delayed Volume Binding 
 ```yaml
@@ -97,7 +87,6 @@ metadata:
   name: pure-block-delay-binding
   labels:
     kubernetes.io/cluster-service: "true"
-    generator: helm
     chart: pure-csi
     release: "pure-storage-driver"
 provisioner: pure-csi 
