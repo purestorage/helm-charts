@@ -56,11 +56,9 @@ The install script will do the following:
 1. Create New Project.<br/>
 The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pso-operator`` namespace is used.<br/> 
 **OpenShift Note**: In OpenShift 3.11, the default node-selector for a project does not allow PSO Operator to mount volumes on master and infra nodes. 
-If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then modify the install script as follows.<br/>
+If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then set `--node-selector` flag to `""` when running the install script as follows.<br/>
 ```
-Existing line:     $KUBECTL adm new-project ${NAMESPACE}
-
-Change to allow volume mounts on master and infra nodes:     $KUBECTL adm new-project ${NAMESPACE} --node-selector=""
+install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> --node-selector=<node-selector> -f <values.yaml>
 ```
 
 2. Create a Custom Resource Definition (CRD) for the PSO Operator. <br/>

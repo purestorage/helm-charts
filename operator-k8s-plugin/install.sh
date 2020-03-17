@@ -3,6 +3,7 @@ IMAGE=quay.io/purestorage/pso-operator:v0.0.11
 NAMESPACE=pso-operator
 KUBECTL=oc
 ORCHESTRATOR=k8s
+NODESELECTOR="unset"
 
 usage()
 {
@@ -35,6 +36,10 @@ while (("$#")); do
                 usage
                 exit
             fi
+            shift
+        ;;
+        --node-selector=*)
+            NODESELECTOR="${1#*=}"
             shift
         ;;
         -f)
@@ -75,7 +80,12 @@ KUBECTL_NS="${KUBECTL} apply -n ${NAMESPACE} -f"
 if [[ "${KUBECTL}" == "kubectl" ]]; then
     $KUBECTL create namespace ${NAMESPACE}
 else
-    $KUBECTL adm new-project ${NAMESPACE}
+    if [[ "${NODESELECTOR}" == "unset" ]]; then
+        # Use openshift default node-selector
+        $KUBECTL adm new-project ${NAMESPACE}
+    else
+        $KUBECTL adm new-project ${NAMESPACE} --node-selector=${NODESELECTOR}
+    fi
 
     # Since this plugin needs to mount external volumes to containers, create a SCC to allow the flex-daemon pod to
     # use the hostPath volume plugin
@@ -98,7 +108,7 @@ supplementalGroups:
 
     # Grant this SCC to the service account creating the flex-daemonset
     # extract the clusterrolebinding.serviceAccount.name from the values.yaml file if it exists.
-    SVC_ACCNT=$( cat ${VALUESFILE} | sed 's/#.*$//' | awk '/clusterrolebinding:/,0' | grep 'name:' | sed  ' s/^.*://; s/ *$//; /^$/d;' | head -1)
+    SVC_ACCNT=$( cat ${VALUESFILE} | sed 's/#.*$//' | awk '/clusterrolebinding:/,0' | grep 'name:' | sed  's/^.*://; s/ *$//; /^$/d;' | head -1)
     if [[ -z ${SVC_ACCNT} ]]; then
         SVC_ACCNT=pure
     fi
