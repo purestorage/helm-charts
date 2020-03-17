@@ -90,6 +90,11 @@ CSI snapshot and clone support is only available from OpenShift 4.3.
 
 To enable these features in OpenShift edit the Feature Gate Custom Resource, named `cluster`, in the `openshift-config` project. Add `VolumeSnapshotDataSource` and `VolumePVCDataSource`as enabled feature gates.
 
+### Docker Kubernetes Service
+
+Install UCP with the `--storage-expt-enabled` flag. This will enable all the k8s 1.14 capable feature gates, including support for volume snapshots. 
+**Note:** Volume clones are not supported in DKS due to the version of Kuberenetes deployed by Docker EE 3.0.
+
 ### Validating Feature Gates
 
 To validate if your feature gates have been correctly set, check the `api-server` pod in the `kube-system` namespace for one of the nodes in the cluster:
