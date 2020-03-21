@@ -77,6 +77,7 @@ The following table lists the configurable parameters and their default values.
 | `image.tag`                 | The image tag to pull              | `5.0.8`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always      `                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
+| `storagetopology.enable`    | Enable/disable csi topology feature  | `false`                                 |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
 | `storageclass.pureBackend`  | Set `pure` storageclass' default backend type | `block`                               |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `pure`                    |

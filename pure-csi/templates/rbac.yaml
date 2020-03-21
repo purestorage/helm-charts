@@ -96,6 +96,30 @@ roleRef:
   name: external-provisioner-runner
   apiGroup: rbac.authorization.k8s.io
 ---
+kind: ClusterRole
+apiVersion: {{ template "rbac.apiVersion" . }}
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: pure-topology
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "watch", "list"]
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: pure-topology
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: pure-topology
+  apiGroup: rbac.authorization.k8s.io
+---
 
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
 # This file is downloaded from https://github.com/kubernetes-csi/cluster-driver-registrar/archive/v1.0.1.tar.gz 
