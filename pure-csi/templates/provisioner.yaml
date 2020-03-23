@@ -75,8 +75,9 @@ spec:
           args:
             - --csi-address=/csi/csi.sock
             - --connection-timeout=15s
-{{- if eq .Values.storagetopology.enable true}}
-            - --feature-gates=Topology=true
+            - --feature-gates=Topology={{ .Values.storagetopology.enable }}
+{{- if and .Values.storagetopology.strictTopology .Values.storagetopology.enable}}
+            - --strict-topology
 {{- end}}
           volumeMounts:
             - name: socket-dir
