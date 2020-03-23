@@ -13,22 +13,39 @@ It also allows topology to be further specified or constrained for both pre-prov
 The following dependencies must be true before the storage topology functionality can be used:
 
 * Kubernetes already running, deployed, configured, etc
-* PSO correctly installed and using [Pure CSI Driver v6.0.0](https://github.com/purestorage/helm-charts/releases/tag/6.0.0)+.
+* PSO correctly installed and using [Pure CSI Driver v5.0.9](https://github.com/purestorage/helm-charts/releases/tag/5.0.9)+.
 * Ensure you have Kubernetes 1.13+ installed, if you are using a version less than 1.13, please make sure the `VolumeScheduling` feature gate is enabled
 
 ## Caveats
-* Please make sure your backend arrays supports all topologies defined in your system. Failing to do so will potential leak volumes. 
-PSO follows the [CSI Spec](https://github.com/container-storage-interface/spec/blob/master/spec.md) to do its best effort to provision a volume with all possible preferred topologies specified by the scheduler.
-For example, if you wants to provision a pod to be in `region-2` by assigning the topology via `nodeAffinity`, scheduler will ask PSO to provision a volume with the preferred topologies like [`region-2` , `region-1`, `region-0`]. In this case, if your arrays don't support `region-2`, PSO end up to provision the volume in the one of the remaining regions [`region-1`, `region-0`].
-The scheduler will not provision the pod because the the volume's topology does not match the pod's requirement. This is an expected behavior, but it leaks the volume and you need to manually delete the created volume.
+* Please make sure your backend arrays support all topologies defined in your system. Failing to do so will potentially leak volumes.
+  PSO follows the [CSI Spec](https://github.com/container-storage-interface/spec/blob/master/spec.md) to do its best effort to provision a volume with all possible topologies specified by the scheduler.
+For example, if you want to provision a pod to be in `region-2` by assigning the topology via `nodeAffinity`, the scheduler will ask PSO to provision a volume with the topology order like this [`region-2` , `region-1`, `region-0`]. In this case, if your arrays don't support `region-2`, PSO ends up to provision the volume in one of the remaining regions [`region-1`, `region-0`].
+The scheduler will end up failing to provision the pod because the volume's topology does not match the pod's requirement. Although this is expected behavior, it leaks the unexpected volume, and you need to delete it manually.
+
 ## How to Use The Topology-Aware Provisioning Feature in PSO
-It is straightforward to use the topology feature in PSO. PSO provides five pre-defined topology keys to help you label your backend arrays, such as FlashArray for FlashBlade, as well as pods and nodes resources in Kubernetes.
-These topology keys are:
-* `topology.purestorage.com/region`
-* `topology.purestorage.com/zone`
-* `topology.purestorage.com/rack`
-* `topology.purestorage.com/name`
-* `topology.purestorage.com/env`
+There are two parameters in the `values.yaml` to enable/disable the CSI topology :
+```yaml
+storagetopology:
+  enable: false
+  strictTopology: false
+```
+`enable` controls enable/disable the CSI topology and `storagetopology` sets  the [strict-topology feature](https://github.com/kubernetes-csi/external-provisioner/blob/master/README.md#topology-support) when users need it. 
+ They are set to `false` by default. You need to set the parameters to `true` to enable the feature.
+
+It is straightforward to use the topology feature in PSO. PSO provides users a pre-defined **pure topology key prefix** (`topology.purestorage.com/`) to label any topology segments you want.
+You can define your topology key/value pairs like these:
+
+```yaml
+topology.purestorage.com/foo : "foo"
+topology.purestorage.com/bar : "bar"
+
+```
+or more formal cloud-hierarchical ways: 
+```yaml
+topology.purestorage.com/zone : "zone-0"
+topology.purestorage.com/region : "region-0"
+```
+
 
 ### Example of Adding Topology Labels to Arrays
 To add topology labels to your backend array, please add them in the `Labels` section of you `values.yaml` file.
@@ -67,9 +84,8 @@ kubectl label node k8s-cluster-0 topology.purestorage.com/zone=zone-1
 kubectl label node k8s-cluster-0 topology.purestorage.com/region=region-1
 kubectl label node k8s-cluster-0 topology.purestorage.com/env=dev
 ``` 
-**NOTE:** Please make sure you label the cluster node topology before installing the PSO. During the PSO initialization phase, PSO will talk to Kubernetes to retrieve topology labels from nodes and generate a `CSINode` object for future reference.
-The topology information in the `CSINode` will not update at runtime, which means any node topology label update will not affect the initialized values.
-      
+**NOTE:** PSO supports dynamic topology labeling. It allows users to add/remove topology labels of cluster nodes on the fly without reloading the PSO. However, users still need to update the `values.yaml` and reload the driver if you want to change the backend array topologies.
+
 ## Delayed Volume Binding
 Without the topology-aware feature, volume binding occurs immediately once a PersistentVolumeClaim is created. For volume binding to take into account all of a pod’s other scheduling constraints, volume binding must be delayed until a Pod is being scheduled.
 
@@ -116,6 +132,25 @@ NAME                STATUS    VOLUME    CAPACITY   ACCESS MODES   STORAGECLASS  
 pure-delaybinding   Pending                                       pure-block-delay-binding   14s       Filesystem
 ```
 
+## Example of using allowedTopologies in StorageClass
+
+When you specify the `WaitForFirstConsumer` volume binding mode in the `StorageClass`, it is no longer necessary to restrict provisioning to specific topologies in most situations. However, if still required, `allowedTopologies` can be specified.
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: pure-block-restrict-provisioning
+provisioner: pure-csi
+parameters:
+    backend: block
+allowedTopologies:
+  - matchLabelExpressions:
+      - key: topology.purestorage.com/rack
+        values:
+          - rack-0
+          - rack-1
+
+```
 ### Example of POD with NodeAffinity
 In this pod yaml example, it specifies the `nodeAffinity` to assign Pod to be hosted in any nodes that label `region-0`. 
 Thus, the delay binding PV will also be enforced and bind at the same node. 
@@ -150,6 +185,7 @@ spec:
     - containerPort: 80
 ```
 
+This example demonstrates how to restrict the topology of provisioned volumes to specific zones and should be used as a replacement for the zone and zones parameters for the supported plugins.
 ## Example of StatefulSet For High Availability
 The following example demonstrates multiple pod constraints and scheduling policies along with topology-aware volume provisioning.
 In the example, we use `volumeClaimTemplates` to specifies the StorageClass that supports the delayed binding that we provision and bind volumes at runtime to achieve high availability.
