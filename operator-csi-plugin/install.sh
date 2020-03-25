@@ -283,7 +283,7 @@ rules:
     - \"get\"
     - \"list\"
     - \"watch\"
-# Need the same permissions as driver-registrat-runner clusterrole to be able to create it. Only for K8s 1.13
+# Need the same permissions as driver-registrar-runner clusterrole to be able to create it. Only for K8s 1.13
   - apiGroups: 
     - \"apiextensions.k8s.io\"
     resources: 
@@ -302,6 +302,17 @@ rules:
     - \"csidrivers\"
     verbs: 
     - \"*\"
+
+# Need the same permissions as pure-topology-runner clusterrole to be able to create it.
+  - apiGroups:
+    - \"\"
+    resources:
+    - \"pods\"
+    - \"nodes\"
+    verbs:
+    - \"get\"
+    - \"list\"
+    - \"watch\"
 
 ---
 kind: ClusterRoleBinding
@@ -327,6 +338,7 @@ rules:
     - \"\"
     resources:
     - pods
+    - nodes
     - services
     - endpoints
     - configmaps
