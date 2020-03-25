@@ -29,12 +29,6 @@ csi:
       name: quay.io/k8scsi/livenessprobe
       pullPolicy: Always
 
-# this option is to enable/disable the csi topology feature
-# for pure-csi-driver
-storagetopology:
-  enable: false
-  strictTopology: false
-
 
 # this option is to enable/disable the debug mode of this app
 # for pure-csi-driver
