@@ -63,6 +63,9 @@ rules:
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
     verbs: ["create", "list", "watch", "delete", "get", "update"]
+  - apiGroups: [""]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "watch", "list"]
 
 ---
 kind: ClusterRoleBinding
@@ -90,6 +93,19 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.clusterrolebinding.serviceAccount.name }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: external-provisioner-runner
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: ClusterRoleBinding
+apiVersion: {{ template "rbac.apiVersion" . }}
+metadata:
+  name: pure-topology-role
+subjects:
+  - kind: ServiceAccount
+    name: default
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
