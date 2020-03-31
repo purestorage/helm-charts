@@ -16,8 +16,8 @@ The following dependencies must be true before the snapshot and clone functional
 
 * Kubernetes already running, deployed, configured, etc
 * PSO correctly installed and using [Pure CSI Driver v5.0.5](https://github.com/purestorage/helm-charts/releases/tag/5.0.5)+.
-* For the snapshot feature, ensure you have Kubernetes 1.13+ installed and the `VolumeSnapshotDataSource` feature gate is enabled
-* For the clone feature, ensure you have Kubernetes 1.15+ installed and the `VolumePVCDataSource` feature gate is enabled
+* For the snapshot feature, ensure you have Kubernetes 1.13+ installed and the `VolumeSnapshotDataSource` feature gate is enabled. This featuregate is set to `True` by default from 1.17 and therefore does not need to be set from this version onwards.
+* For the clone feature, ensure you have Kubernetes 1.15+ installed and the `VolumePVCDataSource` feature gate is enabled. This feature graduated to GA in 1.18 and is therefore no longer required in that and subsequent versions.
 
 ### Enabling Feature Gates
 
@@ -31,7 +31,13 @@ In general you have to ensure that the `kubelet` process has the following switc
 --feature-gates=VolumeSnapshotDataSource=true,VolumePVCDataSource=true
 ```
 
-Here are the methods to enable feature gates in a few common deployment tools:
+**Note:** 
+* `VolumePVCDataSource` gate is no longer required from Kuberenetes 1.18 (feature went GA at this version)
+* `VolumeSnapshotDataSource` gate is no longer required from Kubernetes 1.17 (defaults to true from this version)
+
+More details on feature-gate alpha and beta support can be found [here](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/#feature-gates-for-alpha-or-beta-features)
+
+Detailed below are the methods to enable feature gates in a few common deployment tools:
 
 #### kubespray
 
