@@ -1,3 +1,7 @@
+**The Flex Volume Driver has been deprecated in favour of the CSI Driver**
+
+Flex should only be used where the CSI driver is not supported due to a lower level of Kubernetes version.
+
 # pure-k8s-plugin
 
 This helm chart installs the FlexVolume plugin on a Kubernetes cluster.

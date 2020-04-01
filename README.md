@@ -47,13 +47,19 @@ PSO can be deployed via an Operator or from the Helm chart.
 ### PSO Operator
 
 PSO has Operator-based install available for both its FlexVolume plugin and CSI plugin. This install method does not need Helm installation. 
-The Pure Flex Operator is supported for OpenShift and Kubernetes.
-Pure Flex Operator is now the preferred installation method for FlexVolume on OpenShift version 3.11 and higher.<br/>
+
+The Pure Flex Operator is supported for OpenShift and Kubernetes (note that the Flex driver is deprecated in favour of the CSI driver)
+
+Pure Flex Operator is the preferred installation method for FlexVolume on OpenShift version 3.11. The CSI Operator should be used for OpenShift 4.1 and 4.2. 
+
+**Note** Use the CSI Helm install method for OpenShift 4.3 and higher with the adoption of Helm3 in OpenShift.
+
 For installation, see the [Flex Operator Documentation](./operator-k8s-plugin/README.md#overview) or the [CSI Operator Documentation](./operator-csi-plugin/README.md#overview)..
 
 ### Helm Chart
 
-**pure-k8s-plugin** deploys PSO FlexVolume plugin on your Kubernetes cluster.</br> 
+**pure-k8s-plugin** deploys PSO FlexVolume plugin on your Kubernetes cluster - the Flex Driver is now deprecated 
+
 **pure-csi** deploys PSO CSI plugin on your Kubernetes cluster. 
 
 #### Helm Setup
