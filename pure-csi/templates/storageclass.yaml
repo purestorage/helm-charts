@@ -10,17 +10,23 @@ metadata:
 provisioner: pure-csi # This must match the name of the CSIDriver. And the name of the CSI plugin from the RPC 'GetPluginInfo'
 parameters:
   backend: {{ .Values.storageclass.pureBackend | default "block" | quote }}
+{{- if ne .Values.storageclass.pureBackend "file"}}
   csi.storage.k8s.io/fstype: {{ .Values.flasharray.defaultFSType | default "xfs" | quote }}
   createoptions: {{ .Values.flasharray.defaultFSOpt | default "-q" | quote }}
+{{- end }}
+{{- if eq .Values.storageclass.pureBackend "file"}}
+mountOptions:
+{{- else -}}
 # support either string or list for .Values.flasharray.defaultMountOpt
-{{- if or (kindIs "array" .Values.flasharray.defaultMountOpt) (kindIs "slice" .Values.flasharray.defaultMountOpt) }}
+  {{- if or (kindIs "array" .Values.flasharray.defaultMountOpt) (kindIs "slice" .Values.flasharray.defaultMountOpt) }}
 mountOptions:
   {{- range .Values.flasharray.defaultMountOpt }}
   - {{ . }}
   {{- end }}
-{{- else if kindIs "string" .Values.flasharray.defaultMountOpt}}
+  {{- else if kindIs "string" .Values.flasharray.defaultMountOpt}}
 mountOptions:
   - {{ .Values.flasharray.defaultMountOpt }}
+  {{- end }}
 {{- end }}
 ---
 kind: StorageClass
