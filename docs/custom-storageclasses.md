@@ -45,7 +45,7 @@ For example, if you wish to provide raw block volumes (shortly to be supported b
 
 [**NOTE:** Pure does not recommend using `ext4` as a filesystem for persistent volumes in containers]
 
-With the addition of [per volume filesystem options](docs/csi-filesystem-options.md), the ability to use a different `StorageClass` for different requirements becomes critical.
+With the addition of [per volume filesystem options](csi-filesystem-options.md), the ability to use a different `StorageClass` for different requirements becomes critical.
 
 To create a storageClass that will use PSO use the following template and modify as required for your custom storage class.
 
@@ -60,7 +60,7 @@ To create a storageClass that will use PSO use the following template and modify
   parameters:
 ```
 
-Within the `parameters` section is where you add your own custom settings. More details of some of the options available to use in the parameters section can be found [here](docs/csi-filesystems-options.md)
+Within the `parameters` section is where you add your own custom settings. More details of some of the options available to use in the parameters section can be found [here](csi-filesystem-options.md)
 
 Once you have created your `StorageClass` definition in a YAML file, create it in Kubernetes using the command
 
