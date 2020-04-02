@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-1
+  labels:
+    app: "nginx-file-many"
+spec:
+  # Specify a volume that uses the claim defined in pvc.yaml
+  volumes:
+    - name: pure-vol
+      persistentVolumeClaim:
+        claimName: pure-claim
+  containers:
+    - name: nginx
+      image: nginx
+      # Configure a mount for the volume We define above
+      volumeMounts:
+        - name: pure-vol
+          mountPath: /data
+      ports:
+        - containerPort: 80
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - "nginx-file-many"
+          topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-2
+  labels:
+    app: "nginx-file-many"
+spec:
+  # Specify a volume that uses the claim defined in pvc.yaml
+  volumes:
+    - name: pure-vol
+      persistentVolumeClaim:
+        claimName: pure-claim
+  containers:
+    - name: nginx
+      image: nginx
+      # Configure a mount for the volume We define above
+      volumeMounts:
+        - name: pure-vol
+          mountPath: /data
+      ports:
+        - containerPort: 80
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - "nginx-file-many"
+          topologyKey: "kubernetes.io/hostname"
