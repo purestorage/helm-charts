@@ -110,13 +110,17 @@ volumeBindingMode: WaitForFirstConsumer
 parameters:
     backend: block
 ```
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/storageclass/pure-block-delay-binding.yaml
+```
 ### Example of PVC using Delay Binding StorageClass
 ```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   # Referenced in pod.yaml for the volume spec
-  name: pure-delaybinding
+  name: pure-delay-binding
 spec:
   accessModes:
     - ReadWriteOnce
@@ -125,6 +129,10 @@ spec:
       storage: 10Gi
   # Matches the name defined in deployment/storageclass.yaml
   storageClassName: pure-block-delay-binding
+```
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/pvc/pvc-delay-binding.ymal
 ```
 Once you apply the delay-binding PVC yaml, you should see the PVC is in pending state and wait for the scheduler for further signal.
 ```
@@ -149,8 +157,12 @@ allowedTopologies:
         values:
           - rack-0
           - rack-1
-
 ```
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/storageclass/pure-block-restrict-provisioning.ymal
+```
+
 ### Example of POD with NodeAffinity
 In this pod yaml example, it specifies the `nodeAffinity` to assign Pod to be hosted in any nodes that label `region-0`. 
 Thus, the delay binding PV will also be enforced and bind at the same node. 
@@ -158,7 +170,7 @@ Thus, the delay binding PV will also be enforced and bind at the same node.
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-delaybinding
+  name: pod-delay-binding
 spec:
   affinity:
     nodeAffinity:
@@ -173,7 +185,7 @@ spec:
   volumes:
   - name: pure-vol
     persistentVolumeClaim:
-        claimName: pure-delaybinding
+        claimName: pure-delay-binding
   containers:
   - name: nginx
     image: nginx
@@ -184,7 +196,10 @@ spec:
     ports:
     - containerPort: 80
 ```
-
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/pod/pod-delay-binding.yaml
+```
 This example demonstrates how to restrict the topology of provisioned volumes to specific zones and should be used as a replacement for the zone and zones parameters for the supported plugins.
 ## Example of StatefulSet For High Availability
 The following example demonstrates multiple pod constraints and scheduling policies along with topology-aware volume provisioning.
@@ -258,4 +273,8 @@ spec:
         resources:
           requests:
             storage: 1Gi
+```
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/statefulset/statefulset-topology.yaml
 ```

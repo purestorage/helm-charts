@@ -83,7 +83,10 @@ parameters:
 mountOptions:
       - discard
 ```
-
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/storageclass/pure-block-xfs.yaml
+```
 ## Example of StorageClass for FlashBlade
 
 ```yaml
@@ -99,4 +102,8 @@ parameters:
 mountOptions:
       - nfsvers=3
       - tcp
+```
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/storageclass/pure-file-nfs.yaml
 ```

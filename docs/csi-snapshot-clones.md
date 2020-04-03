@@ -136,8 +136,14 @@ spec:
     name: pure-claim
     kind: PersistentVolumeClaim
 ```
-
+To give it a try:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/pvc/pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/snapshot.yaml
+```
 This will create a snapshot called `volumesnapshot-1` which can check the status of with
+
 
 ```bash
 kubectl describe -n <namespace> volumesnapshot
@@ -145,13 +151,13 @@ kubectl describe -n <namespace> volumesnapshot
 
 #### Restoring a Snapshot
 
-Use the following YAML to restore a snapshot to create a new PVC `pvc-restore-from-volumesnapshot-1`:
+Use the following YAML to restore a snapshot to create a new PVC `pvc-restore-from-volumesnapshot`:
 
 ```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-restore-from-volumesnapshot-1
+  name: pvc-restore-from-volumesnapshot
 spec:
   accessModes:
     - ReadWriteOnce
@@ -164,7 +170,11 @@ spec:
     name: volumesnapshot-1
     apiGroup: snapshot.storage.k8s.io
 ```
-
+To give it a try:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/pvc/pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/restore-snapshot.yaml
+```
 **NOTE:** Recovery of a volume snapshot to overwite its parent persistant volume is not supported in the CSI specification, however this can be achieved with a FlashArray based PVC and snapshot using the following steps:
 
 1. Reduce application deployment replica count to zero to ensure there are no actives IOs through the PVC.
@@ -184,7 +194,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: pure-block
+  storageClassName: pure
   resources:
     requests:
       storage: 10Gi
@@ -192,7 +202,10 @@ spec:
     kind: PersistentVolumeClaim
     name: pure-claim
 ```
-
+To apply:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/clone/clone.yaml
+```
 **Notes:**
 
 1. _Application consistency:_

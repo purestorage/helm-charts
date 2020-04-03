@@ -1,0 +1,12 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: pure-block-delay-binding
+  labels:
+    kubernetes.io/cluster-service: "true"
+    chart: pure-csi
+    release: "pure-storage-driver"
+provisioner: pure-csi 
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+    backend: block

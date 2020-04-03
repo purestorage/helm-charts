@@ -1,0 +1,9 @@
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshot
+metadata:
+  name: volumesnapshot-1
+spec:
+  snapshotClassName: pure-snapshotclass
+  source:
+    name: pure-claim
+    kind: PersistentVolumeClaim
