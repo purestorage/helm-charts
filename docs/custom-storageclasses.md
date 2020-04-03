@@ -31,7 +31,7 @@ As mentioned above, the `pure` class uses block-based backend appliances to prov
 
 You may wish to do this if you only have FlashBlades in your PSO configuration, as these can only provide file-based persistent volumes.
 
-To change the backend type used by the `pure` `StorageClass` to file rather than block, uncomment the following line within the values.yaml configuration file:
+To change the backend type used by the `pure` `StorageClass` to file rather than block, change the following line within the values.yaml configuration file:
 
 ```yaml
   pureBackend: file
