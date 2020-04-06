@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  # Referenced in pod.yaml for the volume spec
+  name: pure-claim-raw-block
+spec:
+  # This specifically is what allows the PVC to be used as a raw block device
+  volumeMode: Block
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  # Matches the name defined in deployment/storageclass.yaml
+  storageClassName: pure-block
