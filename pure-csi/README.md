@@ -45,6 +45,10 @@ More details on using the snapshot and clone functionality can be found [here](.
 
 More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
 
+## Using Read-Write-Many (RWX) volumes with Kubernetes
+
+More details on using Read-Write-Many (RWX) volumes with Kubernetes can be found [here](../docs/csi-read-write-many.md)
+
 ## PSO use of StorageClass
 
 Whilst there are some default `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own custom storage classes that can be used by PSO.
