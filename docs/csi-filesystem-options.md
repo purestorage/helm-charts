@@ -85,7 +85,7 @@ mountOptions:
 ```
 To apply:
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/storageclass/pure-block-xfs.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/fsoptions/pure-block-xfs.yaml
 ```
 ## Example of StorageClass for FlashBlade
 
@@ -105,5 +105,5 @@ mountOptions:
 ```
 To apply:
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/storageclass/pure-file-nfs.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/fsoptions/pure-file-nfs.yaml
 ```

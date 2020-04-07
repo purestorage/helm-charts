@@ -139,7 +139,7 @@ spec:
 To give it a try:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/pvc/pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/pvc.yaml
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/snapshot.yaml
 ```
 This will create a snapshot called `volumesnapshot-1` which can check the status of with
@@ -151,13 +151,13 @@ kubectl describe -n <namespace> volumesnapshot
 
 #### Restoring a Snapshot
 
-Use the following YAML to restore a snapshot to create a new PVC `pvc-restore-from-volumesnapshot`:
+Use the following YAML to restore a snapshot to create a new PVC `pvc-restore-from-volumesnapshot-1`:
 
 ```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-restore-from-volumesnapshot
+  name: pvc-restore-from-volumesnapshot-1
 spec:
   accessModes:
     - ReadWriteOnce
@@ -172,7 +172,6 @@ spec:
 ```
 To give it a try:
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/pvc/pvc.yaml
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/restore-snapshot.yaml
 ```
 **NOTE:** Recovery of a volume snapshot to overwite its parent persistant volume is not supported in the CSI specification, however this can be achieved with a FlashArray based PVC and snapshot using the following steps:
@@ -202,8 +201,9 @@ spec:
     kind: PersistentVolumeClaim
     name: pure-claim
 ```
-To apply:
+To give it a try:
 ```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/clone/pvc.yaml
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/clone/clone.yaml
 ```
 **Notes:**
