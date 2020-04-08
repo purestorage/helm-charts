@@ -78,7 +78,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `5.0.8`                                   |
+| `image.tag`                 | The image tag to pull              | `5.1.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always      `                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storagetopology.enable`    | Enable/disable csi topology feature  | `false`                                 |

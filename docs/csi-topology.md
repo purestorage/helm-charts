@@ -13,7 +13,7 @@ It also allows topology to be further specified or constrained for both pre-prov
 The following dependencies must be true before the storage topology functionality can be used:
 
 * Kubernetes already running, deployed, configured, etc
-* PSO correctly installed and using [Pure CSI Driver v5.0.9](https://github.com/purestorage/helm-charts/releases/tag/5.0.9)+.
+* PSO correctly installed and using [Pure CSI Driver v5.1.0](https://github.com/purestorage/helm-charts/releases/tag/5.1.0)+.
 * Ensure you have Kubernetes 1.13+ installed, if you are using a version less than 1.13, please make sure the `VolumeScheduling` feature gate is enabled
 
 ## Caveats
