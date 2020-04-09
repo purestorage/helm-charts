@@ -91,8 +91,8 @@ orchestrator:
 #     - MgmtEndPoint: "1.2.3.4"
 #       APIToken: "a526a4c6-18b0-a8c9-1afa-3499293574bb"
 #       Labels:
-#         rack: "22"
-#         env: "prod"
+#         topology.purestorage.com/rack: "22"
+#         topology.purestorage.com/env: "prod"
 #     - MgmtEndPoint: "1.2.3.5"
 #       APIToken: "b526a4c6-18b0-a8c9-1afa-3499293574bb"
 #   FlashBlades:
@@ -100,13 +100,13 @@ orchestrator:
 #       APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
 #       NfsEndPoint: "1.2.3.7"
 #       Labels:
-#         rack: "7b"
-#         env: "dev"
+#         topology.purestorage.com/rack: "7b"
+#         topology.purestorage.com/env: "dev"
 #     - MgmtEndPoint: "1.2.3.8"
 #       APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
 #       NfsEndPoint: "1.2.3.9"
 #       Labels:
-#         rack: "6a"
+#         topology.purestorage.com/rack: "6a"
 
 mounter:
   # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
