@@ -31,6 +31,14 @@ To ensure your services stay robust, PSO self-heals – so you’re protected ag
   - Latest FC initiator software for your operating system (Optional, required for FC connectivity, *FC Supported on Bare-metal K8s installations only*)
 - #### FlashArray and FlashBlade:
   - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
+- #### FlashArray User Privilages
+  - It is recommend to use a specific FlashArray user, and associated API token, for PSO access control to enable easier array auditing.
+  - The PSO user can be local or based on a Directory Service controlled account (assuming DS is configured on the array).
+  - The PSO user requires a mininum role level of `storage_admin`.
+- #### FlashBlade User Privileges
+  - If the FlashBlade is configured to use Directory Services for array management, then a DS controlled account and its associated API token can be used for PSO.
+  - The PSO user requires a mininum array management role level of `storage_admin`.
+  - Currently ther is no option to create additonal local users on a FlashBlade.
 
 _* Please see release notes for details_
 
