@@ -103,7 +103,23 @@ Install UCP with the `--storage-expt-enabled` flag. This will enable all the k8s
 
 #### Platform9 Managed Kuberenetes
 
-There is currently no method to enable feature-gates in PMK and therefore snapshots and clones are not supported in this environment.
+Currently the deployment GUI for PMK does not allow for changing feature-gates therefore to enable feature-gates on PMK it is first necessary to build your cluster using the Platfom9 tools and then enable the feature-gates after deployment.
+
+Once the cluster is deployed on each of the master nodes perform the following:
+
+Edit the file `/opt/pf9/pf9-kube/conf/masterconfig/base/master.yaml` and change the two reference of
+
+```
+        - "--feature-gates=PodPriority=true"
+```
+
+to
+
+```
+        - "--feature-gates=PodPriority=true,VolumePVCDataSource=true,VolumeSnapshotDataSource=true"
+```
+
+Once completed, reboot the master nodes in series.
 
 ### Validating Feature Gates
 
