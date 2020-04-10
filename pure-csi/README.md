@@ -15,6 +15,7 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - OpenShift 3.11
   - Google Anthos 1.2.x
   - Docker Kuberenetes Service (DKS) - based on Docker EE 3.0 with Kubernetes 1.14.3
+  - Platform9 Managed Kubernetes (PMK) - Privileged mode only
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
