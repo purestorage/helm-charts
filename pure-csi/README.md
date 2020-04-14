@@ -12,7 +12,6 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
 - #### Environments Supported*:
   - Kubernetes 1.13+
   - Minimum Helm version required is 3.1.0.
-  - OpenShift 3.11
   - Google Anthos 1.2.x
   - Docker Kuberenetes Service (DKS) - based on Docker EE 3.0 with Kubernetes 1.14.3
   - Platform9 Managed Kubernetes (PMK) - Privileged mode only
