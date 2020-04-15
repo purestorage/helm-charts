@@ -132,7 +132,7 @@ spec:
 ```
 To apply:
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/topology/pvc-delay-binding.ymal
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/topology/pvc-delay-binding.yaml
 ```
 Once you apply the delay-binding PVC yaml, you should see the PVC is in pending state and wait for the scheduler for further signal.
 ```
