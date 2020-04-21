@@ -74,6 +74,10 @@ https://docs.helm.sh/using_helm#install-helm
 
 Refer to the [k8s-plugin README](./pure-k8s-plugin/README.md) or the [csi-plugin README](./pure-csi/README.md) for further installation steps.
 
+## PSO on the Internet
+
+[Checkout a list of some blogs related to Pure Service Orchestrator](./docs/blog_posts.md)
+
 ## Contributing
 We welcome contributions. The PSO Helm Charts project is under [Apache 2.0 license](https://github.com/purestorage/helm-charts/blob/master/LICENSE). We accept contributions via GitHub pull requests.
 
