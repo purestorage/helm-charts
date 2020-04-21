@@ -97,6 +97,23 @@ spec:
             - name: socket-dir
               mountPath: /csi
 {{- end }}
+# The csi-resizer sidecar that watches the Kubernetes API server for PersistentVolumeClaim updates.
+# Does not scale with more replicas, only one is elected as leader and running.
+# PSO requires K8s 1.16+ for CSI VolumeExpansion
+{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "15") }}
+        - name: csi-resizer
+          {{- with .Values.csi.resizer.image }}
+          image: {{ .name | default "quay.io/k8scsi/csi-resizer" }}:v0.5.0
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+          args:
+            - "--csi-address=/csi/csi.sock"
+            - "--csiTimeout=15s"
+            - "--leader-election=false"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+{{ end }}
 # This is the cluster-driver-registrar sidecar that allows helm-install without CRD-hooks for the CSIDriver CRD
 # The reason we do not want a crd-hook with helm-chart is to avoid upgrade issues like: https://github.com/helm/helm/issues/4489
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}

@@ -76,6 +76,7 @@ spec:
         app: pure-csi
 {{ include "pure_csi.labels" . | indent 8}}
     spec:
+      serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       hostNetwork: true
       hostPID: true
       containers:

@@ -204,6 +204,7 @@ rules:
     - \"list\"
     - \"watch\"
     - \"update\"
+    - \"patch\"
   - apiGroups:
     - \"\"
     resources:
@@ -213,6 +214,13 @@ rules:
     - \"list\"
     - \"update\"
     - \"watch\"
+  - apiGroups:
+    - \"\"
+    resources:
+    - persistentvolumeclaims/status
+    verbs:
+    - \"update\"
+    - \"patch\"
   - apiGroups:
     - storage.k8s.io
     resources:
@@ -267,15 +275,15 @@ rules:
     - \"get\"
     - \"list\"
     - \"watch\"
-  - apiGroups: 
+  - apiGroups:
     - storage.k8s.io
-    resources: 
+    resources:
     - \"csinodes\"
-    verbs: 
+    verbs:
     - \"get\"
     - \"list\"
     - \"watch\"
-  - apiGroups: 
+  - apiGroups:
     - \"\"
     resources:
     - \"nodes\"
@@ -283,24 +291,24 @@ rules:
     - \"get\"
     - \"list\"
     - \"watch\"
-# Need the same permissions as driver-registrar-runner clusterrole to be able to create it. Only for K8s 1.13
-  - apiGroups: 
+# Need the same permissions as driver-registrat-runner clusterrole to be able to create it. Only for K8s 1.13
+  - apiGroups:
     - \"apiextensions.k8s.io\"
-    resources: 
+    resources:
     - \"customresourcedefinitions\"
-    verbs: 
+    verbs:
     - \"*\"
-  - apiGroups: 
+  - apiGroups:
     - \"csi.storage.k8s.io\"
     resources:
     - \"csidrivers\"
-    verbs: 
+    verbs:
     - \"*\"
-  - apiGroups: 
+  - apiGroups:
     - \"storage.k8s.io\"
     resources:
     - \"csidrivers\"
-    verbs: 
+    verbs:
     - \"*\"
 
 # Need the same permissions as pure-topology-runner clusterrole to be able to create it.
