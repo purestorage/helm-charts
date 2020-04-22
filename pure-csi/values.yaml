@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 5.1.0
+  tag: 5.1.1
   pullPolicy: Always
 
 csi:
