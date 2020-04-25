@@ -16,7 +16,10 @@ The following prerequisites must be true to ensure the function can work properl
 * Only allow volume size expansion, shrinking a volume is not allowed.
 * The `StorageClass` that provisions the PVC must support resize. `allowVolumeExpansion` flag is set to true by default in all PSO `StorageClass` since version 5.2.0.
 * The PVC `accessMode` must be `ReadWriteOnce` or `ReadWriteMany`.
-* For PSO `pure-block` `StorageClass`, the filesystem/block on node is only resized upon a Pod (re-)start. 
+
+### Note
+
+Any PVC creted using a StorageClass where the `Parameters:   backend=block` is true will only be resized upon a (re)start of the pod bound to the PVC. 
 
 ## Dependencies
 
@@ -34,24 +37,16 @@ For more details check the [CSI spec](https://github.com/container-storage-inter
 
 #### 1. Ensure `allowVolumeExpansion` is set to `true` in `pure-block` StorageClass:
 
-Example StorageClass `pure-block`:
-```yaml
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: pure-block
-parameters:
-  backend: block
-allowVolumeExpansion: true
-```
-To edit:
+To ensure that the StorageClass has the correct setting run the following command
+
 ```bash
-kubectl edit sc pure-block
+kubectl patch sc pure-block --type='json' -p='[{"op": "add", "path": "/allowVolumeExpansion", "value": true }]'
 ```
 
 #### 2. Create a PVC:
 
 Example PVC:
+
 ```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -66,7 +61,9 @@ spec:
       storage: 10Gi
   storageClassName: pure-block
 ```
+
 To create:
+
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/volexpansion/pvc-block.yaml
 ```
@@ -74,6 +71,7 @@ kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/maste
 #### 3. Start a Pod to use the PVC:
 
 Example Pod:
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -94,18 +92,23 @@ spec:
     ports:
     - containerPort: 80
 ```
+
 To create:
+
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/volexpansion/pod-block.yaml
 ```
 
 #### 4. Expand the PVC:
 
-Edit the pvc field `spec.resources.requests.storage` to a larger size, e.g. 20Gi:
+Patch the PVC to a larger size, e.g. 20Gi:
+
 ```bash
-kubectl edit pvc pure-claim-block
+kubectl patch pvc pure-claim-block -p='{"spec": {"resources": {"requests": {"storage": "20Gi"}}}}'
 ```
-Result shows the PV is already resized successfully, but the PVC size is not changed, because a Pod (re-)start is required:
+
+Check that the PV is already resized successfully, but notice the PVC size is not changed, because a Pod (re-)start is required:
+
 ```bash
 # kubectl get pvc pure-claim-block
 NAME               STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
@@ -113,8 +116,10 @@ pure-claim-block   Bound     pvc-b621957b-2828-4b75-a737-251916c05cb6   10Gi    
 # kubectl get pv
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                      STORAGECLASS   REASON    AGE
 pvc-b621957b-2828-4b75-a737-251916c05cb6   20Gi       RWO            Delete           Bound     default/pure-claim-block   pure-block               68s
+
 ```
 Check the PVC conditions:
+
 ```bash
 # kubectl get pvc pure-claim -o yaml
 ...
@@ -129,12 +134,14 @@ status:
 #### 5. Restart the Pod:
 
 To restart:
+
 ```bash
 kubectl delete -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/volexpansion/pod-block.yaml
 kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/volexpansion/pod-block.yaml
 ```
 Verify the PVC is resized successfully after Pod is running:
 ```bash
+
 # kubectl get pvc pure-claim-block
 NAME               STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 pure-claim-block   Bound     pvc-b621957b-2828-4b75-a737-251916c05cb6   20Gi       RWO            pure-block     2m46s
@@ -147,9 +154,10 @@ The PV and PVC should show the updated size immediately.
 
 #### 1. Ensure `allowVolumeExpansion` is set to `true` in `pure-file` StorageClass:
 
-To edit:
+To ensure that the StorageClass has the correct setting run the following command
+
 ```bash
-kubectl edit sc pure-file
+kubectl patch sc pure-file --type='json' -p='[{"op": "add", "path": "/allowVolumeExpansion", "value": true }]'
 ```
 
 #### 2. Create a PVC:
@@ -167,5 +175,17 @@ kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/maste
 #### 4. Expand the PVC:
 
 ```bash
-kubectl edit pvc pure-claim-file
+kubectl patch pvc pure-claim-file -p='{"spec": {"resources": {"requests": {"storage": "20Gi"}}}}'
 ```
+
+Check that both the PV and PVC are immeadiately expanded. No pod restart is required.
+
+```bash
+# kubectl get pvc pure-claim-file
+NAME               STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+pure-claim-file    Bound     pvc-2ba56b33-3412-2965-f4e4-983de21ba772   20Gi       RWO            pure-file      25s
+# kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                      STORAGECLASS   REASON    AGE
+pvc-2ba56b33-3412-2965-f4e4-983de21ba772   20Gi       RWO            Delete           Bound     default/pure-claim-file    pure-file                27s
+```
+
