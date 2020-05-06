@@ -22,6 +22,8 @@ spec:
     # TODO: change to the volume name in backend.
     # Volume with any name that exists in backend can be imported, and will not be renamed.
     volumeHandle: ns03276-pvc-2031faf1-8348-4ac8-9737-1a0a9989cad7
+    volumeAttributes:
+      backend: block
   # TODO: configure your desired reclaim policy,
   # Use Retain if you don't want your volume to get deleted when the PV is deleted.
   persistentVolumeReclaimPolicy: Delete
