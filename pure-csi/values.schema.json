@@ -701,7 +701,7 @@
                                 "pullPolicy": {
                                     "$id": "#/properties/csi/properties/clusterDriverRegistrar/properties/image/properties/pullPolicy",
                                     "type": "string",
-                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
                                     "description": "An explanation about the purpose of this instance.",
                                     "default": "",
@@ -763,7 +763,7 @@
                                 "pullPolicy": {
                                     "$id": "#/properties/csi/properties/livenessProbe/properties/image/properties/pullPolicy",
                                     "type": "string",
-                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
                                     "description": "An explanation about the purpose of this instance.",
                                     "default": "",
@@ -825,7 +825,7 @@
                                 "pullPolicy": {
                                     "$id": "#/properties/csi/properties/nodeDriverRegistrar/properties/image/properties/pullPolicy",
                                     "type": "string",
-                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
                                     "description": "An explanation about the purpose of this instance.",
                                     "default": "",
@@ -887,7 +887,7 @@
                                 "pullPolicy": {
                                     "$id": "#/properties/csi/properties/provisioner/properties/image/properties/pullPolicy",
                                     "type": "string",
-                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
                                     "description": "An explanation about the purpose of this instance.",
                                     "default": "",
@@ -949,7 +949,7 @@
                                 "pullPolicy": {
                                     "$id": "#/properties/csi/properties/resizer/properties/image/properties/pullPolicy",
                                     "type": "string",
-                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
                                     "description": "An explanation about the purpose of this instance.",
                                     "default": "",
@@ -1011,7 +1011,7 @@
                                 "pullPolicy": {
                                     "$id": "#/properties/csi/properties/snapshotter/properties/image/properties/pullPolicy",
                                     "type": "string",
-                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
                                     "description": "An explanation about the purpose of this instance.",
                                     "default": "",
@@ -1206,7 +1206,7 @@
                 "pullPolicy": {
                     "$id": "#/properties/image/properties/pullPolicy",
                     "type": "string",
-                    "pattern": "^(Always|Never|IfNotPresent)$",
+                    "pattern": "^(Always)$",
                     "title": "The pullPolicy schema",
                     "description": "An explanation about the purpose of this instance.",
                     "default": "",
