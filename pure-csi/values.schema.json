@@ -1,0 +1,1516 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "app": {
+                "debug": true
+            },
+            "arrays": {
+                "FlashArrays": [
+                    {
+                        "MgmtEndPoint": "1.2.3.4",
+                        "APIToken": "a526a4c6-18b0-a8c9-1afa-3499293574bb",
+                        "Labels": {
+                            "topology.purestorage.com/rack": "22",
+                            "topology.purestorage.com/env": "prod"
+                        }
+                    },
+                    {
+                        "MgmtEndPoint": "1.2.3.5",
+                        "APIToken": "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+                    }
+                ],
+                "FlashBlades": [
+                    {
+                        "MgmtEndPoint": "1.2.3.6",
+                        "APIToken": "T-c4925090-c9bf-4033-8537-d24ee5669135",
+                        "NfsEndPoint": "1.2.3.7",
+                        "Labels": {
+                            "topology.purestorage.com/rack": "7b",
+                            "topology.purestorage.com/env": "dev"
+                        }
+                    },
+                    {
+                        "MgmtEndPoint": "1.2.3.8",
+                        "APIToken": "T-d4925090-c9bf-4033-8537-d24ee5669135",
+                        "NfsEndPoint": "1.2.3.9",
+                        "Labels": {
+                            "topology.purestorage.com/rack": "6a"
+                        }
+                    }
+                ]
+            },
+            "clusterrolebinding": {
+                "serviceAccount": {
+                    "name": "pure"
+                }
+            },
+            "csi": {
+                "clusterDriverRegistrar": {
+                    "image": {
+                        "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
+                        "pullPolicy": "IfNotPresent"
+                    }
+                },
+                "livenessProbe": {
+                    "image": {
+                        "name": "quay.io/k8scsi/livenessprobe",
+                        "pullPolicy": "IfNotPresent"
+                    }
+                },
+                "nodeDriverRegistrar": {
+                    "image": {
+                        "name": "quay.io/k8scsi/csi-node-driver-registrar",
+                        "pullPolicy": "IfNotPresent"
+                    }
+                },
+                "provisioner": {
+                    "image": {
+                        "name": "quay.io/k8scsi/csi-provisioner",
+                        "pullPolicy": "IfNotPresent"
+                    }
+                },
+                "resizer": {
+                    "image": {
+                        "name": "quay.io/k8scsi/csi-resizer",
+                        "pullPolicy": "Always"
+                    }
+                },
+                "snapshotter": {
+                    "image": {
+                        "name": "quay.io/k8scsi/csi-snapshotter",
+                        "pullPolicy": "IfNotPresent"
+                    }
+                }
+            },
+            "flasharray": {
+                "defaultFSOpt": "-q",
+                "defaultFSType": "xfs",
+                "defaultMountOpt": [
+                    "discard"
+                ],
+                "iSCSIAllowedCIDR": "",
+                "iSCSILoginTimeout": 20,
+                "preemptAttachments": "true",
+                "sanType": "ISCSI"
+            },
+            "flashblade": {
+                "snapshotDirectoryEnabled": "false"
+            },
+            "image": {
+                "name": "pc2-dtr.dev.purestorage.com/purestorage/k8s",
+                "pullPolicy": "Always",
+                "tag": "5.2.0-17e29570-a4b94e748c140859dbf5896525ea9c74"
+            },
+            "mounter": {
+                "affinity": {},
+                "nodeSelector": {},
+                "tolerations": []
+            },
+            "namespace": {
+                "pure": "dsudemo"
+            },
+            "orchestrator": {
+                "basePath": "/var/lib/kubelet",
+                "name": "k8s"
+            },
+            "provisioner": {
+                "affinity": {},
+                "nodeSelector": {},
+                "tolerations": []
+            },
+            "storageclass": {
+                "createBuiltIn": true,
+                "isPureDefault": false,
+                "pureBackend": "block"
+            },
+            "storagetopology": {
+                "enable": true,
+                "strictTopology": false
+            }
+        }
+    ],
+    "required": [
+        "app",
+        "arrays",
+        "clusterrolebinding",
+        "csi",
+        "flasharray",
+        "flashblade",
+        "image",
+        "mounter",
+        "namespace",
+        "orchestrator",
+        "provisioner",
+        "storageclass",
+        "storagetopology"
+    ],
+    "additionalProperties": true,
+    "properties": {
+        "app": {
+            "$id": "#/properties/app",
+            "type": "object",
+            "title": "The app schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "debug": true
+                }
+            ],
+            "required": [
+                "debug"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "debug": {
+                    "$id": "#/properties/app/properties/debug",
+                    "type": "boolean",
+                    "title": "The debug schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        true
+                    ]
+                }
+            }
+        },
+        "arrays": {
+            "$id": "#/properties/arrays",
+            "type": "object",
+            "title": "The arrays schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "FlashArrays": [
+                        {
+                            "MgmtEndPoint": "1.2.3.4",
+                            "APIToken": "a526a4c6-18b0-a8c9-1afa-3499293574bb",
+                            "Labels": {
+                                "topology.purestorage.com/rack": "22",
+                                "topology.purestorage.com/env": "prod"
+                            }
+                        },
+                        {
+                            "MgmtEndPoint": "1.2.3.5",
+                            "APIToken": "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+                        }
+                    ],
+                    "FlashBlades": [
+                        {
+                            "MgmtEndPoint": "1.2.3.6",
+                            "APIToken": "T-c4925090-c9bf-4033-8537-d24ee5669135",
+                            "NfsEndPoint": "1.2.3.7",
+                            "Labels": {
+                                "topology.purestorage.com/rack": "7b",
+                                "topology.purestorage.com/env": "dev"
+                            }
+                        },
+                        {
+                            "MgmtEndPoint": "1.2.3.8",
+                            "APIToken": "T-d4925090-c9bf-4033-8537-d24ee5669135",
+                            "NfsEndPoint": "1.2.3.9",
+                            "Labels": {
+                                "topology.purestorage.com/rack": "6a"
+                            }
+                        }
+                    ]
+                }
+            ],
+
+
+
+            "oneOf": [  
+                    
+                {
+                    "properties":{
+                        "FlashArrays": {"minItems": 1},
+                        "FlashBlades": {"maxItems": 0}
+                    }
+                },
+                {
+                    "properties":{
+                        "FlashArrays": {"maxItems": 0},
+                        "FlashBlades": {"minItems": 1}
+                    }
+                },    
+                {
+                    "properties":{
+                        "FlashArrays": {"minItems": 1},
+                        "FlashBlades": {"minItems": 1}
+                    }
+                }            
+
+            ],
+
+            "additionalProperties": true,
+            "properties": {
+                "FlashArrays": {
+                    "$id": "#/properties/arrays/properties/FlashArrays",
+                    "type": "array",
+                    "title": "The FlashArrays schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
+                            {
+                                "MgmtEndPoint": "1.2.3.4",
+                                "APIToken": "a526a4c6-18b0-a8c9-1afa-3499293574bb",
+                                "Labels": {
+                                    "topology.purestorage.com/rack": "22",
+                                    "topology.purestorage.com/env": "prod"
+                                }
+                            },
+                            {
+                                "MgmtEndPoint": "1.2.3.5",
+                                "APIToken": "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+                            }
+                        ]
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0",
+                                "type": "object",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "MgmtEndPoint": "1.2.3.4",
+                                        "APIToken": "a526a4c6-18b0-a8c9-1afa-3499293574bb",
+                                        "Labels": {
+                                            "topology.purestorage.com/rack": "22",
+                                            "topology.purestorage.com/env": "prod"
+                                        }
+                                    }
+                                ],
+                                "required": [
+                                    "MgmtEndPoint",
+                                    "APIToken"
+                                ],
+                                "additionalProperties": true,
+                                "properties": {
+                                    "MgmtEndPoint": {
+                                        "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/MgmtEndPoint",
+                                        "type": "string",
+                                        "title": "The MgmtEndPoint schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "1.2.3.4"
+                                        ]
+                                    },
+                                    "APIToken": {
+                                        "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/APIToken",
+                                        "type": "string",
+                                        "title": "The APIToken schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "a526a4c6-18b0-a8c9-1afa-3499293574bb"
+                                        ]
+                                    },
+                                    "Labels": {
+                                        "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/Labels",
+                                        "type": "object",
+                                        "title": "The Labels schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": {},
+                                        "examples": [
+                                            {
+                                                "topology.purestorage.com/rack": "22",
+                                                "topology.purestorage.com/env": "prod"
+                                            }
+                                        ],
+                                        "additionalProperties": true,
+                                        "properties": {
+                                            "topology.purestorage.com/rack": {
+                                                "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/rack",
+                                                "type": "string",
+                                                "title": "The topology.purestorage.com/rack schema",
+                                                "description": "An explanation about the purpose of this instance.",
+                                                "default": "",
+                                                "examples": [
+                                                    "22"
+                                                ]
+                                            },
+                                            "topology.purestorage.com/env": {
+                                                "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/env",
+                                                "type": "string",
+                                                "title": "The topology.purestorage.com/env schema",
+                                                "description": "An explanation about the purpose of this instance.",
+                                                "default": "",
+                                                "examples": [
+                                                    "prod"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/1",
+                                "type": "object",
+                                "title": "The second anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "MgmtEndPoint": "1.2.3.5",
+                                        "APIToken": "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+                                    }
+                                ],
+                                "required": [
+                                    "MgmtEndPoint",
+                                    "APIToken"
+                                ],
+                                "additionalProperties": true,
+                                "properties": {
+                                    "MgmtEndPoint": {
+                                        "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/1/properties/MgmtEndPoint",
+                                        "type": "string",
+                                        "title": "The MgmtEndPoint schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "1.2.3.5"
+                                        ]
+                                    },
+                                    "APIToken": {
+                                        "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/1/properties/APIToken",
+                                        "type": "string",
+                                        "title": "The APIToken schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "b526a4c6-18b0-a8c9-1afa-3499293574bb"
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        "$id": "#/properties/arrays/properties/FlashArrays/items"
+                    }
+                },
+                "FlashBlades": {
+                    "$id": "#/properties/arrays/properties/FlashBlades",
+                    "type": "array",
+                    "title": "The FlashBlades schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
+                            {
+                                "MgmtEndPoint": "1.2.3.6",
+                                "APIToken": "T-c4925090-c9bf-4033-8537-d24ee5669135",
+                                "NfsEndPoint": "1.2.3.7",
+                                "Labels": {
+                                    "topology.purestorage.com/rack": "7b",
+                                    "topology.purestorage.com/env": "dev"
+                                }
+                            },
+                            {
+                                "MgmtEndPoint": "1.2.3.8",
+                                "APIToken": "T-d4925090-c9bf-4033-8537-d24ee5669135",
+                                "NfsEndPoint": "1.2.3.9",
+                                "Labels": {
+                                    "topology.purestorage.com/rack": "6a"
+                                }
+                            }
+                        ]
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0",
+                                "type": "object",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "MgmtEndPoint": "1.2.3.6",
+                                        "APIToken": "T-c4925090-c9bf-4033-8537-d24ee5669135",
+                                        "NfsEndPoint": "1.2.3.7",
+                                        "Labels": {
+                                            "topology.purestorage.com/rack": "7b",
+                                            "topology.purestorage.com/env": "dev"
+                                        }
+                                    }
+                                ],
+                                "required": [
+                                    "MgmtEndPoint",
+                                    "APIToken"
+                                ],
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "required": ["NFSEndPoint"]
+                                    },
+                                    {
+                                        "type": "object",
+                                        "required": ["NfsEndPoint"]
+                                    }
+                                ],                                
+                                "additionalProperties": true,
+                                "properties": {
+                                    "MgmtEndPoint": {
+                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/MgmtEndPoint",
+                                        "type": "string",
+                                        "title": "The MgmtEndPoint schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "1.2.3.6"
+                                        ]
+                                    },
+                                    "APIToken": {
+                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/APIToken",
+                                        "type": "string",
+                                        "title": "The APIToken schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "T-c4925090-c9bf-4033-8537-d24ee5669135"
+                                        ]
+                                    },
+                                    "NfsEndPoint": {
+                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NfsEndPoint",
+                                        "type": "string",
+                                        "title": "The NfsEndPoint schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "1.2.3.7"
+                                        ]
+                                    },
+                                    "NFSEndPoint": {
+                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NfsEndPoint",
+                                        "type": "string",
+                                        "title": "The NfsEndPoint schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "1.2.3.7"
+                                        ]
+                                    },
+                                    "Labels": {
+                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/Labels",
+                                        "type": "object",
+                                        "title": "The Labels schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": {},
+                                        "examples": [
+                                            {
+                                                "topology.purestorage.com/rack": "7b",
+                                                "topology.purestorage.com/env": "dev"
+                                            }
+                                        ],
+                                        "additionalProperties": true,
+                                        "properties": {
+                                            "topology.purestorage.com/rack": {
+                                                "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/rack",
+                                                "type": "string",
+                                                "title": "The topology.purestorage.com/rack schema",
+                                                "description": "An explanation about the purpose of this instance.",
+                                                "default": "",
+                                                "examples": [
+                                                    "7b"
+                                                ]
+                                            },
+                                            "topology.purestorage.com/env": {
+                                                "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/env",
+                                                "type": "string",
+                                                "title": "The topology.purestorage.com/env schema",
+                                                "description": "An explanation about the purpose of this instance.",
+                                                "default": "",
+                                                "examples": [
+                                                    "dev"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "$id": "#/properties/arrays/properties/FlashBlades/items"
+                    }
+                }
+            }
+        },
+        "clusterrolebinding": {
+            "$id": "#/properties/clusterrolebinding",
+            "type": "object",
+            "title": "The clusterrolebinding schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "serviceAccount": {
+                        "name": "pure"
+                    }
+                }
+            ],
+            "required": [
+                "serviceAccount"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "serviceAccount": {
+                    "$id": "#/properties/clusterrolebinding/properties/serviceAccount",
+                    "type": "object",
+                    "title": "The serviceAccount schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "name": "pure"
+                        }
+                    ],
+                    "required": [
+                        "name"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "name": {
+                            "$id": "#/properties/clusterrolebinding/properties/serviceAccount/properties/name",
+                            "type": "string",
+                            "title": "The name schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                                "pure"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "csi": {
+            "$id": "#/properties/csi",
+            "type": "object",
+            "title": "The csi schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "clusterDriverRegistrar": {
+                        "image": {
+                            "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
+                            "pullPolicy": "IfNotPresent"
+                        }
+                    },
+                    "livenessProbe": {
+                        "image": {
+                            "name": "quay.io/k8scsi/livenessprobe",
+                            "pullPolicy": "IfNotPresent"
+                        }
+                    },
+                    "nodeDriverRegistrar": {
+                        "image": {
+                            "name": "quay.io/k8scsi/csi-node-driver-registrar",
+                            "pullPolicy": "IfNotPresent"
+                        }
+                    },
+                    "provisioner": {
+                        "image": {
+                            "name": "quay.io/k8scsi/csi-provisioner",
+                            "pullPolicy": "IfNotPresent"
+                        }
+                    },
+                    "resizer": {
+                        "image": {
+                            "name": "quay.io/k8scsi/csi-resizer",
+                            "pullPolicy": "Always"
+                        }
+                    },
+                    "snapshotter": {
+                        "image": {
+                            "name": "quay.io/k8scsi/csi-snapshotter",
+                            "pullPolicy": "IfNotPresent"
+                        }
+                    }
+                }
+            ],
+            "required": [
+                "clusterDriverRegistrar",
+                "livenessProbe",
+                "nodeDriverRegistrar",
+                "provisioner",
+                "resizer",
+                "snapshotter"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "clusterDriverRegistrar": {
+                    "$id": "#/properties/csi/properties/clusterDriverRegistrar",
+                    "type": "object",
+                    "title": "The clusterDriverRegistrar schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "image": {
+                                "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
+                                "pullPolicy": "IfNotPresent"
+                            }
+                        }
+                    ],
+                    "required": [
+                        "image"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "image": {
+                            "$id": "#/properties/csi/properties/clusterDriverRegistrar/properties/image",
+                            "type": "object",
+                            "title": "The image schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
+                                    "pullPolicy": "IfNotPresent"
+                                }
+                            ],
+                            "required": [
+                                "name",
+                                "pullPolicy"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "name": {
+                                    "$id": "#/properties/csi/properties/clusterDriverRegistrar/properties/image/properties/name",
+                                    "type": "string",
+                                    "title": "The name schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "quay.io/k8scsi/csi-cluster-driver-registrar"
+                                    ]
+                                },
+                                "pullPolicy": {
+                                    "$id": "#/properties/csi/properties/clusterDriverRegistrar/properties/image/properties/pullPolicy",
+                                    "type": "string",
+                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "title": "The pullPolicy schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "IfNotPresent"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "livenessProbe": {
+                    "$id": "#/properties/csi/properties/livenessProbe",
+                    "type": "object",
+                    "title": "The livenessProbe schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "image": {
+                                "name": "quay.io/k8scsi/livenessprobe",
+                                "pullPolicy": "IfNotPresent"
+                            }
+                        }
+                    ],
+                    "required": [
+                        "image"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "image": {
+                            "$id": "#/properties/csi/properties/livenessProbe/properties/image",
+                            "type": "object",
+                            "title": "The image schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "name": "quay.io/k8scsi/livenessprobe",
+                                    "pullPolicy": "IfNotPresent"
+                                }
+                            ],
+                            "required": [
+                                "name",
+                                "pullPolicy"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "name": {
+                                    "$id": "#/properties/csi/properties/livenessProbe/properties/image/properties/name",
+                                    "type": "string",
+                                    "title": "The name schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "quay.io/k8scsi/livenessprobe"
+                                    ]
+                                },
+                                "pullPolicy": {
+                                    "$id": "#/properties/csi/properties/livenessProbe/properties/image/properties/pullPolicy",
+                                    "type": "string",
+                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "title": "The pullPolicy schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "IfNotPresent"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "nodeDriverRegistrar": {
+                    "$id": "#/properties/csi/properties/nodeDriverRegistrar",
+                    "type": "object",
+                    "title": "The nodeDriverRegistrar schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "image": {
+                                "name": "quay.io/k8scsi/csi-node-driver-registrar",
+                                "pullPolicy": "IfNotPresent"
+                            }
+                        }
+                    ],
+                    "required": [
+                        "image"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "image": {
+                            "$id": "#/properties/csi/properties/nodeDriverRegistrar/properties/image",
+                            "type": "object",
+                            "title": "The image schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "name": "quay.io/k8scsi/csi-node-driver-registrar",
+                                    "pullPolicy": "IfNotPresent"
+                                }
+                            ],
+                            "required": [
+                                "name",
+                                "pullPolicy"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "name": {
+                                    "$id": "#/properties/csi/properties/nodeDriverRegistrar/properties/image/properties/name",
+                                    "type": "string",
+                                    "title": "The name schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "quay.io/k8scsi/csi-node-driver-registrar"
+                                    ]
+                                },
+                                "pullPolicy": {
+                                    "$id": "#/properties/csi/properties/nodeDriverRegistrar/properties/image/properties/pullPolicy",
+                                    "type": "string",
+                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "title": "The pullPolicy schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "IfNotPresent"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "provisioner": {
+                    "$id": "#/properties/csi/properties/provisioner",
+                    "type": "object",
+                    "title": "The provisioner schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "image": {
+                                "name": "quay.io/k8scsi/csi-provisioner",
+                                "pullPolicy": "IfNotPresent"
+                            }
+                        }
+                    ],
+                    "required": [
+                        "image"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "image": {
+                            "$id": "#/properties/csi/properties/provisioner/properties/image",
+                            "type": "object",
+                            "title": "The image schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "name": "quay.io/k8scsi/csi-provisioner",
+                                    "pullPolicy": "IfNotPresent"
+                                }
+                            ],
+                            "required": [
+                                "name",
+                                "pullPolicy"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "name": {
+                                    "$id": "#/properties/csi/properties/provisioner/properties/image/properties/name",
+                                    "type": "string",
+                                    "title": "The name schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "quay.io/k8scsi/csi-provisioner"
+                                    ]
+                                },
+                                "pullPolicy": {
+                                    "$id": "#/properties/csi/properties/provisioner/properties/image/properties/pullPolicy",
+                                    "type": "string",
+                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "title": "The pullPolicy schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "IfNotPresent"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "resizer": {
+                    "$id": "#/properties/csi/properties/resizer",
+                    "type": "object",
+                    "title": "The resizer schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "image": {
+                                "name": "quay.io/k8scsi/csi-resizer",
+                                "pullPolicy": "Always"
+                            }
+                        }
+                    ],
+                    "required": [
+                        "image"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "image": {
+                            "$id": "#/properties/csi/properties/resizer/properties/image",
+                            "type": "object",
+                            "title": "The image schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "name": "quay.io/k8scsi/csi-resizer",
+                                    "pullPolicy": "Always"
+                                }
+                            ],
+                            "required": [
+                                "name",
+                                "pullPolicy"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "name": {
+                                    "$id": "#/properties/csi/properties/resizer/properties/image/properties/name",
+                                    "type": "string",
+                                    "title": "The name schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "quay.io/k8scsi/csi-resizer"
+                                    ]
+                                },
+                                "pullPolicy": {
+                                    "$id": "#/properties/csi/properties/resizer/properties/image/properties/pullPolicy",
+                                    "type": "string",
+                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "title": "The pullPolicy schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "Always"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "snapshotter": {
+                    "$id": "#/properties/csi/properties/snapshotter",
+                    "type": "object",
+                    "title": "The snapshotter schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {
+                            "image": {
+                                "name": "quay.io/k8scsi/csi-snapshotter",
+                                "pullPolicy": "IfNotPresent"
+                            }
+                        }
+                    ],
+                    "required": [
+                        "image"
+                    ],
+                    "additionalProperties": true,
+                    "properties": {
+                        "image": {
+                            "$id": "#/properties/csi/properties/snapshotter/properties/image",
+                            "type": "object",
+                            "title": "The image schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": {},
+                            "examples": [
+                                {
+                                    "name": "quay.io/k8scsi/csi-snapshotter",
+                                    "pullPolicy": "IfNotPresent"
+                                }
+                            ],
+                            "required": [
+                                "name",
+                                "pullPolicy"
+                            ],
+                            "additionalProperties": true,
+                            "properties": {
+                                "name": {
+                                    "$id": "#/properties/csi/properties/snapshotter/properties/image/properties/name",
+                                    "type": "string",
+                                    "title": "The name schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "quay.io/k8scsi/csi-snapshotter"
+                                    ]
+                                },
+                                "pullPolicy": {
+                                    "$id": "#/properties/csi/properties/snapshotter/properties/image/properties/pullPolicy",
+                                    "type": "string",
+                                    "pattern": "^(Always|Never|IfNotPresent)$",
+                                    "title": "The pullPolicy schema",
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "default": "",
+                                    "examples": [
+                                        "IfNotPresent"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "flasharray": {
+            "$id": "#/properties/flasharray",
+            "type": "object",
+            "title": "The flasharray schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "defaultFSOpt": "-q",
+                    "defaultFSType": "xfs",
+                    "defaultMountOpt": [
+                        "discard"
+                    ],
+                    "iSCSIAllowedCIDR": "",
+                    "iSCSILoginTimeout": 20,
+                    "preemptAttachments": "true",
+                    "sanType": "ISCSI"
+                }
+            ],
+            "required": [
+                "defaultFSOpt",
+                "defaultFSType",
+                "defaultMountOpt",
+                "iSCSIAllowedCIDR",
+                "iSCSILoginTimeout",
+                "preemptAttachments",
+                "sanType"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "defaultFSOpt": {
+                    "$id": "#/properties/flasharray/properties/defaultFSOpt",
+                    "type": "string",
+                    "title": "The defaultFSOpt schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "-q"
+                    ]
+                },
+                "defaultFSType": {
+                    "$id": "#/properties/flasharray/properties/defaultFSType",
+                    "type": "string",
+                    "title": "The defaultFSType schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "xfs"
+                    ]
+                },
+                "defaultMountOpt": {
+                    "$id": "#/properties/flasharray/properties/defaultMountOpt",
+                    "type": "array",
+                    "title": "The defaultMountOpt schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
+                            "discard"
+                        ]
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/flasharray/properties/defaultMountOpt/items/anyOf/0",
+                                "type": "string",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                    "discard"
+                                ]
+                            }
+                        ],
+                        "$id": "#/properties/flasharray/properties/defaultMountOpt/items"
+                    }
+                },
+                "iSCSIAllowedCIDR": {
+                    "$id": "#/properties/flasharray/properties/iSCSIAllowedCIDR",
+                    "type": "string",
+                    "title": "The iSCSIAllowedCIDR schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        ""
+                    ]
+                },
+                "iSCSILoginTimeout": {
+                    "$id": "#/properties/flasharray/properties/iSCSILoginTimeout",
+                    "type": "integer",
+                    "title": "The iSCSILoginTimeout schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        20
+                    ]
+                },
+                "preemptAttachments": {
+                    "$id": "#/properties/flasharray/properties/preemptAttachments",
+                    "type": "string",
+                    "title": "The preemptAttachments schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "true"
+                    ]
+                },
+                "sanType": {
+                    "$id": "#/properties/flasharray/properties/sanType",
+                    "type": "string",
+                    "title": "The sanType schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "ISCSI"
+                    ]
+                }
+            }
+        },
+        "flashblade": {
+            "$id": "#/properties/flashblade",
+            "type": "object",
+            "title": "The flashblade schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "snapshotDirectoryEnabled": "false"
+                }
+            ],
+            "required": [
+                "snapshotDirectoryEnabled"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "snapshotDirectoryEnabled": {
+                    "$id": "#/properties/flashblade/properties/snapshotDirectoryEnabled",
+                    "type": "string",
+                    "title": "The snapshotDirectoryEnabled schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "false"
+                    ]
+                }
+            }
+        },
+        "image": {
+            "$id": "#/properties/image",
+            "type": "object",
+            "title": "The image schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "name": "pc2-dtr.dev.purestorage.com/purestorage/k8s",
+                    "pullPolicy": "Always",
+                    "tag": "5.2.0-17e29570-a4b94e748c140859dbf5896525ea9c74"
+                }
+            ],
+            "required": [
+                "name",
+                "pullPolicy",
+                "tag"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "name": {
+                    "$id": "#/properties/image/properties/name",
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "pc2-dtr.dev.purestorage.com/purestorage/k8s"
+                    ]
+                },
+                "pullPolicy": {
+                    "$id": "#/properties/image/properties/pullPolicy",
+                    "type": "string",
+                    "pattern": "^(Always|Never|IfNotPresent)$",
+                    "title": "The pullPolicy schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "Always"
+                    ]
+                },
+                "tag": {
+                    "$id": "#/properties/image/properties/tag",
+                    "type": "string",
+                    "title": "The tag schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "5.2.0-17e29570-a4b94e748c140859dbf5896525ea9c74"
+                    ]
+                }
+            }
+        },
+        "mounter": {
+            "$id": "#/properties/mounter",
+            "type": "object",
+            "title": "The mounter schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "affinity": {},
+                    "nodeSelector": {},
+                    "tolerations": []
+                }
+            ],
+            "required": [
+                "affinity",
+                "nodeSelector",
+                "tolerations"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "affinity": {
+                    "$id": "#/properties/mounter/properties/affinity",
+                    "type": "object",
+                    "title": "The affinity schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {}
+                    ],
+                    "required": [],
+                    "additionalProperties": true,
+                    "properties": {}
+                },
+                "nodeSelector": {
+                    "$id": "#/properties/mounter/properties/nodeSelector",
+                    "type": "object",
+                    "title": "The nodeSelector schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {}
+                    ],
+                    "required": [],
+                    "additionalProperties": true,
+                    "properties": {}
+                },
+                "tolerations": {
+                    "$id": "#/properties/mounter/properties/tolerations",
+                    "type": "array",
+                    "title": "The tolerations schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        []
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "anyOf": [],
+                        "$id": "#/properties/mounter/properties/tolerations/items"
+                    }
+                }
+            }
+        },
+        "namespace": {
+            "$id": "#/properties/namespace",
+            "type": "object",
+            "title": "The namespace schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "pure": "dsudemo"
+                }
+            ],
+            "required": [
+                "pure"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "pure": {
+                    "$id": "#/properties/namespace/properties/pure",
+                    "type": "string",
+                    "title": "The pure schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "dsudemo"
+                    ]
+                }
+            }
+        },
+        "orchestrator": {
+            "$id": "#/properties/orchestrator",
+            "type": "object",
+            "title": "The orchestrator schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "basePath": "/var/lib/kubelet",
+                    "name": "k8s"
+                }
+            ],
+            "required": [
+                "basePath",
+                "name"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "basePath": {
+                    "$id": "#/properties/orchestrator/properties/basePath",
+                    "type": "string",
+                    "title": "The basePath schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "/var/lib/kubelet"
+                    ]
+                },
+                "name": {
+                    "$id": "#/properties/orchestrator/properties/name",
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "k8s"
+                    ]
+                }
+            }
+        },
+        "provisioner": {
+            "$id": "#/properties/provisioner",
+            "type": "object",
+            "title": "The provisioner schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "affinity": {},
+                    "nodeSelector": {},
+                    "tolerations": []
+                }
+            ],
+            "required": [
+                "affinity",
+                "nodeSelector",
+                "tolerations"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "affinity": {
+                    "$id": "#/properties/provisioner/properties/affinity",
+                    "type": "object",
+                    "title": "The affinity schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {}
+                    ],
+                    "required": [],
+                    "additionalProperties": true,
+                    "properties": {}
+                },
+                "nodeSelector": {
+                    "$id": "#/properties/provisioner/properties/nodeSelector",
+                    "type": "object",
+                    "title": "The nodeSelector schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [
+                        {}
+                    ],
+                    "required": [],
+                    "additionalProperties": true,
+                    "properties": {}
+                },
+                "tolerations": {
+                    "$id": "#/properties/provisioner/properties/tolerations",
+                    "type": "array",
+                    "title": "The tolerations schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        []
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "anyOf": [],
+                        "$id": "#/properties/provisioner/properties/tolerations/items"
+                    }
+                }
+            }
+        },
+        "storageclass": {
+            "$id": "#/properties/storageclass",
+            "type": "object",
+            "title": "The storageclass schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "createBuiltIn": true,
+                    "isPureDefault": false,
+                    "pureBackend": "block"
+                }
+            ],
+            "required": [
+                "createBuiltIn",
+                "isPureDefault",
+                "pureBackend"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "createBuiltIn": {
+                    "$id": "#/properties/storageclass/properties/createBuiltIn",
+                    "type": "boolean",
+                    "title": "The createBuiltIn schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        true
+                    ]
+                },
+                "isPureDefault": {
+                    "$id": "#/properties/storageclass/properties/isPureDefault",
+                    "type": "boolean",
+                    "title": "The isPureDefault schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        false
+                    ]
+                },
+                "pureBackend": {
+                    "$id": "#/properties/storageclass/properties/pureBackend",
+                    "type": "string",
+                    "title": "The pureBackend schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "block"
+                    ]
+                }
+            }
+        },
+        "storagetopology": {
+            "$id": "#/properties/storagetopology",
+            "type": "object",
+            "title": "The storagetopology schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "enable": true,
+                    "strictTopology": false
+                }
+            ],
+            "required": [
+                "enable",
+                "strictTopology"
+            ],
+            "additionalProperties": true,
+            "properties": {
+                "enable": {
+                    "$id": "#/properties/storagetopology/properties/enable",
+                    "type": "boolean",
+                    "title": "The enable schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        true
+                    ]
+                },
+                "strictTopology": {
+                    "$id": "#/properties/storagetopology/properties/strictTopology",
+                    "type": "boolean",
+                    "title": "The strictTopology schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        false
+                    ]
+                }
+            }
+        }
+    }
+}

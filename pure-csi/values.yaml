@@ -3,35 +3,35 @@
 # Declare variables to be passed into your templates.
 
 image:
-  name: purestorage/k8s
+  name: "purestorage/k8s"
   tag: 5.2.0
-  pullPolicy: Always
+  pullPolicy: "Always"
 
 csi:
   provisioner:
     image:
-      name: quay.io/k8scsi/csi-provisioner
-      pullPolicy: Always
+      name: "quay.io/k8scsi/csi-provisioner"
+      pullPolicy: "Always"
   snapshotter:
     image:
-      name: quay.io/k8scsi/csi-snapshotter
-      pullPolicy: Always
+      name: "quay.io/k8scsi/csi-snapshotter"
+      pullPolicy: "Always"
   resizer:
     image:
-      name: quay.io/k8scsi/csi-resizer
-      pullPolicy: Always
+      name: "quay.io/k8scsi/csi-resizer"
+      pullPolicy: "Always"
   clusterDriverRegistrar:
     image:
-      name: quay.io/k8scsi/csi-cluster-driver-registrar
-      pullPolicy: Always
+      name: "quay.io/k8scsi/csi-cluster-driver-registrar"
+      pullPolicy: "Always"
   nodeDriverRegistrar:
     image:
-      name: quay.io/k8scsi/csi-node-driver-registrar
-      pullPolicy: Always
+      name: "quay.io/k8scsi/csi-node-driver-registrar"
+      pullPolicy: "Always"
   livenessProbe:
     image:
-      name: quay.io/k8scsi/livenessprobe
-      pullPolicy: Always
+      name: "quay.io/k8scsi/livenessprobe"
+      pullPolicy: "Always"
 
 # this option is to enable/disable the csi topology feature
 # for pure-csi-driver
@@ -51,17 +51,17 @@ storageclass:
   createBuiltIn: true
   isPureDefault: false
   # set the type of backend you want for the 'pure' storageclass
-  pureBackend: block
+  pureBackend: "block"
 
 # specify the service account name for this app
 clusterrolebinding:
   serviceAccount:
-    name: pure
+    name: "pure"
 
 # support ISCSI or FC, not case sensitive
 flasharray:
-  sanType: ISCSI
-  defaultFSType: xfs
+  sanType: "ISCSI"
+  defaultFSType: "xfs"
   defaultFSOpt: "-q"
   defaultMountOpt:
     - discard
@@ -76,15 +76,15 @@ flashblade:
 # 1. namespace.pure is the backend storage namespace where volumes/shares/etc
 #    will be created.
 namespace:
-  pure: k8s
+  pure: "k8s"
 
 # support k8s or openshift
 orchestrator:
   # name is either 'k8s' or 'openshift'
-  name: k8s
+  name: "k8s"
   # Use this to specify the base path of Kubelet. It should contain the "plugins", "plugins_registry", and "pods" directories.
   # Default is /var/lib/kubelet. For CoreOS and Rancher, this is usually /opt/rke/var/lib/kubelet unless configured otherwise.
-  basePath: /var/lib/kubelet
+  basePath: "/var/lib/kubelet"
 
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
@@ -112,6 +112,10 @@ orchestrator:
 #       NfsEndPoint: "1.2.3.9"
 #       Labels:
 #         topology.purestorage.com/rack: "6a"
+arrays:
+  FlashArrays: []
+  FlashBlades: []
+
 
 mounter:
   # These values map directly to yaml in the daemonset spec, see the kubernetes docs for info
