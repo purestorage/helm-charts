@@ -14,7 +14,7 @@
                 "FlashArrays": [
                     {
                         "MgmtEndPoint": "1.2.3.4",
-                        "APIToken": "",
+                        "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                         "Labels": {
                             "topology.purestorage.com/rack": "22",
                             "topology.purestorage.com/env": "prod"
@@ -22,13 +22,13 @@
                     },
                     {
                         "MgmtEndPoint": "1.2.3.5",
-                        "APIToken": ""
+                        "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                     }
                 ],
                 "FlashBlades": [
                     {
                         "MgmtEndPoint": "1.2.3.6",
-                        "APIToken": "",
+                        "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                         "NfsEndPoint": "1.2.3.7",
                         "Labels": {
                             "topology.purestorage.com/rack": "7b",
@@ -37,7 +37,7 @@
                     },
                     {
                         "MgmtEndPoint": "1.2.3.8",
-                        "APIToken": "",
+                        "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                         "NfsEndPoint": "1.2.3.9",
                         "Labels": {
                             "topology.purestorage.com/rack": "6a"
@@ -103,9 +103,9 @@
                 "snapshotDirectoryEnabled": "false"
             },
             "image": {
-                "name": "pc2-dtr.dev.purestorage.com/purestorage/k8s",
+                "name": "purestorage/k8s",
                 "pullPolicy": "Always",
-                "tag": "5.2.0-17e29570-a4b94e748c140859dbf5896525ea9c74"
+                "tag": "5.2.0"
             },
             "mounter": {
                 "affinity": {},
@@ -113,7 +113,7 @@
                 "tolerations": []
             },
             "namespace": {
-                "pure": "dsudemo"
+                "pure": "psodemo"
             },
             "orchestrator": {
                 "basePath": "/var/lib/kubelet",
@@ -156,7 +156,6 @@
             "$id": "#/properties/app",
             "type": "object",
             "title": "The app schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -172,7 +171,6 @@
                     "$id": "#/properties/app/properties/debug",
                     "type": "boolean",
                     "title": "The debug schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
                         true
@@ -191,7 +189,7 @@
                     "FlashArrays": [
                         {
                             "MgmtEndPoint": "1.2.3.4",
-                            "APIToken": "",
+                            "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                             "Labels": {
                                 "topology.purestorage.com/rack": "22",
                                 "topology.purestorage.com/env": "prod"
@@ -199,13 +197,13 @@
                         },
                         {
                             "MgmtEndPoint": "1.2.3.5",
-                            "APIToken": ""
+                            "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                         }
                     ],
                     "FlashBlades": [
                         {
                             "MgmtEndPoint": "1.2.3.6",
-                            "APIToken": "",
+                            "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                             "NfsEndPoint": "1.2.3.7",
                             "Labels": {
                                 "topology.purestorage.com/rack": "7b",
@@ -214,7 +212,7 @@
                         },
                         {
                             "MgmtEndPoint": "1.2.3.8",
-                            "APIToken": "",
+                            "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                             "NfsEndPoint": "1.2.3.9",
                             "Labels": {
                                 "topology.purestorage.com/rack": "6a"
@@ -255,13 +253,12 @@
                     "$id": "#/properties/arrays/properties/FlashArrays",
                     "type": "array",
                     "title": "The FlashArrays schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": [],
                     "examples": [
                         [
                             {
                                 "MgmtEndPoint": "1.2.3.4",
-                                "APIToken": "",
+                                "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                                 "Labels": {
                                     "topology.purestorage.com/rack": "22",
                                     "topology.purestorage.com/env": "prod"
@@ -269,7 +266,7 @@
                             },
                             {
                                 "MgmtEndPoint": "1.2.3.5",
-                                "APIToken": ""
+                                "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                             }
                         ]
                     ],
@@ -280,12 +277,11 @@
                                 "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0",
                                 "type": "object",
                                 "title": "The first anyOf schema",
-                                "description": "An explanation about the purpose of this instance.",
                                 "default": {},
                                 "examples": [
                                     {
                                         "MgmtEndPoint": "1.2.3.4",
-                                        "APIToken": "",
+                                        "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                                         "Labels": {
                                             "topology.purestorage.com/rack": "22",
                                             "topology.purestorage.com/env": "prod"
@@ -302,7 +298,6 @@
                                         "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/MgmtEndPoint",
                                         "type": "string",
                                         "title": "The MgmtEndPoint schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
                                             "1.2.3.4"
@@ -312,17 +307,15 @@
                                         "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/APIToken",
                                         "type": "string",
                                         "title": "The APIToken schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
-                                            ""
+                                            "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                                         ]
                                     },
                                     "Labels": {
                                         "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/Labels",
                                         "type": "object",
                                         "title": "The Labels schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": {},
                                         "examples": [
                                             {
@@ -336,7 +329,6 @@
                                                 "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/rack",
                                                 "type": "string",
                                                 "title": "The topology.purestorage.com/rack schema",
-                                                "description": "An explanation about the purpose of this instance.",
                                                 "default": "",
                                                 "examples": [
                                                     "22"
@@ -346,7 +338,6 @@
                                                 "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/env",
                                                 "type": "string",
                                                 "title": "The topology.purestorage.com/env schema",
-                                                "description": "An explanation about the purpose of this instance.",
                                                 "default": "",
                                                 "examples": [
                                                     "prod"
@@ -360,7 +351,6 @@
                                 "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/1",
                                 "type": "object",
                                 "title": "The second anyOf schema",
-                                "description": "An explanation about the purpose of this instance.",
                                 "default": {},
                                 "examples": [
                                     {
@@ -378,7 +368,6 @@
                                         "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/1/properties/MgmtEndPoint",
                                         "type": "string",
                                         "title": "The MgmtEndPoint schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
                                             "1.2.3.5"
@@ -388,10 +377,9 @@
                                         "$id": "#/properties/arrays/properties/FlashArrays/items/anyOf/1/properties/APIToken",
                                         "type": "string",
                                         "title": "The APIToken schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
-                                            ""
+                                            "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                                         ]
                                     }
                                 }
@@ -404,7 +392,6 @@
                     "$id": "#/properties/arrays/properties/FlashBlades",
                     "type": "array",
                     "title": "The FlashBlades schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": [],
                     "examples": [
                         [
@@ -434,12 +421,11 @@
                                 "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0",
                                 "type": "object",
                                 "title": "The first anyOf schema",
-                                "description": "An explanation about the purpose of this instance.",
                                 "default": {},
                                 "examples": [
                                     {
                                         "MgmtEndPoint": "1.2.3.6",
-                                        "APIToken": "",
+                                        "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
                                         "NfsEndPoint": "1.2.3.7",
                                         "Labels": {
                                             "topology.purestorage.com/rack": "7b",
@@ -467,7 +453,6 @@
                                         "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/MgmtEndPoint",
                                         "type": "string",
                                         "title": "The MgmtEndPoint schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
                                             "1.2.3.6"
@@ -477,17 +462,15 @@
                                         "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/APIToken",
                                         "type": "string",
                                         "title": "The APIToken schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
-                                            ""
+                                            "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                                         ]
                                     },
                                     "NfsEndPoint": {
                                         "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NfsEndPoint",
                                         "type": "string",
                                         "title": "The NfsEndPoint schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
                                             "1.2.3.7"
@@ -497,7 +480,6 @@
                                         "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NfsEndPoint",
                                         "type": "string",
                                         "title": "The NfsEndPoint schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": "",
                                         "examples": [
                                             "1.2.3.7"
@@ -507,7 +489,6 @@
                                         "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/Labels",
                                         "type": "object",
                                         "title": "The Labels schema",
-                                        "description": "An explanation about the purpose of this instance.",
                                         "default": {},
                                         "examples": [
                                             {
@@ -521,7 +502,6 @@
                                                 "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/rack",
                                                 "type": "string",
                                                 "title": "The topology.purestorage.com/rack schema",
-                                                "description": "An explanation about the purpose of this instance.",
                                                 "default": "",
                                                 "examples": [
                                                     "7b"
@@ -531,7 +511,6 @@
                                                 "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/Labels/properties/topology.purestorage.com/env",
                                                 "type": "string",
                                                 "title": "The topology.purestorage.com/env schema",
-                                                "description": "An explanation about the purpose of this instance.",
                                                 "default": "",
                                                 "examples": [
                                                     "dev"
@@ -551,7 +530,6 @@
             "$id": "#/properties/clusterrolebinding",
             "type": "object",
             "title": "The clusterrolebinding schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -569,7 +547,6 @@
                     "$id": "#/properties/clusterrolebinding/properties/serviceAccount",
                     "type": "object",
                     "title": "The serviceAccount schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -585,7 +562,6 @@
                             "$id": "#/properties/clusterrolebinding/properties/serviceAccount/properties/name",
                             "type": "string",
                             "title": "The name schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": "",
                             "examples": [
                                 "pure"
@@ -599,7 +575,6 @@
             "$id": "#/properties/csi",
             "type": "object",
             "title": "The csi schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -655,7 +630,6 @@
                     "$id": "#/properties/csi/properties/clusterDriverRegistrar",
                     "type": "object",
                     "title": "The clusterDriverRegistrar schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -674,7 +648,6 @@
                             "$id": "#/properties/csi/properties/clusterDriverRegistrar/properties/image",
                             "type": "object",
                             "title": "The image schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
                                 {
@@ -692,7 +665,6 @@
                                     "$id": "#/properties/csi/properties/clusterDriverRegistrar/properties/image/properties/name",
                                     "type": "string",
                                     "title": "The name schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "quay.io/k8scsi/csi-cluster-driver-registrar"
@@ -703,7 +675,6 @@
                                     "type": "string",
                                     "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "IfNotPresent"
@@ -717,7 +688,6 @@
                     "$id": "#/properties/csi/properties/livenessProbe",
                     "type": "object",
                     "title": "The livenessProbe schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -736,7 +706,6 @@
                             "$id": "#/properties/csi/properties/livenessProbe/properties/image",
                             "type": "object",
                             "title": "The image schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
                                 {
@@ -754,7 +723,6 @@
                                     "$id": "#/properties/csi/properties/livenessProbe/properties/image/properties/name",
                                     "type": "string",
                                     "title": "The name schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "quay.io/k8scsi/livenessprobe"
@@ -765,7 +733,6 @@
                                     "type": "string",
                                     "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "IfNotPresent"
@@ -779,7 +746,6 @@
                     "$id": "#/properties/csi/properties/nodeDriverRegistrar",
                     "type": "object",
                     "title": "The nodeDriverRegistrar schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -798,7 +764,6 @@
                             "$id": "#/properties/csi/properties/nodeDriverRegistrar/properties/image",
                             "type": "object",
                             "title": "The image schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
                                 {
@@ -816,7 +781,6 @@
                                     "$id": "#/properties/csi/properties/nodeDriverRegistrar/properties/image/properties/name",
                                     "type": "string",
                                     "title": "The name schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "quay.io/k8scsi/csi-node-driver-registrar"
@@ -827,7 +791,6 @@
                                     "type": "string",
                                     "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "IfNotPresent"
@@ -841,7 +804,6 @@
                     "$id": "#/properties/csi/properties/provisioner",
                     "type": "object",
                     "title": "The provisioner schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -860,7 +822,6 @@
                             "$id": "#/properties/csi/properties/provisioner/properties/image",
                             "type": "object",
                             "title": "The image schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
                                 {
@@ -878,7 +839,6 @@
                                     "$id": "#/properties/csi/properties/provisioner/properties/image/properties/name",
                                     "type": "string",
                                     "title": "The name schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "quay.io/k8scsi/csi-provisioner"
@@ -889,7 +849,6 @@
                                     "type": "string",
                                     "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "IfNotPresent"
@@ -903,7 +862,6 @@
                     "$id": "#/properties/csi/properties/resizer",
                     "type": "object",
                     "title": "The resizer schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -922,7 +880,6 @@
                             "$id": "#/properties/csi/properties/resizer/properties/image",
                             "type": "object",
                             "title": "The image schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
                                 {
@@ -940,7 +897,6 @@
                                     "$id": "#/properties/csi/properties/resizer/properties/image/properties/name",
                                     "type": "string",
                                     "title": "The name schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "quay.io/k8scsi/csi-resizer"
@@ -951,7 +907,6 @@
                                     "type": "string",
                                     "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "Always"
@@ -965,7 +920,6 @@
                     "$id": "#/properties/csi/properties/snapshotter",
                     "type": "object",
                     "title": "The snapshotter schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {
@@ -984,7 +938,6 @@
                             "$id": "#/properties/csi/properties/snapshotter/properties/image",
                             "type": "object",
                             "title": "The image schema",
-                            "description": "An explanation about the purpose of this instance.",
                             "default": {},
                             "examples": [
                                 {
@@ -1002,7 +955,6 @@
                                     "$id": "#/properties/csi/properties/snapshotter/properties/image/properties/name",
                                     "type": "string",
                                     "title": "The name schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "quay.io/k8scsi/csi-snapshotter"
@@ -1013,7 +965,6 @@
                                     "type": "string",
                                     "pattern": "^(Always)$",
                                     "title": "The pullPolicy schema",
-                                    "description": "An explanation about the purpose of this instance.",
                                     "default": "",
                                     "examples": [
                                         "IfNotPresent"
@@ -1029,7 +980,6 @@
             "$id": "#/properties/flasharray",
             "type": "object",
             "title": "The flasharray schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1059,7 +1009,6 @@
                     "$id": "#/properties/flasharray/properties/defaultFSOpt",
                     "type": "string",
                     "title": "The defaultFSOpt schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "-q"
@@ -1069,7 +1018,6 @@
                     "$id": "#/properties/flasharray/properties/defaultFSType",
                     "type": "string",
                     "title": "The defaultFSType schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "xfs"
@@ -1079,7 +1027,6 @@
                     "$id": "#/properties/flasharray/properties/defaultMountOpt",
                     "type": "array",
                     "title": "The defaultMountOpt schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": [],
                     "examples": [
                         [
@@ -1093,7 +1040,6 @@
                                 "$id": "#/properties/flasharray/properties/defaultMountOpt/items/anyOf/0",
                                 "type": "string",
                                 "title": "The first anyOf schema",
-                                "description": "An explanation about the purpose of this instance.",
                                 "default": "",
                                 "examples": [
                                     "discard"
@@ -1107,7 +1053,6 @@
                     "$id": "#/properties/flasharray/properties/iSCSIAllowedCIDR",
                     "type": "string",
                     "title": "The iSCSIAllowedCIDR schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         ""
@@ -1117,7 +1062,6 @@
                     "$id": "#/properties/flasharray/properties/iSCSILoginTimeout",
                     "type": "integer",
                     "title": "The iSCSILoginTimeout schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": 0,
                     "examples": [
                         20
@@ -1127,7 +1071,6 @@
                     "$id": "#/properties/flasharray/properties/preemptAttachments",
                     "type": "string",
                     "title": "The preemptAttachments schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "true"
@@ -1137,7 +1080,6 @@
                     "$id": "#/properties/flasharray/properties/sanType",
                     "type": "string",
                     "title": "The sanType schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "ISCSI"
@@ -1149,7 +1091,6 @@
             "$id": "#/properties/flashblade",
             "type": "object",
             "title": "The flashblade schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1165,7 +1106,6 @@
                     "$id": "#/properties/flashblade/properties/snapshotDirectoryEnabled",
                     "type": "string",
                     "title": "The snapshotDirectoryEnabled schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "false"
@@ -1177,13 +1117,12 @@
             "$id": "#/properties/image",
             "type": "object",
             "title": "The image schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
-                    "name": "pc2-dtr.dev.purestorage.com/purestorage/k8s",
+                    "name": "purestorage/k8s",
                     "pullPolicy": "Always",
-                    "tag": "5.2.0-17e29570-a4b94e748c140859dbf5896525ea9c74"
+                    "tag": "5.2.0"
                 }
             ],
             "required": [
@@ -1197,10 +1136,9 @@
                     "$id": "#/properties/image/properties/name",
                     "type": "string",
                     "title": "The name schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
-                        "pc2-dtr.dev.purestorage.com/purestorage/k8s"
+                        "purestorage/k8s"
                     ]
                 },
                 "pullPolicy": {
@@ -1208,7 +1146,6 @@
                     "type": "string",
                     "pattern": "^(Always)$",
                     "title": "The pullPolicy schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "Always"
@@ -1218,10 +1155,9 @@
                     "$id": "#/properties/image/properties/tag",
                     "type": "string",
                     "title": "The tag schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
-                        "5.2.0-17e29570-a4b94e748c140859dbf5896525ea9c74"
+                        "5.2.0"
                     ]
                 }
             }
@@ -1230,7 +1166,6 @@
             "$id": "#/properties/mounter",
             "type": "object",
             "title": "The mounter schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1250,7 +1185,6 @@
                     "$id": "#/properties/mounter/properties/affinity",
                     "type": "object",
                     "title": "The affinity schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {}
@@ -1263,7 +1197,6 @@
                     "$id": "#/properties/mounter/properties/nodeSelector",
                     "type": "object",
                     "title": "The nodeSelector schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {}
@@ -1276,7 +1209,6 @@
                     "$id": "#/properties/mounter/properties/tolerations",
                     "type": "array",
                     "title": "The tolerations schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": [],
                     "examples": [
                         []
@@ -1293,11 +1225,10 @@
             "$id": "#/properties/namespace",
             "type": "object",
             "title": "The namespace schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
-                    "pure": "dsudemo"
+                    "pure": "psodemo"
                 }
             ],
             "required": [
@@ -1309,10 +1240,9 @@
                     "$id": "#/properties/namespace/properties/pure",
                     "type": "string",
                     "title": "The pure schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
-                        "dsudemo"
+                        "psodemo"
                     ]
                 }
             }
@@ -1321,7 +1251,6 @@
             "$id": "#/properties/orchestrator",
             "type": "object",
             "title": "The orchestrator schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1339,7 +1268,6 @@
                     "$id": "#/properties/orchestrator/properties/basePath",
                     "type": "string",
                     "title": "The basePath schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "/var/lib/kubelet"
@@ -1349,7 +1277,6 @@
                     "$id": "#/properties/orchestrator/properties/name",
                     "type": "string",
                     "title": "The name schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "k8s"
@@ -1361,7 +1288,6 @@
             "$id": "#/properties/provisioner",
             "type": "object",
             "title": "The provisioner schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1381,7 +1307,6 @@
                     "$id": "#/properties/provisioner/properties/affinity",
                     "type": "object",
                     "title": "The affinity schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {}
@@ -1394,7 +1319,6 @@
                     "$id": "#/properties/provisioner/properties/nodeSelector",
                     "type": "object",
                     "title": "The nodeSelector schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [
                         {}
@@ -1407,7 +1331,6 @@
                     "$id": "#/properties/provisioner/properties/tolerations",
                     "type": "array",
                     "title": "The tolerations schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": [],
                     "examples": [
                         []
@@ -1424,7 +1347,6 @@
             "$id": "#/properties/storageclass",
             "type": "object",
             "title": "The storageclass schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1444,7 +1366,6 @@
                     "$id": "#/properties/storageclass/properties/createBuiltIn",
                     "type": "boolean",
                     "title": "The createBuiltIn schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
                         true
@@ -1454,7 +1375,6 @@
                     "$id": "#/properties/storageclass/properties/isPureDefault",
                     "type": "boolean",
                     "title": "The isPureDefault schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
                         false
@@ -1464,7 +1384,6 @@
                     "$id": "#/properties/storageclass/properties/pureBackend",
                     "type": "string",
                     "title": "The pureBackend schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
                         "block"
@@ -1476,7 +1395,6 @@
             "$id": "#/properties/storagetopology",
             "type": "object",
             "title": "The storagetopology schema",
-            "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
@@ -1494,7 +1412,6 @@
                     "$id": "#/properties/storagetopology/properties/enable",
                     "type": "boolean",
                     "title": "The enable schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
                         true
@@ -1504,7 +1421,6 @@
                     "$id": "#/properties/storagetopology/properties/strictTopology",
                     "type": "boolean",
                     "title": "The strictTopology schema",
-                    "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
                         false
