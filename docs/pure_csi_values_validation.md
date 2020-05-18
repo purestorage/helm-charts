@@ -17,7 +17,7 @@ default file and change only the values, but not the keys. Otherwise, users will
 ## How does it work? 
 There is no extra tasks that users need to perform. Both 
 ```bash
-helm update
+helm install
 helm upgrade
 ```
 will trigger the validation, and validation will not continue if errors are thrown. 
