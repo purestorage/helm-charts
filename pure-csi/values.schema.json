@@ -29,7 +29,7 @@
                     {
                         "MgmtEndPoint": "1.2.3.6",
                         "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
-                        "NfsEndPoint": "1.2.3.7",
+                        "NFSEndPoint": "1.2.3.7",
                         "Labels": {
                             "topology.purestorage.com/rack": "7b",
                             "topology.purestorage.com/env": "dev"
@@ -38,7 +38,7 @@
                     {
                         "MgmtEndPoint": "1.2.3.8",
                         "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
-                        "NfsEndPoint": "1.2.3.9",
+                        "NFSEndPoint": "1.2.3.9",
                         "Labels": {
                             "topology.purestorage.com/rack": "6a"
                         }
@@ -204,7 +204,7 @@
                         {
                             "MgmtEndPoint": "1.2.3.6",
                             "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
-                            "NfsEndPoint": "1.2.3.7",
+                            "NFSEndPoint": "1.2.3.7",
                             "Labels": {
                                 "topology.purestorage.com/rack": "7b",
                                 "topology.purestorage.com/env": "dev"
@@ -213,7 +213,7 @@
                         {
                             "MgmtEndPoint": "1.2.3.8",
                             "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
-                            "NfsEndPoint": "1.2.3.9",
+                            "NFSEndPoint": "1.2.3.9",
                             "Labels": {
                                 "topology.purestorage.com/rack": "6a"
                             }
@@ -398,7 +398,7 @@
                             {
                                 "MgmtEndPoint": "1.2.3.6",
                                 "APIToken": "",
-                                "NfsEndPoint": "1.2.3.7",
+                                "NFSEndPoint": "1.2.3.7",
                                 "Labels": {
                                     "topology.purestorage.com/rack": "7b",
                                     "topology.purestorage.com/env": "dev"
@@ -407,7 +407,7 @@
                             {
                                 "MgmtEndPoint": "1.2.3.8",
                                 "APIToken": "",
-                                "NfsEndPoint": "1.2.3.9",
+                                "NFSEndPoint": "1.2.3.9",
                                 "Labels": {
                                     "topology.purestorage.com/rack": "6a"
                                 }
@@ -426,7 +426,7 @@
                                     {
                                         "MgmtEndPoint": "1.2.3.6",
                                         "APIToken": "aaaaaaaa-bbbb-cccc-dddd-123456789012",
-                                        "NfsEndPoint": "1.2.3.7",
+                                        "NFSEndPoint": "1.2.3.7",
                                         "Labels": {
                                             "topology.purestorage.com/rack": "7b",
                                             "topology.purestorage.com/env": "dev"
@@ -435,18 +435,9 @@
                                 ],
                                 "required": [
                                     "MgmtEndPoint",
-                                    "APIToken"
-                                ],
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "required": ["NFSEndPoint"]
-                                    },
-                                    {
-                                        "type": "object",
-                                        "required": ["NfsEndPoint"]
-                                    }
-                                ],                                
+                                    "APIToken",
+                                    "NFSEndPoint"
+                                ],                             
                                 "additionalProperties": true,
                                 "properties": {
                                     "MgmtEndPoint": {
@@ -467,19 +458,10 @@
                                             "aaaaaaaa-bbbb-cccc-dddd-123456789012"
                                         ]
                                     },
-                                    "NfsEndPoint": {
-                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NfsEndPoint",
-                                        "type": "string",
-                                        "title": "The NfsEndPoint schema",
-                                        "default": "",
-                                        "examples": [
-                                            "1.2.3.7"
-                                        ]
-                                    },
                                     "NFSEndPoint": {
-                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NfsEndPoint",
+                                        "$id": "#/properties/arrays/properties/FlashBlades/items/anyOf/0/properties/NFSEndPoint",
                                         "type": "string",
-                                        "title": "The NfsEndPoint schema",
+                                        "title": "The NFSEndPoint schema",
                                         "default": "",
                                         "examples": [
                                             "1.2.3.7"

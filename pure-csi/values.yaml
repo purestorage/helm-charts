@@ -88,7 +88,7 @@ orchestrator:
 
 # arrays specify what storage arrays should be managed by the plugin, this is
 # required to be set upon installation. For FlashArrays you must set the "MgmtEndPoint"
-# and "APIToken", and for FlashBlades you need the additional "NfsEndPoint" parameter.
+# and "APIToken", and for FlashBlades you need the additional "NFSEndPoint" parameter.
 # The labels are optional, and can be any key-value pair for use with the "fleet"
 # provisioner. An example is shown below:
 # arrays:
@@ -103,13 +103,13 @@ orchestrator:
 #   FlashBlades:
 #     - MgmtEndPoint: "1.2.3.6"
 #       APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
-#       NfsEndPoint: "1.2.3.7"
+#       NFSEndPoint: "1.2.3.7"
 #       Labels:
 #         topology.purestorage.com/rack: "7b"
 #         topology.purestorage.com/env: "dev"
 #     - MgmtEndPoint: "1.2.3.8"
 #       APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
-#       NfsEndPoint: "1.2.3.9"
+#       NFSEndPoint: "1.2.3.9"
 #       Labels:
 #         topology.purestorage.com/rack: "6a"
 arrays:
