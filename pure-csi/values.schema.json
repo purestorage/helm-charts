@@ -54,25 +54,25 @@
                 "clusterDriverRegistrar": {
                     "image": {
                         "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
-                        "pullPolicy": "IfNotPresent"
+                        "pullPolicy": "Always"
                     }
                 },
                 "livenessProbe": {
                     "image": {
                         "name": "quay.io/k8scsi/livenessprobe",
-                        "pullPolicy": "IfNotPresent"
+                        "pullPolicy": "Always"
                     }
                 },
                 "nodeDriverRegistrar": {
                     "image": {
                         "name": "quay.io/k8scsi/csi-node-driver-registrar",
-                        "pullPolicy": "IfNotPresent"
+                        "pullPolicy": "Always"
                     }
                 },
                 "provisioner": {
                     "image": {
                         "name": "quay.io/k8scsi/csi-provisioner",
-                        "pullPolicy": "IfNotPresent"
+                        "pullPolicy": "Always"
                     }
                 },
                 "resizer": {
@@ -84,7 +84,7 @@
                 "snapshotter": {
                     "image": {
                         "name": "quay.io/k8scsi/csi-snapshotter",
-                        "pullPolicy": "IfNotPresent"
+                        "pullPolicy": "Always"
                     }
                 }
             },
@@ -563,25 +563,25 @@
                     "clusterDriverRegistrar": {
                         "image": {
                             "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
-                            "pullPolicy": "IfNotPresent"
+                            "pullPolicy": "Always"
                         }
                     },
                     "livenessProbe": {
                         "image": {
                             "name": "quay.io/k8scsi/livenessprobe",
-                            "pullPolicy": "IfNotPresent"
+                            "pullPolicy": "Always"
                         }
                     },
                     "nodeDriverRegistrar": {
                         "image": {
                             "name": "quay.io/k8scsi/csi-node-driver-registrar",
-                            "pullPolicy": "IfNotPresent"
+                            "pullPolicy": "Always"
                         }
                     },
                     "provisioner": {
                         "image": {
                             "name": "quay.io/k8scsi/csi-provisioner",
-                            "pullPolicy": "IfNotPresent"
+                            "pullPolicy": "Always"
                         }
                     },
                     "resizer": {
@@ -593,7 +593,7 @@
                     "snapshotter": {
                         "image": {
                             "name": "quay.io/k8scsi/csi-snapshotter",
-                            "pullPolicy": "IfNotPresent"
+                            "pullPolicy": "Always"
                         }
                     }
                 }
@@ -617,7 +617,7 @@
                         {
                             "image": {
                                 "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
-                                "pullPolicy": "IfNotPresent"
+                                "pullPolicy": "Always"
                             }
                         }
                     ],
@@ -634,7 +634,7 @@
                             "examples": [
                                 {
                                     "name": "quay.io/k8scsi/csi-cluster-driver-registrar",
-                                    "pullPolicy": "IfNotPresent"
+                                    "pullPolicy": "Always"
                                 }
                             ],
                             "required": [
@@ -659,7 +659,7 @@
                                     "title": "The pullPolicy schema",
                                     "default": "",
                                     "examples": [
-                                        "IfNotPresent"
+                                        "Always"
                                     ]
                                 }
                             }
@@ -675,7 +675,7 @@
                         {
                             "image": {
                                 "name": "quay.io/k8scsi/livenessprobe",
-                                "pullPolicy": "IfNotPresent"
+                                "pullPolicy": "Always"
                             }
                         }
                     ],
@@ -692,7 +692,7 @@
                             "examples": [
                                 {
                                     "name": "quay.io/k8scsi/livenessprobe",
-                                    "pullPolicy": "IfNotPresent"
+                                    "pullPolicy": "Always"
                                 }
                             ],
                             "required": [
@@ -717,7 +717,7 @@
                                     "title": "The pullPolicy schema",
                                     "default": "",
                                     "examples": [
-                                        "IfNotPresent"
+                                        "Always"
                                     ]
                                 }
                             }
@@ -733,7 +733,7 @@
                         {
                             "image": {
                                 "name": "quay.io/k8scsi/csi-node-driver-registrar",
-                                "pullPolicy": "IfNotPresent"
+                                "pullPolicy": "Always"
                             }
                         }
                     ],
@@ -750,7 +750,7 @@
                             "examples": [
                                 {
                                     "name": "quay.io/k8scsi/csi-node-driver-registrar",
-                                    "pullPolicy": "IfNotPresent"
+                                    "pullPolicy": "Always"
                                 }
                             ],
                             "required": [
@@ -775,7 +775,7 @@
                                     "title": "The pullPolicy schema",
                                     "default": "",
                                     "examples": [
-                                        "IfNotPresent"
+                                        "Always"
                                     ]
                                 }
                             }
@@ -791,7 +791,7 @@
                         {
                             "image": {
                                 "name": "quay.io/k8scsi/csi-provisioner",
-                                "pullPolicy": "IfNotPresent"
+                                "pullPolicy": "Always"
                             }
                         }
                     ],
@@ -808,7 +808,7 @@
                             "examples": [
                                 {
                                     "name": "quay.io/k8scsi/csi-provisioner",
-                                    "pullPolicy": "IfNotPresent"
+                                    "pullPolicy": "Always"
                                 }
                             ],
                             "required": [
@@ -833,7 +833,7 @@
                                     "title": "The pullPolicy schema",
                                     "default": "",
                                     "examples": [
-                                        "IfNotPresent"
+                                        "Always"
                                     ]
                                 }
                             }
@@ -907,7 +907,7 @@
                         {
                             "image": {
                                 "name": "quay.io/k8scsi/csi-snapshotter",
-                                "pullPolicy": "IfNotPresent"
+                                "pullPolicy": "Always"
                             }
                         }
                     ],
@@ -924,7 +924,7 @@
                             "examples": [
                                 {
                                     "name": "quay.io/k8scsi/csi-snapshotter",
-                                    "pullPolicy": "IfNotPresent"
+                                    "pullPolicy": "Always"
                                 }
                             ],
                             "required": [
@@ -949,7 +949,7 @@
                                     "title": "The pullPolicy schema",
                                     "default": "",
                                     "examples": [
-                                        "IfNotPresent"
+                                        "Always"
                                     ]
                                 }
                             }
