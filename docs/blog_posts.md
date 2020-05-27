@@ -15,7 +15,6 @@ No support or approval by Pure Storage is given or implied.
 * [Migrating k8s Stateful Apps with Pure Storage](https://blog.2vcps.io/2020/03/18/migrating-k8s-stateful-apps-with-pure-storage/)
 * [New Release: Pure Service Orchestrator 5.0.2](https://blog.2vcps.io/2019/11/18/new-release-pure-service-orchestrator-5-0-2/)
 * [Installing PSO in a PKS Cluster using the Operator](https://blog.2vcps.io/2019/11/05/installing-pso-in-a-pks-cluster-using-the-operator/)
-* [PSO Operator Lives!](https://blog.purestorage.com/pso-operator-lives/)
 * [All-Flash Platform-as-a-Service: Pure Storage and Red Hat OpenShift Reference Architecture](https://blog.purestorage.com/paas-pure-storage-red-hat-openshift-reference-architecture/)
 * [Storage-as-a-Service for SQL Server 2019 Big Data Clusters](https://blog.purestorage.com/storage-as-a-service-for-sql-server-2019-big-data-clusters/)
 * [Choosing the Right Infrastructure for A SQL Server 2019 Big Cluster](https://blog.purestorage.com/infrastructure-sql-server-big-cluster/)
