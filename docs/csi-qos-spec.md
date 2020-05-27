@@ -101,10 +101,9 @@ If the REST API version shown is above 1.17, QoS is supported.
     To apply:
         ```
         kubectl apply -f {PVC_yaml_file_name}
-        ```
-    At this point, QoS is not a built-in support for CSI drivers from Kubernetes, so it is entirely being managed by PSO, therefore, to see if the volume bound successfully, try the following steps:
-
-    run ```kubectl get pvc```, grab the volume name. QoS setting can be tracked in two ways
+        ```. At this point, QoS is not a built-in support for CSI drivers from Kubernetes, so it is entirely being managed by PSO, therefore, to see if the QoS is set successfully, try the following steps:
+    
+    first run ```kubectl get pvc``` to make sure your volume is bounded, grab the volume name. QoS setting can be tracked in two ways
     1. through the command line
             ```
             GET https://{deviceIP}}/api/{api_version}}/volume/{volume_name}}?qos=true
