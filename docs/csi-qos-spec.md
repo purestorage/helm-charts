@@ -5,10 +5,9 @@
 - Users want to set IOPS limit for their volumes
 
 ## Dependencies
-* PSO installed and running
-* Pure CSI driver 5.2.0+ (check with team)
+* Pure CSI driver 6.0.0+ 
 * Purity Version 5.3.0+ (Public API version 1.17 +)
-* Support FlashArray only
+* Support FlashArray block storage only
 
 ## General guidance
 Qos allow user to impose QoS limit on their persistent volumes created and managed by PSO on Kubernetes clusters. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, we enable users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in storageclasses. The feature is only supported on FlashArray block storage. 
