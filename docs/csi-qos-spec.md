@@ -1,4 +1,4 @@
-# Apply Qos control on storageclass level
+# Apply QoS control on storageclass level
 
 ## Use Cases
 - Users want to set bandwidth limit for their volumes
@@ -10,7 +10,7 @@
 * Support FlashArray block storage only
 
 ## General guidance
-Qos allows users to impose QoS limits on their persistent volumes created and managed by PSO on Kubernetes clusters. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, we enable users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in storageclasses. The feature is only supported on FlashArray block storage. 
+QoS allows users to impose QoS limits on their persistent volumes created and managed by PSO on Kubernetes clusters. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, we enable users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in storageclasses. The feature is only supported on FlashArray block storage. 
 
 At volume provision time:
 1. If the user does not own any FlashArray that supports QoS (5.3 and above), the volume will NOT be provisioned successfully. 
@@ -25,7 +25,7 @@ At volume provision time:
 
 ## Restrictions
 * Both parameters must be passed in as string types, i.e., they need to have double quotation marks around them, see examples in the later section.
-* If the bandwidth limit is set, it must be between 1 MB/s and 512 GB/s. Enter the size as a number (bytes) or number with a single character unit symbol. Valid unit symbols are K, M, G, T, P, representing KiB, MiB, GiB, TiB, and PiB, respectively, where "Ki" denotes 2^10, "Mi" denotes 2^20, and so on. If the unit symbol is not specified, the unit defaults to bytes. And when no unit symbol is used, the number entered must be multiple of 512. 
+* If the bandwidth limit is set, it must be between 1 MB/s and 512 GB/s. Enter the size as a number (bytes) or number with a single character unit symbol. Valid unit symbols are K, M, G, T, P, representing KiB, MiB, GiB, TiB, and PiB, respectively, where "Ki" denotes 2^10, "Mi" denotes 2^20, and so on. If the unit symbol is not specified, the unit defaults to bytes. And when unit symbol is not specified, the number entered must be multiple of 512. 
 
 
  
@@ -100,9 +100,9 @@ If the REST API version shown is above 1.17, QoS is supported.
 
     To apply:
         ```
-        kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/topology/pvc-delay-binding.yaml
+        kubectl apply -f {PVC_yaml_file_name}
         ```
-    To see if the volume bound successfully. 
+    At this point, QoS is not a built-in support for CSI drivers from Kubernetes, so it is entirely being managed by PSO, therefore, to see if the volume bound successfully, try the following steps:
 
     run ```kubectl get pvc```, grab the volume name. QoS setting can be tracked in two ways
     1. through the command line
@@ -112,7 +112,7 @@ If the REST API version shown is above 1.17, QoS is supported.
     2. through the dashboard UI. 
     go to Storage -> Volumes, search for the volume just created and QoS is shown at the bottom. 
 
-**Note** that this feature applies QoS limits at volume creation time, but both bandwidth_limit and IOPS can be modified at any time after volume creation either through the UI or REST API Put Volume command, see API guide for detail.
+**Note:** this feature applies QoS limits at volume-creation time, but both bandwidth and IOPS limit can be modified at any time after volume-creation either through the dashboard UI or REST API ```Put Volume``` command, see API guide for detail.
 
 
 
