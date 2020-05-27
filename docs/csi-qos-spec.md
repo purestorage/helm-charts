@@ -103,7 +103,7 @@ If the REST API version shown is above 1.17, QoS is supported.
         kubectl apply -f {PVC_yaml_file_name}
         ```. At this point, QoS is not a built-in support for CSI drivers from Kubernetes, so it is entirely being managed by PSO, therefore, to see if the QoS is set successfully, try the following steps:
     
-    first run ```kubectl get pvc``` to make sure your volume is bounded, grab the volume name. QoS setting can be tracked in two ways
+    First run ```kubectl get pvc``` to make sure your volume is bounded and grab the volume name. QoS setting can be tracked in two ways
     1. through the command line
             ```
             GET https://{deviceIP}}/api/{api_version}}/volume/{volume_name}}?qos=true
@@ -111,7 +111,7 @@ If the REST API version shown is above 1.17, QoS is supported.
     2. through the dashboard UI. 
     go to Storage -> Volumes, search for the volume just created and QoS is shown at the bottom. 
 
-**Note:** this feature applies QoS limits at volume-creation time, but both bandwidth and IOPS limit can be modified at any time after volume-creation either through the dashboard UI or REST API ```Put Volume``` command, see API guide for detail.
+**Note:** this feature applies QoS limits at volume-creation time, but both bandwidth and IOPS limit can be modified at any time after volume-creation either through the dashboard UI or REST API ```Put Volume``` command, see API guide for details.
 
 
 
