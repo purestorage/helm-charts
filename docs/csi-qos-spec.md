@@ -10,7 +10,7 @@
 * Support FlashArray block storage only
 
 ## General guidance
-Qos allow user to impose QoS limit on their persistent volumes created and managed by PSO on Kubernetes clusters. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, we enable users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in storageclasses. The feature is only supported on FlashArray block storage. 
+Qos allows users to impose QoS limits on their persistent volumes created and managed by PSO on Kubernetes clusters. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, we enable users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in storageclasses. The feature is only supported on FlashArray block storage. 
 
 At volume provision time:
 1. If the user does not own any FlashArray that supports QoS (5.3 and above), the volume will NOT be provisioned successfully. 
@@ -41,7 +41,7 @@ If the REST API version shown is above 1.17, QoS is supported.
 
 2. **Create a new storageclass**
 
-    Here is an example, but more examples can be found at: [pure-csi/templates](./pure-csi/templates)
+    Here is an example, but more examples can be found at: [pure-csi/templates](../pure-csi/templates)
     ```yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
@@ -79,7 +79,7 @@ If the REST API version shown is above 1.17, QoS is supported.
 
 3. **Create and deploy a persistent volume claim object with storageclass name configured to the storageclass created at step 1**
 
-   Here is an example, but more examples can be found at: [examples/volumeimport](./examples)
+   Here is an example, but more examples can be found at: [examples](./examples)
 
     ```yaml
     kind: PersistentVolumeClaim
@@ -99,12 +99,12 @@ If the REST API version shown is above 1.17, QoS is supported.
     ```
 
     To apply:
-        ```bash
+        ```
         kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/topology/pvc-delay-binding.yaml
         ```
     To see if the volume bound successfully. 
 
-    run ```bashkubectl get pvc```, grab the volume name. QoS setting can be tracked in two ways
+    run ```kubectl get pvc```, grab the volume name. QoS setting can be tracked in two ways
     1. through the command line
             ```
             GET https://{deviceIP}}/api/{api_version}}/volume/{volume_name}}?qos=true
@@ -112,6 +112,8 @@ If the REST API version shown is above 1.17, QoS is supported.
     2. through the dashboard UI. 
     go to Storage -> Volumes, search for the volume just created and QoS is shown at the bottom. 
 
-**Note that this feature applies QoS limits at volume creation time, but both bandwidth_limit and IOPS can be modified at any time after volume creation either through the UI or REST API Put Volume command, see API guide for detail.**
+**Note** that this feature applies QoS limits at volume creation time, but both bandwidth_limit and IOPS can be modified at any time after volume creation either through the UI or REST API Put Volume command, see API guide for detail.
+
+
 
 
