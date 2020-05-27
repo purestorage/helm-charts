@@ -69,7 +69,7 @@ spec:
         # This is the external provisioner sidecar
         - name: csi-provisioner
           {{- with .Values.csi.provisioner.image }}
-          image: {{ .name | default "quay.io/k8scsi/csi-provisioner" }}:v1.4.0
+          image: {{ .name | default "quay.io/k8scsi/csi-provisioner" }}:v1.6.0
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
@@ -86,12 +86,11 @@ spec:
 {{- if not (.Capabilities.KubeVersion.GitVersion | regexMatch "gke") }}
         - name: csi-snapshotter
           {{- with .Values.csi.snapshotter.image }}
-          image: {{ .name | default "quay.io/k8scsi/csi-snapshotter" }}:v1.2.2
+          image: {{ .name | default "quay.io/k8scsi/csi-snapshotter" }}:v2.1.1
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
             - "--csi-address=/csi/csi.sock"
-            - "--connection-timeout=15s"
             - "--leader-election=false"
           volumeMounts:
             - name: socket-dir

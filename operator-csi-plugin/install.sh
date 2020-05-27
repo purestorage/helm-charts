@@ -270,6 +270,12 @@ rules:
   - apiGroups:
     - snapshot.storage.k8s.io
     resources:
+    - \"volumesnapshotcontents/status\"
+    verbs:
+    - \"update\"
+  - apiGroups:
+    - snapshot.storage.k8s.io
+    resources:
     - \"volumesnapshotclasses\"
     verbs:
     - \"get\"

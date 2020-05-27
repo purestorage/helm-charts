@@ -141,7 +141,7 @@ Once you have correctly installed PSO on a Kubernetes deployment and the appropr
 
 These examples start with the assumption that a PVC, called `pure-claim` has been created by PSO under a block related storage class, for example the `pure-block` storage class provided by the PSO installation.
 
-#### Creating snapshots
+#### Creating snapshots (pre-v1.17)
 
 Use the following YAML to create a snapshot of the PVC `pure-claim`:
 
@@ -156,17 +156,20 @@ spec:
     name: pure-claim
     kind: PersistentVolumeClaim
 ```
-To give it a try:
-```bash
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/pvc.yaml
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/snapshot.yaml
-```
-This will create a snapshot called `volumesnapshot-1` which can check the status of with
 
+#### Creating snapshots (v1.17+)
 
-```bash
-kubectl describe -n <namespace> volumesnapshot
+Use the following YAML to create a snapshot of the PVC `pure-claim`:
+
+```yaml
+apiVersion: snapshot.storage.k8s.io/v1beta1
+kind: VolumeSnapshot
+metadata:
+  name: volumesnapshot-1
+spec:
+  volumeSnapshotClassName: pure-snapshotclass
+  source:
+    persistentVolumeClaimName: pure-claim
 ```
 
 #### Restoring a Snapshot
@@ -190,10 +193,7 @@ spec:
     name: volumesnapshot-1
     apiGroup: snapshot.storage.k8s.io
 ```
-To give it a try:
-```bash
-kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/restore-snapshot.yaml
-```
+
 **NOTE:** Recovery of a volume snapshot to overwite its parent persistant volume is not supported in the CSI specification, however this can be achieved with a FlashArray based PVC and snapshot using the following steps:
 
 1. Reduce application deployment replica count to zero to ensure there are no actives IOs through the PVC.
