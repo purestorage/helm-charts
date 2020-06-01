@@ -2,7 +2,7 @@
 # Apply Storage Quality-of-Service (QoS) Control on PSO StorageClass
 
 ## Summary
-Pure Storage FlashArray Quality-of-Service (QoS) allows users to impose QoS limits on their persistent volumes created and managed by PSO on Kubernetes clusters. QoS limits are applied on a per volume basis - these are **not** cumulative for all volumes created using a specific StorageClass. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, PSO enables users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in StorageClasses. 
+Pure Storage FlashArray Quality-of-Service (QoS) allows users to impose QoS limits on their persistent volumes created and managed by PSO on Kubernetes clusters. QoS limits are applied on a per volume basis - these are **not** cumulative for all volumes created using a specific StorageClass. Whenever throughput exceeds the limit specified, throttling occurs. Specifically, PSO enables users to specify their bandwidth limit in terms of volume capacity per second and Input/Output per second. Users can opt to enable one or the other, or both. The two parameters are passed in through parameter fields in `StorageClasses` or `PersistentVolumes`. 
 
 This feature is only supported on Pure Storage FlashArray block storage.
 
