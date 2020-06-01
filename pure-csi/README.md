@@ -11,9 +11,10 @@ This helm chart installs the CSI plugin on a Kubernetes cluster.
   - Ubuntu 18.04
 - #### Environments Supported*:
   - Kubernetes 1.13+
-  - Minimum Helm version required is 2.9.1.
-  - OpenShift 3.11
-  - Google Anthos 1.2.x
+  - Minimum Helm version required is 3.1.0.
+  - Google Anthos 1.2.x, 1.3.x
+  - Docker Kuberenetes Service (DKS) - based on Docker EE 3.0 with Kubernetes 1.14.3
+  - Platform9 Managed Kubernetes (PMK) - Privileged mode only
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
@@ -44,6 +45,10 @@ More details on using the snapshot and clone functionality can be found [here](.
 
 More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
 
+## Using Read-Write-Many (RWX) volumes with Kubernetes
+
+More details on using Read-Write-Many (RWX) volumes with Kubernetes can be found [here](../docs/csi-read-write-many.md)
+
 ## PSO use of StorageClass
 
 Whilst there are some default `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own custom storage classes that can be used by PSO.
@@ -55,9 +60,6 @@ Add the Pure Storage helm repo
 ```bash
 helm repo add pure https://purestorage.github.io/helm-charts
 helm repo update
-# Helm 2
-helm search pure-csi
-# Helm 3
 helm search repo pure-csi
 ```
 
@@ -76,9 +78,12 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `5.0.7`                                   |
+| `image.tag`                 | The image tag to pull              | `5.2.0`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always      `                            |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
+| `storagetopology.enable`    | Enable/disable csi topology feature  | `false`                                 |
+| `storagetopology.strictTopology`    | Enable/disable csi [strict topology](https://github.com/kubernetes-csi/external-provisioner/blob/master/README.md#topology-support) feature  | `false`|
+| `storageclass.createBuiltIn`| Control to create the built-in StorageClasses 'pure', 'pure-file' and 'pure-block'  | `true`                               |
 | `storageclass.isPureDefault`| Set `pure` storageclass to the default | `false`                               |
 | `storageclass.pureBackend`  | Set `pure` storageclass' default backend type | `block`                               |
 | `clusterrolebinding.serviceAccount.name`| Name of K8s/openshift service account for installing the plugin | `pure`                    |
@@ -118,23 +123,15 @@ arrays:
   FlashArrays:
     - MgmtEndPoint: "1.2.3.4"
       APIToken: "a526a4c6-18b0-a8c9-1afa-3499293574bb"
-      Labels:
-        rack: "22"
-        env: "prod"
     - MgmtEndPoint: "1.2.3.5"
       APIToken: "b526a4c6-18b0-a8c9-1afa-3499293574bb"
   FlashBlades:
     - MgmtEndPoint: "1.2.3.6"
       APIToken: "T-c4925090-c9bf-4033-8537-d24ee5669135"
       NfsEndPoint: "1.2.3.7"
-      Labels:
-        rack: "7b"
-        env: "dev"
     - MgmtEndPoint: "1.2.3.8"
       APIToken: "T-d4925090-c9bf-4033-8537-d24ee5669135"
       NfsEndPoint: "1.2.3.9"
-      Labels:
-        rack: "6a"
 ```
 
 ## Assigning Pods to Nodes
@@ -148,22 +145,21 @@ For security reason, it's strongly recommended to install the plugin in a separa
 
 Customize your values.yaml including arrays info (replacement for pure.json), and then install with your values.yaml.
 
+Create a namespace for PSO to install into
+
+```bash
+kubectl create namespace <namespace>
+```
+
 Dry run the installation, and make sure your values.yaml is working correctly.
 
 ```bash
-# Helm 2
-helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
-# Helm 3
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --dry-run --debug
 ```
 
 Run the Install
 
 ```bash
-# Install the plugin
-# Helm 2
-helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
-# Helm 3
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml
 ```
 
@@ -171,11 +167,6 @@ The values in your values.yaml overwrite the ones in pure-csi/values.yaml, but a
 option will take precedence.
 
 ```bash
-# Helm 2
-helm install --name pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
-            --set flasharray.sanType=fc \
-            --set namespace.pure=k8s_xxx \
-# Helm 3
 helm install pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml \
             --set flasharray.sanType=fc \
             --set namespace.pure=k8s_xxx \
@@ -224,9 +215,6 @@ the helm repository with the tag version required. This ensures the supporting c
 ```bash
 # list the avaiable version of the plugin
 helm repo update
-# Helm 2
-helm search pure-csi -l
-# Helm 3
 helm search repo pure-csi -l
 
 # select a target chart version to upgrade as

@@ -76,18 +76,15 @@ spec:
         app: pure-csi
 {{ include "pure_csi.labels" . | indent 8}}
     spec:
+      serviceAccountName: {{ .Values.clusterrolebinding.serviceAccount.name }}
       hostNetwork: true
       hostPID: true
       containers:
         - name: node-driver-registrar
           {{- with .Values.csi.nodeDriverRegistrar.image }}
-          image: {{ .name | default "quay.io/k8scsi/csi-node-driver-registrar" }}:v1.1.0
+          image: {{ .name | default "quay.io/k8scsi/csi-node-driver-registrar" }}:v1.3.0
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
-          lifecycle:
-            preStop:
-              exec:
-                command: ["/bin/sh", "-c", "rm -rf /registration/pure-csi /registration/pure-csi-reg.sock"]
           args:
             - --csi-address=/csi/csi.sock
             - --kubelet-registration-path={{ .Values.orchestrator.basePath | default "/var/lib/kubelet" }}/plugins/pure-csi/csi.sock
@@ -188,14 +185,14 @@ spec:
           - mountPath: /csi
             name: socket-dir
           {{- with .Values.csi.livenessProbe.image }}
-          image: {{ .name | default "quay.io/k8scsi/livenessprobe" }}:v1.1.0
+          image: {{ .name | default "quay.io/k8scsi/livenessprobe" }}:v2.0.0
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
           - --csi-address=/csi/csi.sock
-          - --connection-timeout=3s
+          - --probe-timeout=3s
           - --health-port=9898
-
+          - --v=0
       volumes:
         - secret:
             secretName: pure-provisioner-secret

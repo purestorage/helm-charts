@@ -16,8 +16,8 @@ The following dependencies must be true before the snapshot and clone functional
 
 * Kubernetes already running, deployed, configured, etc
 * PSO correctly installed and using [Pure CSI Driver v5.0.5](https://github.com/purestorage/helm-charts/releases/tag/5.0.5)+.
-* For the snapshot feature, ensure you have Kubernetes 1.13+ installed and the `VolumeSnapshotDataSource` feature gate is enabled
-* For the clone feature, ensure you have Kubernetes 1.15+ installed and the `VolumePVCDataSource` feature gate is enabled
+* For the snapshot feature, ensure you have Kubernetes 1.13+ installed and the `VolumeSnapshotDataSource` feature gate is enabled. This featuregate is set to `True` by default from 1.17 and therefore does not need to be set from this version onwards.
+* For the clone feature, ensure you have Kubernetes 1.15+ installed and the `VolumePVCDataSource` feature gate is enabled. This feature graduated to GA in 1.18 and is therefore no longer required in that and subsequent versions.
 
 ### Enabling Feature Gates
 
@@ -31,7 +31,13 @@ In general you have to ensure that the `kubelet` process has the following switc
 --feature-gates=VolumeSnapshotDataSource=true,VolumePVCDataSource=true
 ```
 
-Here are the methods to enable feature gates in a few common deployment tools:
+**Note:** 
+* `VolumePVCDataSource` gate is no longer required from Kuberenetes 1.18 (feature went GA at this version)
+* `VolumeSnapshotDataSource` gate is no longer required from Kubernetes 1.17 (defaults to true from this version)
+
+More details on feature-gate alpha and beta support can be found [here](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/#feature-gates-for-alpha-or-beta-features)
+
+Detailed below are the methods to enable feature gates in a few common deployment tools:
 
 #### kubespray
 
@@ -90,6 +96,31 @@ CSI snapshot and clone support is only available from OpenShift 4.3.
 
 To enable these features in OpenShift edit the Feature Gate Custom Resource, named `cluster`, in the `openshift-config` project. Add `VolumeSnapshotDataSource` and `VolumePVCDataSource`as enabled feature gates.
 
+#### Docker Kubernetes Service
+
+Install UCP with the `--storage-expt-enabled` flag. This will enable all the k8s 1.14 capable feature gates, including support for volume snapshots. 
+**Note:** Volume clones are not supported in DKS due to the version of Kuberenetes deployed by Docker EE 3.0.
+
+#### Platform9 Managed Kuberenetes
+
+Currently the deployment GUI for PMK does not allow for changing feature-gates therefore to enable feature-gates on PMK it is first necessary to build your cluster using the Platfom9 tools and then enable the feature-gates after deployment.
+
+Once the cluster is deployed on each of the master nodes perform the following:
+
+Edit the file `/opt/pf9/pf9-kube/conf/masterconfig/base/master.yaml` and change the two reference of
+
+```
+        - "--feature-gates=PodPriority=true"
+```
+
+to
+
+```
+        - "--feature-gates=PodPriority=true,VolumePVCDataSource=true,VolumeSnapshotDataSource=true"
+```
+
+Once completed, reboot the master nodes in series.
+
 ### Validating Feature Gates
 
 To validate if your feature gates have been correctly set, check the `api-server` pod in the `kube-system` namespace for one of the nodes in the cluster:
@@ -125,8 +156,14 @@ spec:
     name: pure-claim
     kind: PersistentVolumeClaim
 ```
-
+To give it a try:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/pure-csi/snapshotclass.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/snapshot.yaml
+```
 This will create a snapshot called `volumesnapshot-1` which can check the status of with
+
 
 ```bash
 kubectl describe -n <namespace> volumesnapshot
@@ -134,7 +171,7 @@ kubectl describe -n <namespace> volumesnapshot
 
 #### Restoring a Snapshot
 
-Use the following YAML to restore a snapshot to create a PVC `pvc-restore-from-volumesnapshot-1`:
+Use the following YAML to restore a snapshot to create a new PVC `pvc-restore-from-volumesnapshot-1`:
 
 ```yaml
 kind: PersistentVolumeClaim
@@ -153,6 +190,15 @@ spec:
     name: volumesnapshot-1
     apiGroup: snapshot.storage.k8s.io
 ```
+To give it a try:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/snapshot/restore-snapshot.yaml
+```
+**NOTE:** Recovery of a volume snapshot to overwite its parent persistant volume is not supported in the CSI specification, however this can be achieved with a FlashArray based PVC and snapshot using the following steps:
+
+1. Reduce application deployment replica count to zero to ensure there are no actives IOs through the PVC.
+2. Log on to the FlashArray hosting the underlying PV and perform a snaphot restore through the GUI. More details can be found in the FlashArray Users Guide. This can also be achieved using the `purefa_snap` Ansible module, see [here](https://github.com/Pure-Storage-Ansible/FlashArray-Collection/blob/master/collections/ansible_collections/purestorage/flasharray/docs/purefa_snap.rst) for more details.
+3. Increase the deployment replica count to 1 and allow the application to restart using the recovered PV.
 
 #### Create a clone of a PVC
 
@@ -167,7 +213,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: pure-block
+  storageClassName: pure
   resources:
     requests:
       storage: 10Gi
@@ -175,7 +221,11 @@ spec:
     kind: PersistentVolumeClaim
     name: pure-claim
 ```
-
+To give it a try:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/clone/pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/purestorage/helm-charts/master/docs/examples/clone/clone.yaml
+```
 **Notes:**
 
 1. _Application consistency:_

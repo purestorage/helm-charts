@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v0.0.10
+IMAGE=quay.io/purestorage/pso-operator:v0.2.0
 NAMESPACE=pso-operator
 KUBECTL=oc
 ORCHESTRATOR=k8s
+NODESELECTOR="unset"
 
 usage()
 {
@@ -37,6 +38,10 @@ while (("$#")); do
             fi
             shift
         ;;
+        --node-selector=*)
+            NODESELECTOR="${1#*=}"
+            shift
+        ;;
         -f)
             if [ "$#" -lt 2 ]; then
                 usage
@@ -53,11 +58,14 @@ while (("$#")); do
     esac
 done
 
-CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
 CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
 CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
 ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
-ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+if [[ "${ORCHESTRATOR}" == "openshift" ]]; then
+    ROLEBINDINGAPIVERSION="rbac.authorization.k8s.io/v1beta1"
+else
+    ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+fi
 DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 if [[ -z ${VALUESFILE} || ! -f ${VALUESFILE} ]]; then
@@ -72,7 +80,12 @@ KUBECTL_NS="${KUBECTL} apply -n ${NAMESPACE} -f"
 if [[ "${KUBECTL}" == "kubectl" ]]; then
     $KUBECTL create namespace ${NAMESPACE}
 else
-    $KUBECTL adm new-project ${NAMESPACE}
+    if [[ "${NODESELECTOR}" == "unset" ]]; then
+        # Use openshift default node-selector
+        $KUBECTL adm new-project ${NAMESPACE}
+    else
+        $KUBECTL adm new-project ${NAMESPACE} --node-selector=${NODESELECTOR}
+    fi
 
     # Since this plugin needs to mount external volumes to containers, create a SCC to allow the flex-daemon pod to
     # use the hostPath volume plugin
@@ -95,7 +108,7 @@ supplementalGroups:
 
     # Grant this SCC to the service account creating the flex-daemonset
     # extract the clusterrolebinding.serviceAccount.name from the values.yaml file if it exists.
-    SVC_ACCNT=$( cat ${VALUESFILE} | sed 's/#.*$//' | awk '/clusterrolebinding:/,0' | grep 'name:' | sed  ' s/^.*://; s/ *$//; /^$/d;' | head -1)
+    SVC_ACCNT=$( cat ${VALUESFILE} | sed 's/#.*$//' | awk '/clusterrolebinding:/,0' | grep 'name:' | sed  's/^.*://; s/ *$//; /^$/d;' | head -1)
     if [[ -z ${SVC_ACCNT} ]]; then
         SVC_ACCNT=pure
     fi
@@ -105,34 +118,8 @@ fi
 # 2. Create CRD and wait until TIMEOUT seconds for the CRD to be established.
 counter=0
 TIMEOUT=10
-
-if [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1" ]]; then
-    echo "
-apiVersion: ${CRDAPIVERSION}
-kind: CustomResourceDefinition
-metadata:
-  name: psoplugins.purestorage.com
-spec:
-  group: purestorage.com
-  names:
-    kind: PSOPlugin
-    listKind: PSOPluginList
-    plural: psoplugins
-    singular: psoplugin
-  scope: Namespaced
-  versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          spec:
-            type: object " | ${KUBECTL} apply -f -
-elif [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1beta1" ]]; then
-    echo "
-apiVersion: ${CRDAPIVERSION}
+echo "
+apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: psoplugins.purestorage.com
@@ -150,10 +137,6 @@ spec:
     storage: true
   subresources:
     status: {} " | ${KUBECTL} apply -f -
-else
-    echo "Cluster does not support CustomResourceDefinitions versions apiextensions.k8s.io/v1beta1 or apiextensions.k8s.io/v1, stopping..."
-    exit 1
-fi
 
 while true; do
     result=$(${KUBECTL} get crd/psoplugins.purestorage.com -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' | grep -i true)

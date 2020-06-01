@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-IMAGE=quay.io/purestorage/pso-operator:v5.0.7
+IMAGE=quay.io/purestorage/pso-operator:v5.2.0
 NAMESPACE=pure-csi-operator
 KUBECTL=kubectl
 ORCHESTRATOR=k8s
@@ -53,11 +53,14 @@ while (("$#")); do
     esac
 done
 
-CRDAPIVERSION="$(${KUBECTL} explain CustomResourceDefinition | grep "VERSION:" | awk '{ print $2 }')"
 CLUSTERROLEAPIVERSION="$(${KUBECTL} explain ClusterRole | grep "VERSION:" | awk '{ print $2 }')"
 CLUSTERROLEBINDINGAPIVERSION="$(${KUBECTL} explain ClusterRoleBinding | grep "VERSION:" | awk '{ print $2 }')"
 ROLEAPIVERSION="$(${KUBECTL} explain Role | grep "VERSION:" | awk '{ print $2 }')"
-ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+if [[ "${ORCHESTRATOR}" == "openshift" ]]; then
+    ROLEBINDINGAPIVERSION="rbac.authorization.k8s.io/v1beta1"
+else
+    ROLEBINDINGAPIVERSION="$(${KUBECTL} explain RoleBinding | grep "VERSION:" | awk '{ print $2 }')"
+fi
 DEPLOYMENTAPIVERSION="$(${KUBECTL} explain Deployment | grep "VERSION:" | awk '{ print $2 }')"
 
 if [[ -z ${VALUESFILE} || ! -f ${VALUESFILE} ]]; then
@@ -105,34 +108,8 @@ fi
 # 2. Create CRD and wait until TIMEOUT seconds for the CRD to be established.
 counter=0
 TIMEOUT=10
-
-if [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1" ]]; then
-    echo "
-apiVersion: ${CRDAPIVERSION}
-kind: CustomResourceDefinition
-metadata:
-  name: psoplugins.purestorage.com
-spec:
-  group: purestorage.com
-  names:
-    kind: PSOPlugin
-    listKind: PSOPluginList
-    plural: psoplugins
-    singular: psoplugin
-  scope: Namespaced
-  versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          spec:
-            type: object " | ${KUBECTL} apply -f -
-elif [[ ${CRDAPIVERSION} == "apiextensions.k8s.io/v1beta1" ]]; then
-    echo "
-apiVersion: ${CRDAPIVERSION}
+echo "
+apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: psoplugins.purestorage.com
@@ -150,10 +127,6 @@ spec:
     storage: true
   subresources:
     status: {} " | ${KUBECTL} apply -f -
-else
-    echo "Cluster does not support CustomResourceDefinitions versions apiextensions.k8s.io/v1beta1 or apiextensions.k8s.io/v1, stopping..."
-    exit 1
-fi
 
 while true; do
     result=$(${KUBECTL} get crd/psoplugins.purestorage.com -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' | grep -i true)
@@ -231,6 +204,7 @@ rules:
     - \"list\"
     - \"watch\"
     - \"update\"
+    - \"patch\"
   - apiGroups:
     - \"\"
     resources:
@@ -240,6 +214,13 @@ rules:
     - \"list\"
     - \"update\"
     - \"watch\"
+  - apiGroups:
+    - \"\"
+    resources:
+    - persistentvolumeclaims/status
+    verbs:
+    - \"update\"
+    - \"patch\"
   - apiGroups:
     - storage.k8s.io
     resources:
@@ -294,15 +275,15 @@ rules:
     - \"get\"
     - \"list\"
     - \"watch\"
-  - apiGroups: 
+  - apiGroups:
     - storage.k8s.io
-    resources: 
+    resources:
     - \"csinodes\"
-    verbs: 
+    verbs:
     - \"get\"
     - \"list\"
     - \"watch\"
-  - apiGroups: 
+  - apiGroups:
     - \"\"
     resources:
     - \"nodes\"
@@ -311,24 +292,35 @@ rules:
     - \"list\"
     - \"watch\"
 # Need the same permissions as driver-registrat-runner clusterrole to be able to create it. Only for K8s 1.13
-  - apiGroups: 
+  - apiGroups:
     - \"apiextensions.k8s.io\"
-    resources: 
+    resources:
     - \"customresourcedefinitions\"
-    verbs: 
+    verbs:
     - \"*\"
-  - apiGroups: 
+  - apiGroups:
     - \"csi.storage.k8s.io\"
     resources:
     - \"csidrivers\"
-    verbs: 
+    verbs:
     - \"*\"
-  - apiGroups: 
+  - apiGroups:
     - \"storage.k8s.io\"
     resources:
     - \"csidrivers\"
-    verbs: 
+    verbs:
     - \"*\"
+
+# Need the same permissions as pure-topology-runner clusterrole to be able to create it.
+  - apiGroups:
+    - \"\"
+    resources:
+    - \"pods\"
+    - \"nodes\"
+    verbs:
+    - \"get\"
+    - \"list\"
+    - \"watch\"
 
 ---
 kind: ClusterRoleBinding
@@ -354,6 +346,7 @@ rules:
     - \"\"
     resources:
     - pods
+    - nodes
     - services
     - endpoints
     - configmaps
@@ -461,7 +454,7 @@ spec:
   # Add fields here' | sed "s|REPLACE_NAMESPACE|${NAMESPACE}|"; sed 's/.*/  &/' ${VALUESFILE}) | ${KUBECTL_NS} -
 
 counter=0
-TIMEOUT=30
+TIMEOUT=300
 
 while true; do
     result=$(${KUBECTL} get crd/volumesnapshotclasses.snapshot.storage.k8s.io -o jsonpath='{.status.conditions[?(.type == "Established")].status}{"\n"}' --ignore-not-found | grep -i true)

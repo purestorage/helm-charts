@@ -1,0 +1,16 @@
+apiVersion: "v1"
+kind: "PersistentVolumeClaim"
+metadata:
+  name: pvc-import
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "1Gi"
+  # Note: These two fields are not required for pre-bound PV.
+  # storageClassName: pure-block
+  # volumeMode: Filesystem
+
+  # TODO: Change to the name of the imported PV.
+  volumeName: pv-import

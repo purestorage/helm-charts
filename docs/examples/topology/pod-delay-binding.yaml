@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-delay-binding
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.purestorage.com/region
+            operator: In
+            values:
+            - region-0
+  # Specify a volume that uses the claim defined in pvc.yaml
+  volumes:
+  - name: pure-vol
+    persistentVolumeClaim:
+        claimName: pure-delay-binding
+  containers:
+  - name: nginx
+    image: nginx
+    # Configure a mount for the volume We define above
+    volumeMounts:
+    - name: pure-vol
+      mountPath: /data
+    ports:
+    - containerPort: 80

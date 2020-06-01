@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: pure-csi
+  name: pv-import
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    # TODO: change to the PVC you want to bind this PV.
+    # If you don't pre-bind PVC here, the PV might be automatically bound to a PVC by scheduler.
+    name: pvc-import
+    # Namespace of the PVC
+    namespace: default
+  csi:
+    driver: pure-csi
+    # TODO: change to the volume name in backend.
+    # Volume with any name that exists in backend can be imported, and will not be renamed.
+    volumeHandle: ttt-pvc-a90d7d5f-da6c-44db-a306-a4cc122f9dd3
+    volumeAttributes:
+      backend: file
+  # TODO: configure your desired reclaim policy,
+  # Use Retain if you don't want your volume to get deleted when the PV is deleted.
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: pure-file
+  volumeMode: Filesystem

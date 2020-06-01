@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: clone-of-pure-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: pure
+  resources:
+    requests:
+      storage: 10Gi
+  dataSource:
+    kind: PersistentVolumeClaim
+    name: pure-claim

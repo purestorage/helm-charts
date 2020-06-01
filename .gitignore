@@ -5,3 +5,5 @@
 *~
 .idea
 /operator/helm-charts/**
+operator-csi-plugin/helm-charts/
+operator-k8s-plugin/helm-charts/

@@ -1,0 +1,13 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: pure-block-restrict-provisioning
+provisioner: pure-csi
+parameters:
+    backend: block
+allowedTopologies:
+  - matchLabelExpressions:
+      - key: topology.purestorage.com/rack
+        values:
+          - rack-0
+          - rack-1

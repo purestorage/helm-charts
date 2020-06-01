@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  # Referenced in pod.yaml for the volume spec
+  name: pure-delay-binding
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  # Matches the name defined in deployment/storageclass.yaml
+  storageClassName: pure-block-delay-binding

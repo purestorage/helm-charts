@@ -1,3 +1,6 @@
+**The CSI Operator should only be used for installation of PSO in an OpenShift 4.1 or 4.2 Environment**
+
+For all other deployments of Kubernetes and OpenShift 4.3 and higher, use the Helm3 installation process
 
 # Pure CSI Operator
 
@@ -53,9 +56,13 @@ More details on using the snapshot and clone functionality can be found [here](.
 
 More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
 
+## Using Read-Write-Many (RWX) volumes with Kubernetes
+
+More details on using Read-Write-Many (RWX) volumes with Kubernetes can be found [here](../docs/csi-read-write-many.md)
+
 ## PSO use of StorageClass
 
-Whilst there are some default `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own cu
+Whilst there are some example `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own cu
 stom storage classes that can be used by PSO.
 
 ## Installation
@@ -117,15 +124,6 @@ In addition, the operator needs access to multiple resources in the project/name
 4. Creates a deployment for the Operator.<br/>
 Finally the script creates and deploys the operator using the customized parameters passed in the ``values.yaml`` file.
 
-## Migrating from Helm to Operator
-
-### How to migrate from helm install to Pure CSI Operator
-
-This migration will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
-
-Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release.
-Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
-
 ### Apply changes in ``values.yaml``
 
 The ``update.sh`` script is used to apply changes from ``values.yaml`` as follows.
@@ -144,7 +142,6 @@ kubectl delete all --all -n <pure-csi-operator-installed-namespace>
 
 where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
 
-If you are using OpenShift, replace `kubectl` with `oc`.
 To completely remove the CustomResourceDefinition used by the Operator run
 
 ```bash

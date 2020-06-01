@@ -4,7 +4,7 @@
 
 image:
   name: purestorage/k8s
-  tag: 2.5.7
+  tag: 2.7.0
   pullPolicy: Always
 
 # this option is to enable/disable the debug mode of this app
@@ -31,6 +31,7 @@ flasharray:
   defaultMountOpt: ""
   preemptAttachments: "true"
   iSCSILoginTimeout: 20
+  iSCSIAllowedCIDR: ""
 
 flashblade:
   snapshotDirectoryEnabled: "false"

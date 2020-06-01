@@ -1,7 +1,11 @@
+**The Flex Volume Driver has been deprecated in favour of the CSI Driver**
+
+Flex should only be used where the CSI driver is not supported due to a lower level of Kubernetes version.
+
 # Pure Flex Operator
 
 ## Overview
-Pure Flex Operator is now the preferred install method for PSO on OpenShift 3.11 and higher versions. 
+Pure Flex Operator is the preferred install method for PSO on OpenShift 3.11. 
 The Pure Flex Operator packages and deploys the Pure Service Orchestrator (PSO) Flexvolume driver on OpenShift for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances.
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-k8s-plugin Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
@@ -17,7 +21,7 @@ This installation process does not require Helm installation.
 - #### Environments Supported*:
   - Kubernetes 1.11+
     - Access to a user account that has cluster-admin privileges.
-  - OpenShift 3.11+
+  - OpenShift 3.11
     - Access to a user account that has cluster-admin privileges.
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
@@ -56,11 +60,9 @@ The install script will do the following:
 1. Create New Project.<br/>
 The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pso-operator`` namespace is used.<br/> 
 **OpenShift Note**: In OpenShift 3.11, the default node-selector for a project does not allow PSO Operator to mount volumes on master and infra nodes. 
-If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then modify the install script as follows.<br/>
+If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then set `--node-selector` flag to `""` when running the install script as follows.<br/>
 ```
-Existing line:     $KUBECTL adm new-project ${NAMESPACE}
-
-Change to allow volume mounts on master and infra nodes:     $KUBECTL adm new-project ${NAMESPACE} --node-selector=""
+install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> --node-selector=<node-selector> -f <values.yaml>
 ```
 
 2. Create a Custom Resource Definition (CRD) for the PSO Operator. <br/>
@@ -84,13 +86,6 @@ In addition, the operator needs access to multiple resources in the project/name
 4. Creates a deployment for the Operator.<br/>
 Finally the script creates and deploys the operator using the customized parameters passed in the ``values.yaml`` file.
 
-## Migrating from Helm to Operator
-
-### How to migrate from helm install to Pure Flex Operator
-This migration will not impact the in-use volumes/filesystems from data path perspective. However, it will affect the in-flight volume/filesystem management operations. So, it is recommended to stop all the volume/filesystem management operations before doing this upgrade. Otherwise, these operations may need to be retried after the upgrade.
-Remove the helm-chart using instructions in https://helm.sh/docs/using_helm/#uninstall-a-release.
-Once the helm chart has been uninstalled, follow the install instructions [above.](#installation)
-
 ### Apply changes in ``values.yaml``
 The ``update.sh`` script is used to apply changes from ``values.yaml`` as follows.
 ```
@@ -101,7 +96,7 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 
 More details on using the snapshot functionality can be found [here](../docs/flex-snapshot-for-flasharray.md)
 
-# Using Labels to control volume topology
+## Using Labels to control volume topology
 
 More details on using configuration labels can be found [here](../docs/flex-volume-using-labels.md)
 
@@ -113,7 +108,6 @@ kubectl delete all --all -n <pure-k8s-operator-installed-namespace>
 ```
 where ``pure-k8s-operator-installed-namespace`` is the project/namespace in which the Pure FlexVolume Operator is installed. It is **strongly recommended** to install the Pure FlexVolume Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
 
-If you are using OpenShift, replace `kubectl` with `oc`.
 To completely remove the CustomResourceDefinition used by the Operator run
 ```
 kubectl delete crd psoplugins.purestorage.com
