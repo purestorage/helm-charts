@@ -24,7 +24,7 @@ Any PVC creted using a StorageClass where the `Parameters:   backend=block` is t
 ## Dependencies
 
 * Kubernetes already running, deployed, configured, etc.
-* Kubernetes supports CSI Volume Expansion as beta since 1.16 and GA since 1.19, so ensure you have Kubernetes 1.16+ installed.
+* Kubernetes supports CSI Volume Expansion as beta since 1.16 and is expected to GA in Kubernetes 1.19, so ensure you have Kubernetes 1.16+ installed. [More Info](https://kubernetes-csi.github.io/docs/volume-expansion.html)
 * PSO correctly installed and using [Pure CSI Driver v5.2.0](https://github.com/purestorage/helm-charts/releases/tag/5.2.0)+.
 
 
