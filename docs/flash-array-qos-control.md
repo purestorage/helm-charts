@@ -100,7 +100,7 @@ For importing:
     kubectl apply -f {PVC_yaml_file_name}
     ```
 ## Example - importing
-For full documentation of importing, please see [here](/csi-volume-import.md), and examples [here](./examples/volumeimport)
+For full documentation of importing, please see [here](/docs/csi-volume-import.md), and examples [here](./examples/volumeimport).
 
 To impose QoS limits during importing, since the volume to be imported already exists, simply add the QoS parameters in the `PersistentVolume`under `VolumeAttributes`, other steps as shown in the importing doc remain the same. 
 ```yaml
