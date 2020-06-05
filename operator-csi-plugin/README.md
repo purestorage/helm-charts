@@ -1,6 +1,8 @@
 **The CSI Operator should only be used for installation of PSO in an OpenShift 4.1 or 4.2 Environment**
 
-For all other deployments of Kubernetes and OpenShift 4.3 and higher, use the Helm3 installation process
+For all other deployments of Kubernetes including OpenShift 4.3 and higher, use the Helm3 installation process. Note the Operator method does work for OpenShift 4.3 but is not recommended.
+
+Should you wish to use the Operator install method for OpenShift 4.4 please refer, temporarily which awaiting a permament fix, to these [special installation notes](../docs/openshift_44.md).
 
 # Pure CSI Operator
 
