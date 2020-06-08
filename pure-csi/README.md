@@ -216,6 +216,8 @@ the helm repository with the tag version required. This ensures the supporting c
 # list the avaiable version of the plugin
 helm repo update
 helm search repo pure-csi -l
+# Optional: To obtain your values.yaml (if it is unavailable)
+helm get values <pso helm release name> --namespace <pso namespace> --output yaml > pso-values.yaml
 
 # select a target chart version to upgrade as
 helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
