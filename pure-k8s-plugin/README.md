@@ -296,6 +296,10 @@ The kubelet configuration is then set via the `node-config.yaml` in the
 path to use is something like `/etc/origin/kubelet-plugins` or similar
 as the node config path is passed through to the container.
 
+## How to upgrade from FlexVolume driver to CSI
+
+To upgrade from the FlexVolume driver to CSI please read these [support notes](../docs/flex-csi-upgrade.md).
+
 # Release Notes
 
 Release notes can be found [here](https://github.com/purestorage/helm-charts/releases)

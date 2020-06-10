@@ -223,9 +223,9 @@ helm get values <pso helm release name> --namespace <pso namespace> --output yam
 helm upgrade pure-storage-driver pure/pure-csi --namespace <namespace> -f <your_own_dir>/yourvalues.yaml --version <target chart version>
 ```
 
-## How to upgrade from the flexvolume to CSI
+## How to upgrade from FlexVolume driver to CSI
 
-Upgrade from flexvolume to CSI is not currently supported and is being considered for an upcoming release.
+To upgrade from the FlexVolume driver to CSI please read these [support notes](../docs/flex-csi-upgrade.md).
 
 # Release Notes
 
