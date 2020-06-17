@@ -10,11 +10,17 @@ This document provides one strategy to migrate volumes created and managed by th
 
 Note that this requires all access to the persistent volume to be stopped whilst this migration takes place.
 
+## Scale Down Applications
+
+The fisrt phase of the upgrade is to scale down all your deployments and statefulsets to zero to ensure that all PVs and PVs are not being accessed by application.
+
+Use the `kubectl scale --replicas=0` command to perform this.
+
 ## Upgrade to PSO CSI Driver
 
-The first phase of the migration process is to upgrade the PSO driver from the Flex version to the CSI version. 
+The second phase of the migration process is to upgrade the PSO driver from the Flex version to the CSI version. 
 
-During this upgrade all existing persistent volumes and volume claims are unaffected and the applications using these will be unaffected.
+During this upgrade all existing persistent volumes and volume claims are unaffected.
 
 First, uninstall the PSO FlexDriver by running the `helm delete` command. If you have installed the FlexDriver using the Operator then follow the process [here](../operator-k8s-plugin#uninstall) to uninstall.
 
@@ -37,15 +43,7 @@ kubectl get pv -o json | jq -j '.items[] | "PV: \(.metadata.name), Driver: \(.sp
 ```
 Persistent volumes where the driver equals `pure/flex` need to be migrated to CSI control.
 
-Once a PV has been identified as requiring migration you must stop the application pod using the PVC associated with the PV.
-
-To determine which pods are using which PVCs use the following command:
-
-```bash
-kubectl get pod -o json --all-namespaces | jq -j '.items[] | "PVC: \(.spec.volumes[].persistentVolumeClaim.claimName), Pod: \(.metadata.name), Namespace: \(.metadata.namespace)\n"' | grep -v null
-```
-
-When the application pod has been stopped, perform the following command on the PV to be migrated:
+Once a PV has been identified as requiring migration you can perform the following command on the PV:
 
 ```bash
 kubectl patch pv <your-pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
@@ -53,17 +51,26 @@ kubectl patch pv <your-pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Re
 
 ### Delete the PVC and PV (don't panic!!)
 
-* Delete the associated PVC and notice that the associated PV is not deleted.
+**Before proceeding keep a record of which PVC was bound to which PV - you will need this later in the process**
+
+* Delete the associated PVC and notice that the associated PV is not deleted
+
 * Manually delete the PV
 
 These actions will leave the underlying volume on the backend storage ready for import.
 
 ### Importing the backend volume into CSI control
 
-Now that the PVC and PV have been deleted from Kuberentes, it is necessary to import the underlying volume on the backend back into Kubernetes control, but using the CSI driver.
+Now that the PVC and PV have been deleted from Kubernetes, it is necessary to import the underlying volume on the backend back into Kubernetes control, but using the CSI driver.
 
 To achieve this use the volume import facility in PSO as documented [here](./csi-volume-import.md).
 
-Ensure that the `persistentVolumeReclaimPolicy` is set to `Delete`. This will ensure that when the time comes for the PV to be deleted, the CSI driver will correctly delete the backend volume.
+* In this step the `volumeHandle` referenced will be the PV name prefixed by the Pure namespace, defined for your PSO installation, and a hyphen. THe Pure namespace setting is available in the PSO installation `values.yaml`.
 
-Remember to create the PVC with the same name that the application used before so that when the application pod restarts it will attach to the correct PV.
+  For example:
+
+  A PV called `pvc-70c5a426-c704-4478-b034-2d233ec673bc` and a Pure namespace of `k8s` will require the `volumeHandle` to be `k8s-pvc-70c5a426-c704-4478-b034-2d233ec673bc`.
+
+* The `name` setting in `claimRef` must match the PVC name linked to the PV name you are importing. **Reference the record of these you obtained earlier**.
+
+* Finally, ensure that the `persistentVolumeReclaimPolicy` is set to `Delete`. This will ensure that when the time comes for the PV to be deleted, the CSI driver will correctly delete the backend volume.
