@@ -65,7 +65,7 @@ Now that the PVC and PV have been deleted from Kubernetes, it is necessary to im
 
 To achieve this use the volume import facility in PSO as documented [here](./csi-volume-import.md).
 
-* In this step the `volumeHandle` referenced will be the PV name prefixed by the Pure namespace, defined for your PSO installation, and a hyphen. THe Pure namespace setting is available in the PSO installation `values.yaml`.
+* In this step the `volumeHandle` referenced will be the PV name prefixed by the Pure namespace, defined for your PSO installation, and a hyphen. The Pure namespace setting is available in the PSO installation `values.yaml`.
 
   For example:
 
@@ -74,3 +74,9 @@ To achieve this use the volume import facility in PSO as documented [here](./csi
 * The `name` setting in `claimRef` must match the PVC name linked to the PV name you are importing. **Reference the record of these you obtained earlier**.
 
 * Finally, ensure that the `persistentVolumeReclaimPolicy` is set to `Delete`. This will ensure that when the time comes for the PV to be deleted, the CSI driver will correctly delete the backend volume.
+
+## Scale Up Applications
+
+The final phase of the upgrade is to scale up all your deployments and statefulsets to their original replica size.
+
+Use the `kubectl scale --replicas=<replica count>` command to perform this.
