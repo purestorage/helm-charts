@@ -40,6 +40,7 @@ Parameter list:
 1. `namespace` is the namespace/project in which the Pure CSI Operator and its entities will be installed. If unspecified, the operator creates and installs in the `pure-csi-operator` namespace.
 
 **Pure CSI Operator MUST be installed in a new project with no other pods, otherwise an uninstall may delete pods that are not related to the Pure CSI Operator.**
+
 2. `values.yaml` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
 Refer to [Configuration for values.yaml.](../pure-csi/README.md#configuration)
 
