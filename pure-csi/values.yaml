@@ -11,26 +11,32 @@ csi:
   provisioner:
     image:
       name: "quay.io/k8scsi/csi-provisioner"
+      tag: "v1.4.0"
       pullPolicy: "Always"
   snapshotter:
     image:
       name: "quay.io/k8scsi/csi-snapshotter"
+      tag: "v1.2.2"
       pullPolicy: "Always"
   resizer:
     image:
       name: "quay.io/k8scsi/csi-resizer"
+      tag: "v0.5.0"
       pullPolicy: "Always"
   clusterDriverRegistrar:
     image:
       name: "quay.io/k8scsi/csi-cluster-driver-registrar"
+      tag: "v1.0.1"
       pullPolicy: "Always"
   nodeDriverRegistrar:
     image:
       name: "quay.io/k8scsi/csi-node-driver-registrar"
+      tag: "v1.3.0"
       pullPolicy: "Always"
   livenessProbe:
     image:
       name: "quay.io/k8scsi/livenessprobe"
+      tag: "v2.0.0"
       pullPolicy: "Always"
 
 # this option is to enable/disable the csi topology feature

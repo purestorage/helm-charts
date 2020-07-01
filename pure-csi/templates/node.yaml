@@ -1,7 +1,7 @@
-# On K8s 1.12 and 1.13 you need to create this CRD on the cluster before the helm install. 
-# This is because CSI is still alpha on these versions and the CSIDriver object is a CRD. 
-# Our helm chart cannot create this CRD because if affects other CSI-drivers that may be installed 
-# on the cluster. 
+# On K8s 1.12 and 1.13 you need to create this CRD on the cluster before the helm install.
+# This is because CSI is still alpha on these versions and the CSIDriver object is a CRD.
+# Our helm chart cannot create this CRD because if affects other CSI-drivers that may be installed
+# on the cluster.
 # See https://kubernetes-csi.github.io/docs/csi-driver-object.html for details.
 # Inlining the CRD definition here in comments if you want to copy and apply.
 #
@@ -82,7 +82,7 @@ spec:
       containers:
         - name: node-driver-registrar
           {{- with .Values.csi.nodeDriverRegistrar.image }}
-          image: {{ .name | default "quay.io/k8scsi/csi-node-driver-registrar" }}:v1.3.0
+          image: {{ .name | default "quay.io/k8scsi/csi-node-driver-registrar" }}:{{ .tag }}
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
@@ -185,7 +185,7 @@ spec:
           - mountPath: /csi
             name: socket-dir
           {{- with .Values.csi.livenessProbe.image }}
-          image: {{ .name | default "quay.io/k8scsi/livenessprobe" }}:v2.0.0
+          image: {{ .name | default "quay.io/k8scsi/livenessprobe" }}:{{ .tag }}
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
           args:
