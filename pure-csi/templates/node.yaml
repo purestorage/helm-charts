@@ -36,7 +36,7 @@
 #  version: v1alpha1
 # {{ end }}
 ---
-{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "13") }}
+{{ if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion }}
 # For Kubernetes v1.13, this is not needed, because
 # we should be using cluster-driver-registrar sidecar
 # container.
