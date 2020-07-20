@@ -16,7 +16,7 @@ parameters:
   createoptions: {{ .Values.flasharray.defaultFSOpt | default "-q" | quote }}
 {{- end }}
 # PSO requires K8s 1.16+ for CSI VolumeExpansion
-{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "15") }}
+{{ if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion }}
 allowVolumeExpansion: true
 {{ end }}
 {{- if eq .Values.storageclass.pureBackend "file"}}
@@ -45,7 +45,7 @@ provisioner: pure-csi # This must match the name of the CSIDriver. And the name 
 parameters:
     backend: file
 # PSO requires K8s 1.16+ for CSI VolumeExpansion
-{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "15") }}
+{{ if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion }}
 allowVolumeExpansion: true
 {{ end }}
 ---
@@ -62,7 +62,7 @@ parameters:
   csi.storage.k8s.io/fstype: xfs
   createoptions: -q
 # PSO requires K8s 1.16+ for CSI VolumeExpansion
-{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "15") }}
+{{ if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion }}
 allowVolumeExpansion: true
 {{ end }}
 # support either string or list for .Values.flasharray.defaultMountOpt

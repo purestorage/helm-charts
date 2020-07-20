@@ -100,7 +100,7 @@ spec:
 # The csi-resizer sidecar that watches the Kubernetes API server for PersistentVolumeClaim updates.
 # Does not scale with more replicas, only one is elected as leader and running.
 # PSO requires K8s 1.16+ for CSI VolumeExpansion
-{{ if and (eq .Capabilities.KubeVersion.Major "1") (gt .Capabilities.KubeVersion.Minor "15") }}
+{{ if semverCompare ">=1.16-0" .Capabilities.KubeVersion.GitVersion }}
         - name: csi-resizer
           {{- with .Values.csi.resizer.image }}
           image: {{ .name | default "quay.io/k8scsi/csi-resizer" }}:v0.5.0
