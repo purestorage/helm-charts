@@ -17,6 +17,8 @@ This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
   - Kubernetes 1.6+
   - Helm 2.9.1+ (**NOTE:** Helm3 is not supported for FlexDriver)
   - [OpenShift](#openshift) 3.11
+    - [Dynamic provisioning](https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/dynamically_provisioning_pvs.html#overview) enabled in the master nodes.
+    - [Controller attach-detach disabled](https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/enabling_controller_attach_detach.html#configuring-nodes-to-enable-controller-managed-attachment-and-detachment) in all nodes the flex driver is running on.
   - AWS EKS 1.14
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
