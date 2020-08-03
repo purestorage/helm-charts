@@ -1,71 +1,45 @@
-**The CSI Operator should only be used for installation of PSO in an OpenShift 4.1, 4.2 or 4.3 Environment**
+**The CSI Operator should only be used for installation of PSO in an OpenShift 4 Environment**
 
-For all other deployments of Kubernetes including OpenShift 4.4 and higher, use the Helm3 installation process. Note the Operator method does work for OpenShift 4.4 but is not recommended.
-
-Should you wish to use the Operator install method for OpenShift 4.4 please refer, temporarily which awaiting a permament fix, to these [special installation notes](../docs/openshift_44.md).
+For all other deployments of Kubernetes use the Helm installation process.
 
 # Pure CSI Operator
 
 ## Overview
 
-The Pure CSI Operator packages and deploys the Pure Service Orchestrator (PSO) CSI plugin on Kubernetes for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances. 
+The Pure CSI Operator packages and deploys the Pure Service Orchestrator (PSO) CSI plugin on OpenShift for dynamic provisioning of persistent volumes on FlashArray and FlashBlade storage appliances. 
 This Operator is created as a [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) from the [pure-csi Helm chart](https://github.com/purestorage/helm-charts#purestorage-helm-charts-and-helm-operator) using the [Operator-SDK](https://github.com/operator-framework/operator-sdk#overview).
 This installation process does not require Helm installation.
 
 ## Platform and Software Dependencies
 
-- #### Operating Systems Supported*:
-  - CentOS 7
-  - CoreOS (Ladybug 1298.6.0 and above)
-  - RHEL 7
-  - Ubuntu 16.04
-  - Ubuntu 18.04
 - #### Environments Supported*:
-  - AWS EKS 1.14
-  - Kubernetes 1.13+
-    - Access to a user account that has cluster-admin privileges.
-  - CSI specification v1.0.0
+  - Red Hat OpenShift 4.3+
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
   - Latest iSCSI initiator software for your operating system (Optional, required for iSCSI connectivity)
   - Latest NFS software package for your operating system (Optional, required for NFS connectivity)
-  - Latest FC initiator software for your operating system (Optional, required for FC connectivity, *FC Supported on Bare-metal K8s installations only*)
+  - Latest FC initiator software for your operating system (Optional, required for FC connectivity, *FC Supported on Bare-metal installations only*)
 - #### FlashArray and FlashBlade:
   - The FlashArray and/or FlashBlade should be connected to the compute nodes using [Pure's best practices](https://support.purestorage.com/Solutions/Linux/Reference/Linux_Recommended_Settings)
 
 _* Please see release notes for details_
 
-## Additional configuration for Kubernetes 1.13 Only
-
-For details see the [CSI documentation](https://kubernetes-csi.github.io/docs/csi-driver-object.html). 
-In Kubernetes 1.12 and 1.13 CSI was alpha and is disabled by default. To enable the use of a CSI driver on these versions, do the following:
-
-1. Ensure the feature gate is enabled via the following Kubernetes feature flag: ```--feature-gates=CSIDriverRegistry=true```
-2. Either ensure the CSIDriver CRD is installed cluster with the following command:
-
-```bash
-$> kubectl create -f https://raw.githubusercontent.com/kubernetes/csi-api/master/pkg/crd/manifests/csidriver.yaml
-```
-
-## CSI Snapshot and Clone features for Kubernetes
+## CSI Snapshot and Clone feature
 
 More details on using the snapshot and clone functionality can be found [here](../docs/csi-snapshot-clones.md)
 
-*Note:* It is not currently possible to open feature gates in [AWS EKS](https://github.com/aws/containers-roadmap/issues/512), therefore these features are not available on EKS
-
-## Using Per-Volume FileSystem Options with Kubernetes
+## Using Per-Volume FileSystem Options
 
 More details on using customized filesystem options can be found [here](../docs/csi-filesystem-options.md).
 
-## Using Read-Write-Many (RWX) volumes with Kubernetes
+## Using Read-Write-Many (RWX) volumes
 
 More details on using Read-Write-Many (RWX) volumes with Kubernetes can be found [here](../docs/csi-read-write-many.md)
 
 ## PSO use of StorageClass
 
-Whilst there are some example `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own cu
-stom storage classes that can be used by PSO.
+Whilst there are some example `StorageClass` definitions provided by the PSO installation, refer [here](../docs/custom-storageclasses.md) for more details on these default storage classes and how to create your own custom storage classes that can be used by PSO.
 
 ## Installation
 
@@ -83,15 +57,17 @@ The pure-csi-operator namespace/project is created by the install script (see be
 Run the install script to set up the Pure CSI Operator. <br/>
 
 ```bash
-install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>
+# For OpenShift 4.3 only
+install.sh --image=<image> --namespace=<namespace> --orchestrator=openshift -f <values.yaml>
+# For OpenShift 4.4 and 4.5
+install_ose4.sh --image=<image> --namespace=<namespace> --orchestrator=openshift -f <values.yaml>
 ```
 
 Parameter list:<br/>
 1. ``image`` is the Pure CSI Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
 2. ``namespace`` is the namespace/project in which the Pure CSI Operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``pure-csi-operator`` namespace.
 **Pure CSI Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the Pure CSI Operator.**
-3. ``orchestrator`` defaults to ``k8s``. Options are ``k8s`` or ``openshift``. 
-4. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
+3. ``values.yaml`` is the customized helm-chart configuration parameters. This is a **required parameter** and must contain the list of all backend FlashArray and FlashBlade storage appliances. All parameters that need a non-default value must be specified in this file. 
 Refer to [Configuration for values.yaml.](../pure-csi/README.md#configuration)
 
 ### Install script steps:
@@ -132,8 +108,8 @@ The ``update.sh`` script is used to apply changes from ``values.yaml`` as follow
 
 To uninstall the Pure CSI Operator, run 
 ```bash
-kubectl delete PSOPlugin/psoplugin-operator -n <pure-csi-operator-installed-namespace>
-kubectl delete all --all -n <pure-csi-operator-installed-namespace>
+oc delete PSOPlugin/psoplugin-operator -n <pure-csi-operator-installed-namespace>
+oc delete all --all -n <pure-csi-operator-installed-namespace>
 ```
 
 where ``pure-csi-operator-installed-namespace`` is the project/namespace in which the Pure CSI Operator is installed. It is **strongly recommended** to install the Pure CSI Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall. 
@@ -141,10 +117,8 @@ where ``pure-csi-operator-installed-namespace`` is the project/namespace in whic
 To completely remove the CustomResourceDefinition used by the Operator run
 
 ```bash
-kubectl delete crd psoplugins.purestorage.com
+oc delete crd psoplugins.purestorage.com
 ```
-
-If you are using OpenShift, replace `kubectl` with `oc` in the above commands.
 
 # License
 

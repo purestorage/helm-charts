@@ -468,7 +468,7 @@ done
 if [ $counter -gt $TIMEOUT ]; then
     echo "VolumeSnapshotClasss CRD not found!"
 else
-    $KUBECTL apply -f ../pure-csi/snapshotclass_ose44.yaml
+    $KUBECTL apply -f ../pure-csi/snapshotclass_ose4.yaml
     while true; do
         result=$(${KUBECTL} get statefulset/pure-provisioner -n ${NAMESPACE} -o jsonpath='{.status.readyReplicas}{"\n"}' --ignore-not-found | grep -i 1)
         if [ $? -eq 0 ]; then
@@ -480,6 +480,6 @@ else
         fi
         sleep 1
     done
-    $KUBECTL apply -f <(cat <(kubectl get clusterrole external-provisioner-runner -o yaml) ./ose_44_clusterrole_patch.yaml)
+    $KUBECTL apply -f <(cat <(kubectl get clusterrole external-provisioner-runner -o yaml) ./ose_4_clusterrole_patch.yaml)
     $KUBECTL apply -f <(cat <(kubectl get -n ${NAMESPACE} statefulset pure-provisioner -o yaml | sed 's/v1.4.0/v1.6.0/' - | sed 's/v1.2.2/v2.1.1/' -) | awk '/- --connection-timeout=15s/{c++;if(c==2){sub("- --connection-timeout=15s", "");c=0}}1' -)
 fi
