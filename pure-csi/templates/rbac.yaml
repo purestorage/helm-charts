@@ -49,6 +49,9 @@ rules:
     resources: ["volumesnapshots/status"]
     verbs: ["update"]
   - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotcontents/status"]
+    verbs: ["update"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshotcontents"]
     verbs: ["create", "get", "list", "watch", "update", "delete"]
   - apiGroups: ["storage.k8s.io"]
@@ -114,13 +117,13 @@ roleRef:
 ---
 
 {{ if and (eq .Capabilities.KubeVersion.Major "1") (eq .Capabilities.KubeVersion.Minor "13") }}
-# This file is downloaded from https://github.com/kubernetes-csi/cluster-driver-registrar/archive/v1.0.1.tar.gz 
+# This file is downloaded from https://github.com/kubernetes-csi/cluster-driver-registrar/archive/v1.0.1.tar.gz
 # NOTE: this repo is only for Kubernetes versions 1.12 and 1.13. The rbac in the master branch is not maintained so use the
 # one in the released branch.
 
 # This YAML file contains all RBAC objects that are necessary to run cluster-driver-registrar sidecar because our
 # CSI driver does not yet support ControllerPublish/Unpublish and we need the 'SkipAttach' functionality.
-# Also this sidecar is not being used in 1.14 so this is only for 1.13 right now. 
+# Also this sidecar is not being used in 1.14 so this is only for 1.13 right now.
 # NOTE: Kubernetes 1.12 needs a different sidecar : https://github.com/kubernetes-csi/driver-registrar.
 #
 # In production, each CSI driver deployment has to be customized:
