@@ -46,10 +46,13 @@ cd operator-k8s-plugin
 
 Create your own `values.yaml`. The easiest way is to copy the default [./values.yaml](./values.yaml) with `wget`.
 
-Run the install script to set up the PSO-operator. <br/>
-```install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>```
+Run the install script to set up the PSO-operator.
 
-Parameter list:<br/>
+```bash
+install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> -f <values.yaml>
+```
+
+Parameter list:
 1. ``image`` is the Pure Flex Operator image. If unspecified ``image`` resolves to the released version at [quay.io/purestorage/pso-operator](https://quay.io/purestorage/pso-operator).
 2. ``namespace`` is the namespace/project in which the Pure Flex Operator and its entities will be installed. If unspecified, the operator creates and installs in  the ``pso-operator`` namespace.
 **Pure Flex Operator MUST be installed in a new project with no other pods. Otherwise an uninstall may delete pods that are not related to the Pure Flex operator.**
@@ -63,11 +66,12 @@ The install script will do the following:
 The script creates a new project (if it does not already exist) with the given namespace. If no namespace parameter is specified, the ``pso-operator`` namespace is used.<br/> 
 **OpenShift Note**: In OpenShift 3.11, the default node-selector for a project does not allow PSO Operator to mount volumes on master and infra nodes. 
 If you want to mount volumes on master and infra nodes OR run pods in the default namespace using volumes mounted by PSO, then set `--node-selector` flag to `""` when running the install script as follows.<br/>
-```
+
+```bash
 install.sh --image=<image> --namespace=<namespace> --orchestrator=<ochestrator> --node-selector=<node-selector> -f <values.yaml>
 ```
 
-2. Create a Custom Resource Definition (CRD) for the PSO Operator. <br/>
+2. Create a Custom Resource Definition (CRD) for the PSO Operator.<br/>
 The script waits for the CRD to be published in the cluster. If after 10 seconds the API server has not setup the CRD, the script times out. To wait longer, pass the parameter 
 ``--timeout=<timeout_in_sec>`` to the install script.
 
@@ -80,17 +84,16 @@ The Pure Flex Operator needs the following Cluster-level Roles and RoleBindings.
 | Namespace | Get | PSO Operator needs the ability to get created namespaces |
 | Storageclass | Create/Delete | Create and cleanup storage classes to be used for Provisioning |
 | ClusterRoleBinding | Create/Delete/Get | PSO Operator needs to create and cleanup a ClusterRoleBinding called ``pure-provisioner-rights`` to the ClusterRole ``system:persistent-volume-provisioner`` for provisioning PVs |
-<br/>
+
 In addition, the operator needs access to multiple resources in the project/namespace that it is deployed in to function correctly. Hence it is recommended to install the PSO-operator in the non-default namespace.
-<br/>
-<br/>
    
 4. Creates a deployment for the Operator.<br/>
 Finally the script creates and deploys the operator using the customized parameters passed in the ``values.yaml`` file.
 
 ### Apply changes in ``values.yaml``
 The ``update.sh`` script is used to apply changes from ``values.yaml`` as follows.
-```
+
+```bash
 ./update.sh -f values.yaml
 ```
 
@@ -102,18 +105,36 @@ More details on using the snapshot functionality can be found [here](../docs/fle
 
 More details on using configuration labels can be found [here](../docs/flex-volume-using-labels.md)
 
-## Uninstall
-To uninstall the Pure FlexVolume Operator, run
+## Upgrading FlexDriver Operator version
+To upgrade the version of your FlexDriver perform the following actions:
+1. Update your `helm-charts` directory using `git fetch` and `git rebase`. If you have modified any files you will need to commit these before performing the `rebase`. For more details see [here](https://git-scm.com/docs/git-rebase) and [here](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
+2. Ensure that your local `values.yaml` file is modified to reflect the `tag` version of the `purestorage/k8s` FlexDriver image you wish to upgrade to, for example: `2.7.0`
+3. Run the `upgrade.sh` script as follows:<br/>
+
+```bash
+./upgrade.sh -f values.yaml --version=<new_version>
 ```
+
+where `<new_version>` refers to the PSO Operator image version, such as `0.2.0`, you wish to upgrade to.
+
+**NOTE:** The Operator image version and FlexDriver version must be compatible
+
+## Uninstall FlexDriver Operator
+To uninstall the Pure FlexVolume Operator, run
+
+```bash
 kubectl delete PSOPlugin/psoplugin-operator -n <pure-k8s-operator-installed-namespace>
 kubectl delete all --all -n <pure-k8s-operator-installed-namespace>
 ```
-where ``pure-k8s-operator-installed-namespace`` is the project/namespace in which the Pure FlexVolume Operator is installed. It is **strongly recommended** to install the Pure FlexVolume Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
+
+where ``pure-k8s-operator-installed-namespace`` is the project/namespace in which the Pure FlexDriver Operator is installed. It is **strongly recommended** to install the Pure FlexDriver Operator in a new project and not add any other pods to this project/namespace. Any pods in this project will be cleaned up on an uninstall.
 
 To completely remove the CustomResourceDefinition used by the Operator run
-```
+
+```bash
 kubectl delete crd psoplugins.purestorage.com
 ```
+
 If you are using OpenShift, replace `kubectl` with `oc` in the above commands.
 
 # License
