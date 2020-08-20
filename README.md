@@ -1,5 +1,9 @@
 # Pure Service Orchestrator (PSO) Helm Charts
 
+## Feature-Frozen
+Pure Service Orchestrator 5.x is in feature freeze. All new features will be going into our new [6.x release](https://github.com/purestorage/pso-csi).
+Bug reports for 5.x will still be addressed, and PSO 5.x is currently still the required plugin for Google Anthos and OpenShift 3.11.
+
 ## What is PSO?
 
 Pure Service Orchestrator (PSO) delivers storage-as-a-service for containers, giving developers the agility of public cloud with the reliability and security of on-premises infrastructure.
