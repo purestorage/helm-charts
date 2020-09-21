@@ -1,8 +1,8 @@
 # Pure Service Orchestrator (PSO) Helm Charts
 
 ## Feature-Frozen
-Pure Service Orchestrator 5.x is in feature freeze. All new features will be going into our new [6.x release](https://github.com/purestorage/pso-csi).
-Bug reports for 5.x will still be addressed, and PSO 5.x is currently still the required plugin for Google Anthos and OpenShift 3.11.
+Pure Service Orchestrator 5.x, which is instaled using this Helm chart (pure-csi), is in feature freeze. All new features will be going into our new [6.x release (pso-csi)](https://github.com/purestorage/pso-csi).
+Bug reports for 5.x will still be addressed, and PSO 5.x (pure-csi) is currently still the required plugin for Google Anthos and OpenShift 3.11.
 
 ## What is PSO?
 
