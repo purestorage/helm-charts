@@ -1,6 +1,6 @@
-**The CSI Operator should only be used for installation of PSO in an OpenShift 4 Environment**
+**The CSI Operator should only be used for installation of PSO in an OpenShift 4.2 and 4.3 Environment**
 
-For all other deployments of Kubernetes use the Helm installation process.
+For all other deployments of Kubernetes, including OpenShift 4.4 and higher, use the Helm installation process.
 
 # Pure CSI Operator
 
