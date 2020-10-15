@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: pso-gke-config
+  name: pso-node-config
   namespace: {{ .Release.Namespace }}
 spec:
   selector:
