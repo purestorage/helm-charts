@@ -3,20 +3,20 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: pso-daemonset
+  name: pso-gke-config
   namespace: {{ .Release.Namespace }}
 spec:
   selector:
     matchLabels:
-      name: pso-daemonset
+      name: pso-node-config
   template:
     metadata:
       labels:
-        name: pso-daemonset
+        name: pso-node-config
     spec:
       hostPID: true
       containers:
-      - name: pso-daemonset
+      - name: pso-node-config
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh", "-c", "/node-configure.sh"]
