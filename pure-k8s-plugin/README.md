@@ -57,7 +57,7 @@ The following table lists the configurable parameters and their default values.
 |             Parameter       |            Description             |                    Default                |
 |-----------------------------|------------------------------------|-------------------------------------------|
 | `image.name`                | The image name       to pull from  | `purestorage/k8s`                         |
-| `image.tag`                 | The image tag to pull              | `2.7.0`                                   |
+| `image.tag`                 | The image tag to pull              | `2.7.1`                                   |
 | `image.pullPolicy`          | Image pull policy                  | `Always`                                  |
 | `app.debug`                 | Enable/disable debug mode for app  | `false`                                   |
 | `storageclass.createBuiltIn`| Control to create the built-in StorageClasses 'pure', 'pure-file' and 'pure-block'  | `true`                               |
