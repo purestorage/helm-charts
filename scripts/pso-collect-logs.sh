@@ -71,13 +71,10 @@ do
     $KUBECTL logs $pod -c pure-provisioner -n $PSO_NS > $LOG_DIR/$pod.log
   fi
   # For csi driver
-  if [[ $pod == *"pure-csi-"* ]]; then
+  if [[ $pod == *"pure-csi-"* ]] || [[ $pod == *"pure-provisioner-0"* ]] ; then
     $KUBECTL logs $pod -c pure-csi-container -n $PSO_NS > $LOG_DIR/$pod.log
   fi
 
-  if [[ $pod == *"pure-provisioner-0"* ]]; then
-    $KUBECTL logs $pod -c pure-csi-container -n $PSO_NS > $LOG_DIR/$pod.log
-  fi
 done
 
 if [ "$FULL_MODE" == "true" ]; then
