@@ -19,7 +19,7 @@ This installation process does not require Helm installation.
   - Ubuntu 16.04
   - Ubuntu 18.04
 - #### Environments Supported*:
-  - Kubernetes 1.11+
+  - Kubernetes 1.11
     - Access to a user account that has cluster-admin privileges.
   - OpenShift 3.11
     - Access to a user account that has cluster-admin privileges.
