@@ -13,7 +13,7 @@ This installation process does not require Helm installation.
 ## Platform and Software Dependencies
 
 - #### Environments Supported*:
-  - Red Hat OpenShift 4.3+
+  - Red Hat OpenShift 4.3 - 4.4
 - #### Other software dependencies:
   - Latest linux multipath software package for your operating system (Required)
   - Latest Filesystem utilities/drivers (XFS by default, Required)
