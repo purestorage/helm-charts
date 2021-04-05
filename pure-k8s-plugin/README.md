@@ -14,7 +14,7 @@ This helm chart installs the FlexVolume plugin on a Kubernetes cluster.
   - Ubuntu 16.04
   - Ubuntu 18.04
 - #### Environments Supported*:
-  - Kubernetes 1.6+
+  - Kubernetes 1.6 - 1.13
   - Helm 2.9.1+ (**NOTE:** Helm3 is not supported for FlexDriver)
   - [OpenShift](#openshift) 3.11
     - [Dynamic provisioning](https://docs.openshift.com/container-platform/3.11/install_config/persistent_storage/dynamically_provisioning_pvs.html#overview) enabled in the master nodes.
