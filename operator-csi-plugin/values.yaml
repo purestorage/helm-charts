@@ -61,6 +61,7 @@ flashblade:
 # there are two namespaces for this app
 # 1. namespace.pure is the backend storage namespace where volumes/shares/etc
 #    will be created.
+# Values for this can only include alphanumeric and underscores. Hyphens are not allowed.
 namespace:
   pure: k8s
 
