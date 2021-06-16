@@ -53,10 +53,15 @@ storageclass:
   # set the type of backend you want for the 'pure' storageclass
   pureBackend: "block"
 
-# specify the service account name for this app
+# specify the service account name for this app and the ClusterRoleBinding resizer name
 clusterrolebinding:
+  name: csi-resizer-role
   serviceAccount:
     name: "pure"
+  
+# specify the  ClusterRole name
+clusterrole:
+  name: external-resizer-runner
 
 # support ISCSI or FC, not case sensitive
 flasharray:

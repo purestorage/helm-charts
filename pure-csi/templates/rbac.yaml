@@ -182,7 +182,7 @@ roleRef:
 kind: ClusterRole
 apiVersion: {{ template "rbac.apiVersion" . }}
 metadata:
-  name: external-resizer-runner
+  name: {{ .Values.clusterrole.name }}
   labels:
 {{ include "pure_csi.labels" . | indent 4}}
 rules:
@@ -208,7 +208,7 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: {{ template "rbac.apiVersion" . }}
 metadata:
-  name: csi-resizer-role
+  name: {{ .Values.clusterrolebinding.name }}
   labels:
 {{ include "pure_csi.labels" . | indent 4}}
 subjects:
