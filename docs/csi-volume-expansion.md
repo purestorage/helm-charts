@@ -19,7 +19,7 @@ The following prerequisites must be true to ensure the function can work properl
 
 ### Note
 
-Any PVC creted using a StorageClass where the `Parameters:   backend=block` is true will only be resized upon a (re)start of the pod bound to the PVC. 
+Any PVC created using a StorageClass where the `Parameters:   backend=block` is true will only be resized upon a (re)start of the pod bound to the PVC. 
 
 ## Dependencies
 
