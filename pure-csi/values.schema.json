@@ -222,31 +222,6 @@
                 }
             ],
 
-
-
-            "oneOf": [  
-                    
-                {
-                    "properties":{
-                        "FlashArrays": {"minItems": 1},
-                        "FlashBlades": {"maxItems": 0}
-                    }
-                },
-                {
-                    "properties":{
-                        "FlashArrays": {"maxItems": 0},
-                        "FlashBlades": {"minItems": 1}
-                    }
-                },    
-                {
-                    "properties":{
-                        "FlashArrays": {"minItems": 1},
-                        "FlashBlades": {"minItems": 1}
-                    }
-                }            
-
-            ],
-
             "additionalProperties": true,
             "properties": {
                 "FlashArrays": {
